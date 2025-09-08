@@ -6,6 +6,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/layout', function () {
+Route::get('/admin
+', function () {
     return view('admin/layout');
 });
