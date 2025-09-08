@@ -40,9 +40,25 @@
     <div id="sidebar"
         class="fixed top-0 left-0 h-full w-72 bg-white shadow-xl z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
 
-        <!-- Sidebar Header -->
         <div class="bg-white/80 px-6 py-4 text-white rounded-tr-xl mt-6">
-            <h2 class="text-2xl font-semibold">Tymiqly</h2>
+            <h2 class="text-2xl font-semibold">Yours Snacks</h2>
+        </div>
+
+        <div class="px-6 py-4 border-b border-pink-100">
+            <div class="flex items-center space-x-4">
+
+
+                <div
+                    class="w-12 h-12 rounded-full shadow-lg bg-orange-900 text-white flex items-center justify-center text-lg font-semibold">
+                    A
+                </div>
+
+                <div>
+                    <p class="text-base font-semibold text-blue-800">Hi, <span class="text-orange-600">Ankur Jha</span>
+                    </p>
+                    <p class="text-sm text-gray-900">Admin</p>
+                </div>
+            </div>
         </div>
 
 
@@ -51,33 +67,53 @@
         <div class="p-6">
             <ul class="space-y-4">
                 <li>
-                    <a href="{{ route('adminCategoryPage') }}" onclick="showLoader()"
-                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3  {{ request()->routeIs('adminCategoryPage') ? 'bg-blue-100 border-1 border-orange-900' : '' }}  rounded-md transition">
+                    <a href="{{ route('admindashboard') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3 {{ request()->routeIs('admindashboard') ? 'bg-blue-100 border border-orange-900' : '' }} rounded-md transition">
+                        <i class="fas fa-tachometer-alt mr-3 text-gray-500"></i>
+                        Dashboard
+                    </a>
+                </li>
 
+                <li>
+                    <a href="{{ route('adminCategoryPage') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3 {{ request()->routeIs('adminCategoryPage') ? 'bg-blue-100 border border-orange-900' : '' }} rounded-md transition">
+                        <i class="fas fa-folder mr-3 text-gray-500"></i>
                         Category
                     </a>
                 </li>
+
                 <li>
                     <a href="{{ route('searchProducts') }}" onclick="showLoader()"
-                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3  {{ request()->routeIs('searchProducts') ? 'bg-blue-100 border-1 border-orange-900' : '' }}  rounded-md transition">
-
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3 {{ request()->routeIs('searchProducts') ? 'bg-blue-100 border border-orange-900' : '' }} rounded-md transition">
+                        <i class="fas fa-box mr-3 text-gray-500"></i>
                         All Products
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('allOrders') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3 {{ request()->routeIs('allOrders') ? 'bg-blue-100 border border-orange-900' : '' }} rounded-md transition">
+                        <i class="fas fa-shopping-cart mr-3 text-gray-500"></i>
+                        All Orders
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('allCouponsPage') }}" onclick="showLoader()"
-                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3  {{ request()->routeIs('allCouponsPage') ? 'bg-blue-100 border-1 border-orange-900' : '' }}  rounded-md transition">
-
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3 {{ request()->routeIs('allCouponsPage') ? 'bg-blue-100 border border-orange-900' : '' }} rounded-md transition">
+                        <i class="fas fa-ticket-alt mr-3 text-gray-500"></i>
                         Coupons
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('allUsers') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3 {{ request()->routeIs('allUsers') ? 'bg-blue-100 border border-orange-900' : '' }} rounded-md transition">
+                        <i class="fas fa-users mr-3 text-gray-500"></i>
+                        All Users
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('logout') }}" onclick="showLoader()"
-                        class="flex items-center text-gray-700 hover:bg-red-100 px-4 py-3    rounded-md transition">
-                        <svg class="w-5 h-5 text-orange-600 mr-3" fill="none" stroke="currentColor" stroke-width="2"
-                            viewBox="0 0 24 24">
-                            <path d="M3 12l2-2 7-7 7 7M13 5v6h6" />
-                        </svg>
+                        class="flex items-center text-gray-700 hover:bg-red-100 px-4 py-3 rounded-md transition">
+                        <i class="fas fa-sign-out-alt mr-3 text-gray-500"></i>
                         Logout
                     </a>
                 </li>
@@ -88,13 +124,12 @@
     </div>
 
     <!-- Navbar -->
-    <!-- Navbar -->
     <nav class="bg-white/90 backdrop-blur-md shadow-sm fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
 
                 <div class="text-3xl font-bold">
-                    <a href="{{ route('adminCategoryPage') }}" class="flex items-center gap-2" onclick="showLoader()">
+                    <a href="{{ route('admindashboard') }}" class="flex items-center gap-2" onclick="showLoader()">
                         <div class="text-3xl font-bold flex flex-wrap items-center">
                             <span class="text-blue-800 ml-1">Yours Snacks</span>
                         </div>
@@ -103,7 +138,6 @@
                 </div>
 
 
-                <!-- Right: Nav Links -->
                 <div class="hidden md:flex items-center space-x-7 text-sm font-medium">
 
                     <a href="{{ route('adminCategoryPage') }}" onclick="showLoader()"

@@ -45,3 +45,9 @@ Route::get('admin/coupons', [AdminController::class, 'allCoupons'])->name('allCo
 Route::post('admin/addCoupon', [AdminController::class, 'addCoupons'])->name('addCoupons');
 Route::delete('admin/deleteCoupon/{id}', [AdminController::class, 'deleteCoupon'])->name('deleteCoupon');
 Route::put('admin/updateCoupon/{id}', [AdminController::class, 'updateCoupon'])->name('updateCoupon');
+
+Route::get('admin/allUsers', [AdminController::class, 'allUsers'])->name('allUsers');
+
+Route::get('admin/allOrders', [AdminController::class, 'allOrders'])->name('allOrders');
+
+Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');

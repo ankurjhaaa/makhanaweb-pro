@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Coupon;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -182,4 +184,18 @@ class AdminController extends Controller
     }
 
 
+    public function allUsers()
+    {
+        $allUsers = User::all();
+        return view('admin.users', compact('allUsers'));
+    }
+    public function allOrders()
+    {
+        $allOrders = Order::all();
+        return view('admin.orders', compact('allOrders'));
+    }
+    public function dashboard()
+    {
+        return view('admin.dashboard');
+    }
 }
