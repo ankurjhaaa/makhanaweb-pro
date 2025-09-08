@@ -15,9 +15,10 @@
         </div>
         <nav class="mt-6">
             <a href="/admin/dashboard" class="block px-6 py-2 hover:bg-gray-100">Dashboard</a>
-            <a href="/admin/users" class="block px-6 py-2 hover:bg-gray-100">Users</a>
-            <a href="/admin/products" class="block px-6 py-2 hover:bg-gray-100">Products</a>
-            <a href="/admin/orders" class="block px-6 py-2 hover:bg-gray-100">Orders</a>
+            <a href="/admin/category" class="block px-6 py-2 hover:bg-gray-100">Category</a>
+            <a href="" class="block px-6 py-2 hover:bg-gray-100">Users</a>
+            <a href="" class="block px-6 py-2 hover:bg-gray-100">Products</a>
+            <a href="" class="block px-6 py-2 hover:bg-gray-100">Orders</a>
             <a href="/admin/settings" class="block px-6 py-2 hover:bg-gray-100">Settings</a>
         </nav>
     </aside>
