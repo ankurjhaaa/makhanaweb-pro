@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Livewire\Public\Cart;
 use App\Livewire\Public\Checkout;
 use App\Livewire\Public\Homepage;
@@ -23,3 +24,7 @@ Route::post('/logout', [SocialAuthController::class, 'logout'])->name('logout');
 Route::get('/admin', function () {
     return view('admin/layout');
 });
+
+Route::get('admin/category', [AdminController::class, 'adminCategoryPage'])->name('adminCategoryPage');
+Route::post('admin/addCategory', [AdminController::class, 'adminCategory'])->name('addAdminCategory');
+Route::delete('admin/deleteCategory/{id}', [AdminController::class, 'deleteCategory'])->name('deleteCategory');
