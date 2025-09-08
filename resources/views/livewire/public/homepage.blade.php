@@ -43,68 +43,56 @@
     </section>
 
     <!-- Featured Products -->
-    <section class="bg-gray-50 py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="text-center">
-                <h2 class="font-poppins text-3xl md:text-4xl font-semibold">Featured Products</h2>
-                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Discover our handpicked selection of premium healthy snacks, crafted with love and tested for purity.</p>
-            </div>
-
-            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white rounded-lg border border-gray-100 p-6 transition-all hover:border-brand-200">
-                    <div class="text-xs uppercase tracking-wider font-medium text-brand-600 mb-3">Makhana</div>
-                    <div class="aspect-w-1 aspect-h-1 mb-5">
-                        <img src="/images/product1.jpg" alt="Premium Makhana" class="w-full h-48 object-cover rounded-md">
-                    </div>
-                    <h3 class="font-poppins font-semibold text-lg">Premium Makhana</h3>
-                    <p class="text-gray-600 text-sm mt-2">Crispy roasted foxnuts, naturally sourced and perfectly seasoned.</p>
-                    <div class="mt-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-brand-600 font-bold text-lg">₹299</span>
-                            <span class="text-gray-400 text-sm line-through ml-2">₹399</span>
-                        </div>
-                        <button class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">Add to Cart</button>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-lg border border-gray-100 p-6 transition-all hover:border-brand-200">
-                    <div class="text-xs uppercase tracking-wider font-medium text-brand-600 mb-3">Spices</div>
-                    <div class="aspect-w-1 aspect-h-1 mb-5">
-                        <img src="/images/product2.jpg" alt="Authentic Spice Collection" class="w-full h-48 object-cover rounded-md">
-                    </div>
-                    <h3 class="font-poppins font-semibold text-lg">Authentic Spice Collection</h3>
-                    <p class="text-gray-600 text-sm mt-2">Premium ground spices with traditional flavors and aroma.</p>
-                    <div class="mt-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-brand-600 font-bold text-lg">₹199</span>
-                            <span class="text-gray-400 text-sm line-through ml-2">₹249</span>
-                        </div>
-                        <button class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">Add to Cart</button>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-lg border border-gray-100 p-6 transition-all hover:border-brand-200">
-                    <div class="text-xs uppercase tracking-wider font-medium text-brand-600 mb-3">Healthy Snacks</div>
-                    <div class="aspect-w-1 aspect-h-1 mb-5">
-                        <img src="/images/product3.jpg" alt="Healthy Mix Snacks" class="w-full h-48 object-cover rounded-md">
-                    </div>
-                    <h3 class="font-poppins font-semibold text-lg">Healthy Mix Snacks</h3>
-                    <p class="text-gray-600 text-sm mt-2">Nutritious blend of nuts, seeds, and natural ingredients.</p>
-                    <div class="mt-4 flex items-center justify-between">
-                        <div>
-                            <span class="text-brand-600 font-bold text-lg">₹349</span>
-                            <span class="text-gray-400 text-sm line-through ml-2">₹449</span>
-                        </div>
-                        <button class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-10 text-center">
-                <a href="#" class="inline-block border-2 border-brand-600 text-brand-600 px-6 py-3 rounded-full hover:bg-brand-50 transition-all font-medium">View All Products</a>
-            </div>
+  <section class="bg-gray-50 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="text-center">
+            <h2 class="font-poppins text-3xl md:text-4xl font-semibold">Featured Products</h2>
+            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+                Discover our handpicked selection of premium healthy snacks, crafted with love and tested for purity.
+            </p>
         </div>
-    </section>
+
+        <!-- Product Grid -->
+        <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach ($products as $product)
+                <div class="bg-white rounded-lg border border-gray-100 p-6 transition-all hover:border-brand-200">
+                    <div class="text-xs uppercase tracking-wider font-medium text-brand-600 mb-3">
+                        {{ $product->category->name ?? 'Uncategorized' }}
+                    </div>
+
+                    <div class="aspect-w-1 aspect-h-1 mb-5">
+                        <img src="{{ asset('storage/' . $product->image) }}" 
+                             alt="{{ $product->name }}" 
+                             class="w-full h-48 object-cover rounded-md">
+                    </div>
+
+                    <h3 class="font-poppins font-semibold text-lg">{{ $product->name }}</h3>
+                    <p class="text-gray-600 text-sm mt-2">{{ Str::limit($product->description, 80) }}</p>
+
+                    <div class="mt-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-brand-600 font-bold text-lg">₹{{ $product->price }}</span>
+                            @if($product->old_price)
+                                <span class="text-gray-400 text-sm line-through ml-2">₹{{ $product->old_price }}</span>
+                            @endif
+                        </div>
+                        <button class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <div class="mt-10 text-center">
+            <a href="" 
+               class="inline-block border-2 border-brand-600 text-brand-600 px-6 py-3 rounded-full hover:bg-brand-50 transition-all font-medium">
+               View All Products
+            </a>
+        </div>
+    </div>
+</section>
+
 
     <!-- Why Choose Makhana -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-20">

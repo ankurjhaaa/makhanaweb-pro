@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use App\Models\Product;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -10,6 +11,7 @@ class Homepage extends Component
 {
     public function render()
     {
-        return view('livewire.public.homepage');
+        $products = Product::all();
+        return view('livewire.public.homepage', compact('products'));
     }
 }
