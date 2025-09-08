@@ -5,6 +5,12 @@
             <div class="text-center mb-8">
                 <h1 class="font-poppins text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
                 <p class="text-gray-600">Sign in to your account to continue</p>
+                <p class="mt-2 text-sm text-gray-600">
+                    Don't have an account?
+                    <a href="{{ route('register') }}" class="font-medium text-orange-600 hover:text-orange-500 transition-colors">
+                        Create one here
+                    </a>
+                </p>
             </div>
 
             <!-- Success Message -->

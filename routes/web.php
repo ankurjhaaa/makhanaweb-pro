@@ -5,14 +5,18 @@ use App\Livewire\Public\Cart;
 use App\Livewire\Public\Checkout;
 use App\Livewire\Public\Homepage;
 use App\Livewire\Public\Login;
+use App\Livewire\Public\Register;
 use App\Livewire\Public\OrderSuccess;
+use App\Livewire\Public\Shop;
 use App\Http\Controllers\Auth\SocialAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Homepage::class)->name("home");
+Route::get('/shop', Shop::class)->name("shop");
 Route::get('/cart', Cart::class)->name("cart");
 Route::get('/checkout', Checkout::class)->name("checkout");
 Route::get('/login', Login::class)->name("login");
+Route::get('/register', Register::class)->name("register");
 
 Route::get('/order/success', OrderSuccess::class)->name('order.success');
 
