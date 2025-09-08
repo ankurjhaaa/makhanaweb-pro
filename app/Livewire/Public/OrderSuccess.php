@@ -3,6 +3,8 @@
 namespace App\Livewire\Public;
 
 use Livewire\Component;
+use Livewire\Attributes\Layout;
+#[Layout('layouts.app')]
 
 class OrderSuccess extends Component
 {
