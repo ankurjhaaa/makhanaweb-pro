@@ -128,7 +128,7 @@
             <div class="mt-8 text-center">
                 <p class="text-sm text-gray-600">
                     Don't have an account? 
-                    <a href="#" class="text-brand-600 hover:text-brand-700 font-medium">
+                    <a href="{{route('signup')}}" class="text-brand-600 hover:text-brand-700 font-medium">
                         Sign up for free
                     </a>
                 </p>

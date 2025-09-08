@@ -7,12 +7,14 @@ use App\Livewire\Public\Homepage;
 use App\Livewire\Public\Login;
 use App\Livewire\Public\OrderSuccess;
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Livewire\Public\Signup;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Homepage::class)->name("home");
 Route::get('/cart', Cart::class)->name("cart");
 Route::get('/checkout', Checkout::class)->name("checkout");
 Route::get('/login', Login::class)->name("login");
+Route::get('/signup', Signup::class)->name('signup');
 
 Route::get('/order/success', OrderSuccess::class)->name('order.success');
 
@@ -28,3 +30,4 @@ Route::get('/admin', function () {
 Route::get('admin/category', [AdminController::class, 'adminCategoryPage'])->name('adminCategoryPage');
 Route::post('admin/addCategory', [AdminController::class, 'adminCategory'])->name('addAdminCategory');
 Route::delete('admin/deleteCategory/{id}', [AdminController::class, 'deleteCategory'])->name('deleteCategory');
+
