@@ -26,21 +26,34 @@ class SocialAuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
             
+            // dd("test");
             // Check if user already exists
             $user = User::where('email', $googleUser->getEmail())->first();
             
             if ($user) {
-                // Update Google ID if not set
+                // Update Google ID and details if not set
                 if (!$user->google_id) {
+                    $nameParts = explode(' ', $googleUser->getName(), 2);
+                    $firstName = $nameParts[0] ?? '';
+                    $lastName = $nameParts[1] ?? '';
+                    
                     $user->update([
                         'google_id' => $googleUser->getId(),
                         'avatar' => $googleUser->getAvatar(),
+                        'first_name' => $user->first_name ?: $firstName,
+                        'last_name' => $user->last_name ?: $lastName,
                     ]);
                 }
             } else {
                 // Create new user
+                $nameParts = explode(' ', $googleUser->getName(), 2);
+                $firstName = $nameParts[0] ?? '';
+                $lastName = $nameParts[1] ?? '';
+                
                 $user = User::create([
                     'name' => $googleUser->getName(),
+                    'first_name' => $firstName,
+                    'last_name' => $lastName,
                     'email' => $googleUser->getEmail(),
                     'google_id' => $googleUser->getId(),
                     'avatar' => $googleUser->getAvatar(),
