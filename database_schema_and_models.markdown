@@ -164,7 +164,7 @@ Below are the Laravel model definitions for each table, including relationships.
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable; 
 
 class User extends Authenticatable
 {
@@ -608,7 +608,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateShippingTable extends Migration
 {
     public function up()
-    {
+    { 
         Schema::create('shipping', function (Blueprint $table) {
             $table->id();
             $table->string('method_name', 100);
