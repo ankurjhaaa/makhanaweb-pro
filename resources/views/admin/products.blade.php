@@ -3,12 +3,11 @@
 @section('title', 'Products Management')
 
 @section('content')
-    <div class="space-y-8">
-        {{-- Header --}}
-        <div class="flex items-center justify-between">
-            <h1 class="text-3xl font-extrabold text-gray-800">Products Management 📦</h1>
+    <div class="bg-white shadow rounded-lg mt-20 p-4">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-800">Products </h2>
             <button onclick="document.getElementById('addProductModal').classList.remove('hidden')"
-                class="px-5 py-2.5 text-sm font-semibold text-white bg-green-600 rounded-xl shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition">
+                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
                 + Add New Product
             </button>
         </div>
@@ -17,36 +16,29 @@
                 {{ session('success') }}
             </div>
         @endif
-        <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+        <div class=" p-1 rounded-md ">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+                <!-- Search Form -->
                 <div class="relative w-full md:w-1/2">
-                    <form method="GET" action="{{ route('searchProducts') }}"
-                        class="flex items-center gap-2 w-full md:w-1/2 mb-4">
+                    <form method="GET" action="{{ route('searchProducts') }}" class="flex w-full">
                         <div class="relative flex-1">
                             <input type="search" name="search" value="{{ request('search') }}"
-                                class="w-full pl-12 pr-4 py-2 text-sm border border-gray-300 rounded-xl focus:ring-green-500 focus:border-green-500 placeholder-gray-400 shadow-sm"
+                                class="w-full pl-3 py-2 text-sm border border-gray-300 rounded-s-md focus:ring-green-500 focus:border-green-500 placeholder-gray-400 shadow-sm"
                                 placeholder="Search products...">
                         </div>
 
                         <button type="submit"
-                            class="px-4 py-2 bg-green-600 text-white rounded-xl shadow hover:bg-green-700 transition font-semibold text-sm">
+                            class=" px-4 py-2 bg-blue-600 text-white rounded-e-md shadow hover:bg-blue-700 transition font-semibold text-sm">
                             Search
                         </button>
                     </form>
-
-
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </div>
                 </div>
 
-                <div class="flex items-center space-x-2">
-                    <span class="text-gray-500 text-sm">Sort by:</span>
+                <!-- Sort By -->
+                <div class="flex items-center space-x-2 w-full md:w-auto">
+                    <span class="text-gray-500 text-sm">Sort_by:</span>
                     <select id="sort-by"
-                        class="p-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:ring-green-500 focus:border-green-500">
+                        class="w-full md:w-auto p-2 text-sm border border-gray-300 rounded-md bg-gray-50 focus:ring-green-500 focus:border-green-500">
                         <option value="name">Name</option>
                         <option value="price">Price</option>
                         <option value="stock">Stock</option>
@@ -54,19 +46,24 @@
                 </div>
             </div>
 
+
             <div class="overflow-x-auto rounded-lg">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-100 sticky top-0">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Product
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                Product
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
                                 Category</th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Price
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                Price
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Stock
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                Stock
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
+                                Status
                             </th>
                             <th class="px-6 py-3 text-right text-xs font-bold text-gray-600 uppercase tracking-wider">
                                 Actions</th>

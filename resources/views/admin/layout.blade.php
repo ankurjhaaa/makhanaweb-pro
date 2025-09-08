@@ -1,65 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title') | {{ env('APP_NAME') }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    @vite('resources/css/app.css')
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 
-    <title>@yield('title','Admin Dashboard')</title>
-    @vite('resources/css/app.css')  {{-- Tailwind CSS --}}
-  
 </head>
-<body class="bg-gray-100 flex">
 
-    {{-- Sidebar --}}
-    <aside class="w-64 bg-white shadow-lg min-h-screen hidden md:block">
-        <div class="p-6">
-            <h2 class="text-2xl font-bold text-green-600">Admin</h2>
-        </div>
-        <nav class="mt-6">
-            <a href="/admin/dashboard" class="block px-6 py-2 hover:bg-gray-100">Dashboard</a>
-            <a href="/admin/users" class="block px-6 py-2 hover:bg-gray-100">Users</a>
-            <a href="/admin/products" class="block px-6 py-2 hover:bg-gray-100">Products</a>
-            <a href="{{ route('adminCategoryPage') }}" class="block px-6 py-2 hover:bg-gray-100">Categories</a>
-            <a href="/admin/settings" class="block px-6 py-2 hover:bg-gray-100">Settings</a>
-        </nav>
-    </aside>
-
-    {{-- Main Content --}}
-    <div class="flex-1 flex flex-col">
-        {{-- Top Navbar --}}
-        <header class="bg-white shadow h-16 flex items-center justify-between px-6">
-            <div class="flex items-center space-x-2">
-                {{-- Mobile Menu Button --}}
-                <button class="md:hidden p-2 rounded hover:bg-gray-200" id="menuToggle">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-                <span class="font-semibold text-lg">Admin Panel</span>
-            </div>
-
-            <div class="flex items-center space-x-4">
-                <span class="text-gray-600">Welcome, Admin</span>
-                <button class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">Logout</button>
-            </div>
-        </header>
-
-        {{-- Page Content --}}
-        <main class="flex-1 p-6">
-            @yield('content')
-        </main>
+<body>
+    <!-- --------------------------- loder wirl Here ---------------- -->
+    <!-- Loader HTML -->
+    <div id="loaderOverlay" class="fixed inset-0 bg-black/10 bg-opacity-40 hidden items-center justify-center z-[9999]">
+        <div class="loader border-4 border-white border-t-[#b1432d] rounded-full w-12 h-12 animate-spin"></div>
     </div>
 
-
-    {{-- Simple Mobile Menu Script --}}
     <script>
-        const btn = document.getElementById('menuToggle');
-        const sidebar = document.querySelector('aside');
-
-        btn?.addEventListener('click', () => {
-            sidebar.classList.toggle('hidden');
+        function showLoader() {
+            const overlay = document.getElementById('loaderOverlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+        }
+        window.addEventListener('pageshow', function (event) {
+            const overlay = document.getElementById('loaderOverlay');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
         });
     </script>
+
+
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0  bg-opacity-50 z-40 hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <div id="sidebar"
+        class="fixed top-0 left-0 h-full w-72 bg-white shadow-xl z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
+
+        <!-- Sidebar Header -->
+        <div class="bg-white/80 px-6 py-4 text-white rounded-tr-xl mt-6">
+            <h2 class="text-2xl font-semibold">Tymiqly</h2>
+        </div>
+
+
+
+        <!-- Sidebar Links -->
+        <div class="p-6">
+            <ul class="space-y-4">
+                <li>
+                    <a href="{{ route('adminCategoryPage') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3  {{ request()->routeIs('adminCategoryPage') ? 'bg-blue-100 border-1 border-orange-900' : '' }}  rounded-md transition">
+
+                        Category
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('searchProducts') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3  {{ request()->routeIs('searchProducts') ? 'bg-blue-100 border-1 border-orange-900' : '' }}  rounded-md transition">
+
+                        All Products
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('allCouponsPage') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3  {{ request()->routeIs('allCouponsPage') ? 'bg-blue-100 border-1 border-orange-900' : '' }}  rounded-md transition">
+
+                        Coupons
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('logout') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-700 hover:bg-red-100 px-4 py-3    rounded-md transition">
+                        <svg class="w-5 h-5 text-orange-600 mr-3" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M3 12l2-2 7-7 7 7M13 5v6h6" />
+                        </svg>
+                        Logout
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+
+                <div class="text-3xl font-bold">
+                    <a href="{{ route('adminCategoryPage') }}" class="flex items-center gap-2" onclick="showLoader()">
+                        <div class="text-3xl font-bold flex flex-wrap items-center">
+                            <span class="text-blue-800 ml-1">Yours Snacks</span>
+                        </div>
+                    </a>
+
+                </div>
+
+
+                <!-- Right: Nav Links -->
+                <div class="hidden md:flex items-center space-x-7 text-sm font-medium">
+
+                    <a href="{{ route('adminCategoryPage') }}" onclick="showLoader()"
+                        class="group relative  text-[17px] transition-all duration-300 hover:text-blue-800 {{ request()->routeIs('adminCategoryPage') ? 'text-blue-800' : '' }}">
+                        All Category
+                        <span
+                            class="{{ request()->routeIs('adminCategoryPage') ? 'absolute left-0 -bottom-1 h-[2px] bg-blue-800 w-full' : 'absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-800 transition-all duration-300 group-hover:w-full' }}"></span>
+                    </a>
+
+                    <a href="{{ route('logout') }}"
+                        class="ml-2 bg-orange-600 text-white px-5 py-2 rounded-md text-[17px]  hover:bg-orange-700 transition">
+                        Logout
+                    </a>
+                </div>
+
+                <!-- Hamburger (Mobile) -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleSidebar()" class="text-orange-800 focus:outline-none">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+    </script>
+    <!-- Main content -->
+    <main class="flex-1 min-h-screen md:ml-72 p-5">
+        @yield('content')
+    </main>
+
 </body>
+
 </html>

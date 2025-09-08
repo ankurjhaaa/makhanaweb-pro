@@ -3,7 +3,8 @@
 @section('title', 'Category Page')
 
 @section('content')
-    <div class="container mx-auto p-4">
+
+    <div class="container mx-auto p-4 mt-20">
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-bold">Categories</h1>
             <button onclick="document.getElementById('categoryModal').classList.remove('hidden')"
