@@ -37,3 +37,6 @@ Route::put('admin/editCategory/{id}', [AdminController::class, 'editCategory'])-
 
 Route::get('admin/products', [AdminController::class, 'allproducts'])->name('allproducts');
 Route::post('admin/addProducts', [AdminController::class, 'addProducts'])->name('addProducts');
+Route::delete('admin/deleteProduct/{id}', [AdminController::class, 'deleteProduct'])->name('deleteProduct');
+Route::put('admin/updateProduct/{id}', [AdminController::class, 'updateProduct'])->name('updateProduct');
+Route::get('admin/products', [AdminController::class, 'searchProducts'])->name('searchProducts');
