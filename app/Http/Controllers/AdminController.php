@@ -67,7 +67,7 @@ class AdminController extends Controller
             'name' => 'required',
             'price' => 'required',
             'stock' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,wepg|max:10000',
 
         ]);
         $imagePath = null;

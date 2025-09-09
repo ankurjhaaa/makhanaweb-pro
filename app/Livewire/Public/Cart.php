@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Public;
 
+use App\Models\Coupon;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -18,45 +21,63 @@ class Cart extends Component
     public $couponApplied = false;
     public $couponError = '';
 
-    public function mount()
-    {
-        // In a real application, you would load cart items from session or database
-        // Here we're using sample data for demonstration
-        $this->cartItems = [
-            [
-                'id' => 1,
-                'name' => 'Premium Makhana',
-                'image' => '/images/product1.jpg',
-                'price' => 299,
-                'originalPrice' => 399,
-                'quantity' => 2,
-                'category' => 'Makhana',
-                'weight' => '200g',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Authentic Spice Collection',
-                'image' => '/images/product2.jpg',
-                'price' => 199,
-                'originalPrice' => 249,
-                'quantity' => 1,
-                'category' => 'Spices',
-                'weight' => '150g',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Healthy Mix Snacks',
-                'image' => '/images/product3.jpg',
-                'price' => 349,
-                'originalPrice' => 449,
-                'quantity' => 1,
-                'category' => 'Healthy Snacks',
-                'weight' => '250g',
-            ],
+
+
+public function addToCart($productId)
+{
+    // Check if user is logged in
+    if (!Auth::check()) {
+        // Agar login nahi hai → login page par bhej do
+        return redirect()->route('login')->with('error', 'Please login to add items to cart.');
+    }
+
+    // Get product from DB
+    $product = \App\Models\Product::find($productId);
+
+    if (!$product) {
+        return;
+    }
+
+    // Load current cart from session
+    $cart = session()->get('cart', []);
+
+    if (isset($cart[$productId])) {
+        $cart[$productId]['quantity']++;
+    } else {
+        $cart[$productId] = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'image' => $product->image,
+            'price' => $product->price,
+            'originalPrice' => $product->original_price ?? $product->price,
+            'quantity' => 1,
+            'category' => $product->category->name ?? 'General',
+            'weight' => $product->weight ?? '',
         ];
-        
+    }
+
+    // Save cart to session
+    session()->put('cart', $cart);
+
+    // Update local cart
+    $this->cartItems = $cart;
+    $this->calculateTotals();
+
+    return redirect()->route('cart');
+}
+
+
+
+   public function mount()
+{
+    if (request()->has('add')) {
+        $this->addToCart(request()->get('add'));
+    } else {
+        $this->cartItems = session()->get('cart', []);
         $this->calculateTotals();
     }
+}
+
     
     public function calculateTotals()
     {
@@ -87,50 +108,82 @@ class Cart extends Component
         }
     }
     
-    public function updateQuantity($itemId, $newQuantity)
-    {
-        if ($newQuantity < 1) {
-            $newQuantity = 1;
-        }
-        
-        foreach ($this->cartItems as $key => $item) {
-            if ($item['id'] == $itemId) {
-                $this->cartItems[$key]['quantity'] = $newQuantity;
-                break;
-            }
-        }
-        
-        $this->calculateTotals();
+   public function updateQuantity($productId, $newQuantity)
+{
+    $cart = session()->get('cart', []);
+
+    if (isset($cart[$productId])) {
+        $cart[$productId]['quantity'] = max(1, (int) $newQuantity);
+        session()->put('cart', $cart);
+        $this->cartItems = $cart;
     }
+
+    $this->calculateTotals();
+}
+
     
-    public function removeItem($itemId)
-    {
-        foreach ($this->cartItems as $key => $item) {
-            if ($item['id'] == $itemId) {
-                unset($this->cartItems[$key]);
-                $this->cartItems = array_values($this->cartItems);
-                break;
-            }
-        }
-        
-        $this->calculateTotals();
+  public function removeItem($productId)
+{
+    $cart = session()->get('cart', []);
+
+    if (isset($cart[$productId])) {
+        unset($cart[$productId]);
+        session()->put('cart', $cart);
+        $this->cartItems = $cart;
     }
-    
-    public function applyCoupon()
-    {
-        // Sample coupon logic
-        if (strtoupper($this->couponCode) === 'WELCOME10') {
-            $this->couponDiscount = round($this->subtotal * 0.1, 2); // 10% discount
-            $this->couponApplied = true;
-            $this->couponError = '';
-        } else {
-            $this->couponDiscount = 0;
-            $this->couponApplied = false;
-            $this->couponError = 'Invalid coupon code';
-        }
-        
-        $this->calculateTotals();
+
+    $this->calculateTotals();
+}
+
+public function applyCoupon()
+{
+    $code = strtoupper(trim($this->couponCode));
+
+    $coupon = Coupon::where('code', $code)->first();
+
+    if (!$coupon) {
+        $this->couponError = 'Invalid coupon code';
+        $this->couponApplied = false;
+        $this->couponDiscount = 0;
+        return;
     }
+
+    // Check status
+    if ($coupon->status !== 'active') {
+        $this->couponError = 'This coupon is inactive';
+        return;
+    }
+
+    // Check validity dates
+    $today = Carbon::today();
+    if (($coupon->valid_from && $today->lt(Carbon::parse($coupon->valid_from))) ||
+        ($coupon->valid_until && $today->gt(Carbon::parse($coupon->valid_until)))) {
+        $this->couponError = 'This coupon is expired or not yet valid';
+        return;
+    }
+
+    // Check minimum order amount
+    if ($coupon->min_order_amount && $this->subtotal < $coupon->min_order_amount) {
+        $this->couponError = "Minimum order ₹{$coupon->min_order_amount} required for this coupon";
+        return;
+    }
+
+    // Calculate discount
+    if ($coupon->discount_type === 'percentage') {
+        $discount = round($this->subtotal * ($coupon->discount_value / 100), 2);
+        if ($coupon->max_discount_amount) {
+            $discount = min($discount, $coupon->max_discount_amount);
+        }
+    } else { // fixed
+        $discount = $coupon->discount_value;
+    }
+
+    $this->couponDiscount = $discount;
+    $this->couponApplied = true;
+    $this->couponError = '';
+
+    $this->calculateTotals();
+}
     
     public function removeCoupon()
     {
