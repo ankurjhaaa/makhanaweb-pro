@@ -77,7 +77,7 @@ class Checkout extends Component
     {
         // Load cart data (in real app, from session/database)
         $this->loadCartData();
-        
+
         // Pre-fill user data if authenticated
         if (Auth::check()) {
             $user = Auth::user();
@@ -89,57 +89,24 @@ class Checkout extends Component
 
     private function loadCartData()
     {
-        // Load same cart data as Cart component
-        $this->cartItems = [
-            [
-                'id' => 1,
-                'name' => 'Premium Makhana',
-                'image' => '/images/product1.jpg',
-                'price' => 299,
-                'originalPrice' => 399,
-                'quantity' => 2,
-                'category' => 'Makhana',
-                'weight' => '200g',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Authentic Spice Collection',
-                'image' => '/images/product2.jpg',
-                'price' => 199,
-                'originalPrice' => 249,
-                'quantity' => 1,
-                'category' => 'Spices',
-                'weight' => '150g',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Healthy Mix Snacks',
-                'image' => '/images/product3.jpg',
-                'price' => 349,
-                'originalPrice' => 449,
-                'quantity' => 1,
-                'category' => 'Healthy Snacks',
-                'weight' => '250g',
-            ],
-        ];
-        
+        $this->cartItems = session()->get('cart', []);
         $this->calculateTotals();
     }
 
     private function calculateTotals()
     {
         $this->subtotal = 0;
-        
+
         foreach ($this->cartItems as $item) {
             $this->subtotal += $item['price'] * $item['quantity'];
         }
-        
+
         // Sample shipping cost calculation
         $this->shippingCost = $this->subtotal > 999 ? 0 : 49;
-        
+
         // Sample tax calculation (5% GST)
         $this->tax = round($this->subtotal * 0.05, 2);
-        
+
         // Calculate final total
         $this->total = $this->subtotal + $this->shippingCost + $this->tax - $this->couponDiscount;
     }
@@ -194,48 +161,74 @@ class Checkout extends Component
         }
     }
 
-    public function placeOrder()
-    {
-        // Validate all required fields
-        $this->validate();
+public function placeOrder()
+{
+    $this->validate();
 
-        // Additional validation for shipping if not same as billing
-        if (!$this->same_as_billing) {
-            $this->validate([
-                'shipping_address_line1' => 'required|min:5',
-                'shipping_city' => 'required|min:2',
-                'shipping_state' => 'required|min:2',
-                'shipping_country' => 'required',
-                'shipping_postal_code' => 'required|min:5|max:10',
-                'shipping_phone' => 'required|min:10|max:15',
-            ]);
-        }
-
-        // Payment method specific validation
-        if ($this->payment_method === 'card') {
-            $this->validate([
-                'card_number' => 'required|min:16|max:19',
-                'card_expiry' => 'required',
-                'card_cvv' => 'required|min:3|max:4',
-                'card_name' => 'required|min:3',
-            ]);
-        } elseif ($this->payment_method === 'upi') {
-            $this->validate([
-                'upi_id' => 'required|email',
-            ]);
-        }
-
-        // Here you would typically:
-        // 1. Create the order in database
-        // 2. Process payment
-        // 3. Send confirmation email
-        // 4. Clear cart
-        // 5. Redirect to success page
-
-        session()->flash('success', 'Order placed successfully! You will receive a confirmation email shortly.');
-        
-        return redirect()->route('order.success');
+    if (!$this->same_as_billing) {
+        $this->validate([
+            'shipping_address_line1' => 'required|min:5',
+            'shipping_city' => 'required|min:2',
+            'shipping_state' => 'required|min:2',
+            'shipping_country' => 'required',
+            'shipping_postal_code' => 'required|min:5|max:10',
+            'shipping_phone' => 'required|min:10|max:15',
+        ]);
     }
+
+    // Order create
+    $order = \App\Models\Order::create([
+        'user_id'        => Auth::id(),
+        'order_number'   => 'ORD-' . strtoupper(uniqid()),
+        'subtotal'       => $this->subtotal,
+        'shipping_cost'  => $this->shippingCost,
+        'tax'            => $this->tax,
+        'discount'       => $this->couponDiscount,
+        'total_amount'   => $this->total,
+        'shipping_address_id' => '1',
+        'payment_method' => $this->payment_method,
+        'status'         => 'pending',
+
+        // Billing Address JSON
+        'billing_address' => json_encode([
+            'line1'       => $this->billing_address_line1,
+            'line2'       => $this->billing_address_line2,
+            'city'        => $this->billing_city,
+            'state'       => $this->billing_state,
+            'country'     => $this->billing_country,
+            'postal_code' => $this->billing_postal_code,
+            'phone'       => $this->billing_phone,
+        ]),
+
+        // Shipping Address JSON
+        'shipping_address' => json_encode([
+            'line1'       => $this->same_as_billing ? $this->billing_address_line1 : $this->shipping_address_line1,
+            'line2'       => $this->same_as_billing ? $this->billing_address_line2 : $this->shipping_address_line2,
+            'city'        => $this->same_as_billing ? $this->billing_city : $this->shipping_city,
+            'state'       => $this->same_as_billing ? $this->billing_state : $this->shipping_state,
+            'country'     => $this->same_as_billing ? $this->billing_country : $this->shipping_country,
+            'postal_code' => $this->same_as_billing ? $this->billing_postal_code : $this->shipping_postal_code,
+            'phone'       => $this->same_as_billing ? $this->billing_phone : $this->shipping_phone,
+        ]),
+    ]);
+
+    // Order items save
+    foreach ($this->cartItems as $item) {
+        $order->items()->create([
+            'product_id' => $item['id'],
+            'price'      => $item['price'],
+            'quantity'   => $item['quantity'],
+        ]);
+    }
+
+    // Clear cart
+    session()->forget('cart');
+
+    session()->flash('success', 'Order placed successfully!');
+    return redirect()->route('order.success');
+}
+
+
 
     public function render()
     {

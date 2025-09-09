@@ -11,6 +11,7 @@ use App\Livewire\Public\Shop;
 use App\Livewire\Public\Recipes;
 use App\Livewire\Public\Contactus;
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Livewire\Public\Signup;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', Homepage::class)->name("home");
@@ -35,4 +36,22 @@ Route::get('/admin', function () {
 
 Route::get('admin/category', [AdminController::class, 'adminCategoryPage'])->name('adminCategoryPage');
 Route::post('admin/addCategory', [AdminController::class, 'adminCategory'])->name('addAdminCategory');
-Route::delete('admin/deleteCategory/{id}', [AdminController::class, 'deleteCategory'])->name('deleteCategory');
+Route::delete('admin/deleteCategory/{id}', [AdminController::class, 'deleteCategory'])->name('deleteAdminCategory');
+Route::put('admin/editCategory/{id}', [AdminController::class, 'editCategory'])->name('editAdminCategory');
+
+Route::get('admin/products', [AdminController::class, 'allProducts'])->name('allProducts');
+Route::post('admin/addProducts', [AdminController::class, 'addProducts'])->name('addProducts');
+Route::delete('admin/deleteProduct/{id}', [AdminController::class, 'deleteProduct'])->name('deleteProduct');
+Route::put('admin/updateProduct/{id}', [AdminController::class, 'updateProduct'])->name('updateProduct');
+Route::get('admin/products', [AdminController::class, 'searchProducts'])->name('searchProducts');
+
+Route::get('admin/coupons', [AdminController::class, 'allCoupons'])->name('allCouponsPage');
+Route::post('admin/addCoupon', [AdminController::class, 'addCoupons'])->name('addCoupons');
+Route::delete('admin/deleteCoupon/{id}', [AdminController::class, 'deleteCoupon'])->name('deleteCoupon');
+Route::put('admin/updateCoupon/{id}', [AdminController::class, 'updateCoupon'])->name('updateCoupon');
+
+Route::get('admin/allUsers', [AdminController::class, 'allUsers'])->name('allUsers');
+
+Route::get('admin/allOrders', [AdminController::class, 'allOrders'])->name('allOrders');
+
+Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');
