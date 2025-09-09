@@ -6,11 +6,18 @@ use App\Models\Category;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\product_pricing;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+    public function dashboard()
+    {
+
+        return view('admin.dashboard');
+    }
     public function adminCategoryPage()
     {
         $categories = Category::all();
@@ -194,8 +201,65 @@ class AdminController extends Controller
         $allOrders = Order::all();
         return view('admin.orders', compact('allOrders'));
     }
-    public function dashboard()
+
+    public function deleteUser($id)
     {
-        return view('admin.dashboard');
+        $user = User::findOrFail($id);
+        $user->delete();
+        return back()->with('success', 'user deleted successfully');
+    }
+    public function addUser(Request $request)
+    {
+        $addUser = $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'role' => 'required',
+            'password' => 'required',
+        ]);
+        User::create([
+            'name' => $request->first_name . $request->last_name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+        return back()->with('success', 'userr added successfully');
+
+
+    }
+    public function productCombo()
+    {
+        $products = Product::all();
+        $combos = Product_pricing::all();
+        return view('admin.productCombo', compact('products', 'combos'));
+    }
+    public function addProductCombo(Request $request)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+            'price' => 'required|numeric',
+            'product_id' => 'nullable|numeric',
+            'combo_products' => 'nullable',
+        ]);
+        if (!$request->product_id && (!$request->combo_products || count($request->combo_products) == 0)) {
+            return back()->with('error' , 'Please select either a Single Product or at least one Combo Product.');
+        }
+
+        Product_pricing::create([
+            'product_id' => $request->product_id ?? null,
+            'combo_products' => $request->combo_products ? json_encode($request->combo_products) : null,
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+        ]);
+
+        return redirect()->back()->with('success', 'Combo Pricing saved successfully!');
+    }
+    public function deleteCombos($id)
+    {
+        $combos = Product_pricing::findOrFail($id);
+        $combos->delete();
+        return back()->with('success', 'combos delete successfuly');
     }
 }

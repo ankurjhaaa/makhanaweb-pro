@@ -104,6 +104,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('productComboPage') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3 {{ request()->routeIs('productComboPage') ? 'bg-blue-100 border border-orange-900' : '' }} rounded-md transition">
+                        <i class="fas fa-gift mr-3 text-gray-500"></i>
+                        Combo`s
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('allUsers') }}" onclick="showLoader()"
                         class="flex items-center text-gray-700 hover:bg-blue-100 px-4 py-3 {{ request()->routeIs('allUsers') ? 'bg-blue-100 border border-orange-900' : '' }} rounded-md transition">
                         <i class="fas fa-users mr-3 text-gray-500"></i>
@@ -177,7 +184,40 @@
     <main class="flex-1 min-h-screen md:ml-72 p-5">
         @yield('content')
     </main>
+    @if(session('success'))
+        <div id="toast-success"
+            class="fixed bottom-6 right-6 flex items-center w-full max-w-xs p-4 mb-2 text-orange-700 bg-orange-100 rounded-lg shadow-lg"
+            role="alert">
+            <svg class="w-5 h-5 mr-2 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414L9 14.414 5.293 10.707a1 1 0 011.414-1.414L9 11.586l6.293-6.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"></path>
+            </svg>
+            <span class="text-sm font-medium">{{ session('success') }}</span>
+        </div>
 
+    @endif
+
+    @if(session('error'))
+        <div id="toast-error"
+            class="fixed bottom-6 right-6 flex items-center w-full max-w-xs p-4 mb-2 text-red-700 bg-red-100 rounded-lg shadow-lg"
+            role="alert">
+            <svg class="w-5 h-5 mr-2 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-5h2v2H9v-2zm0-6h2v5H9V7z"
+                    clip-rule="evenodd">
+                </path>
+            </svg>
+            <span class="text-sm font-medium">{{ session('error') }}</span>
+        </div>
+    @endif
+    <script>
+        setTimeout(() => {
+            const success = document.getElementById('toast-success');
+            const error = document.getElementById('toast-error');
+            if (success) success.style.display = 'none';
+            if (error) error.style.display = 'none';
+        }, 10000); // 3 sec me gayab ho jayega
+    </script>
 </body>
 
 </html>

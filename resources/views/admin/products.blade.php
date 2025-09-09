@@ -11,11 +11,7 @@
                 + Add New Product
             </button>
         </div>
-        @if(session('success'))
-            <div class="bg-green-100 text-green-700 p-2 rounded mb-3">
-                {{ session('success') }}
-            </div>
-        @endif
+        
         <div class=" p-1 rounded-md ">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
                 <!-- Search Form -->

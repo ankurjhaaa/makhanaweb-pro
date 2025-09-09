@@ -51,7 +51,13 @@ Route::delete('admin/deleteCoupon/{id}', [AdminController::class, 'deleteCoupon'
 Route::put('admin/updateCoupon/{id}', [AdminController::class, 'updateCoupon'])->name('updateCoupon');
 
 Route::get('admin/allUsers', [AdminController::class, 'allUsers'])->name('allUsers');
+Route::post('admin/addUser', [AdminController::class, 'addUser'])->name('addUser');
+Route::delete('admin/deleteUser/{id}', [AdminController::class, 'deleteUser'])->name('deleteUser');
 
 Route::get('admin/allOrders', [AdminController::class, 'allOrders'])->name('allOrders');
 
 Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');
+
+Route::get('admin/productCombo', [AdminController::class, 'productCombo'])->name('productComboPage');
+Route::post('admin/addProductCombo', [AdminController::class, 'addProductCombo'])->name('addProductCombo');
+Route::delete('admin/deleteCombos/{id}', [AdminController::class, 'deleteCombos'])->name('deleteCombos');
