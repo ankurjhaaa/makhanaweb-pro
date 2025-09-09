@@ -36,7 +36,7 @@
         </div>
 
         <div class="flex justify-end mt-8 md:mt-0">
-            <div class="w-full max-w-sm rounded-lg border-4 border-brand-100 p-4">
+            <div class="w-full max-w-lg rounded-lg border-4 border-brand-100 p-4">
                 <img src="/images/hero-snacks.jpg" alt="Assorted healthy snacks" class="rounded-lg w-full h-auto">
             </div>
         </div>
@@ -86,7 +86,7 @@
                 <div class="bg-white rounded-lg border border-gray-100 p-6 transition-all hover:border-brand-200">
                     <div class="text-xs uppercase tracking-wider font-medium text-brand-600 mb-3">Healthy Snacks</div>
                     <div class="aspect-w-1 aspect-h-1 mb-5">
-                        <img src="/images/product3.jpg" alt="Healthy Mix Snacks" class="w-full h-48 object-cover rounded-md">
+                        <img src="/images/product3.png" alt="Healthy Mix Snacks" class="w-full h-48 object-cover rounded-md">
                     </div>
                     <h3 class="font-poppins font-semibold text-lg">Healthy Mix Snacks</h3>
                     <p class="text-gray-600 text-sm mt-2">Nutritious blend of nuts, seeds, and natural ingredients.</p>

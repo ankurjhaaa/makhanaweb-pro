@@ -68,10 +68,10 @@
             
             <nav class="hidden md:flex gap-8 text-gray-600 font-medium">
                 <a href="{{ route("home") }}" class="hover:text-brand-600 transition-all">Home</a>
-               
-                <a href="" class="hover:text-brand-600 transition-all">About</a>
-                <a href="" class="hover:text-brand-600 transition-all">Recipes</a>
-                <a href="" class="hover:text-brand-600 transition-all">Contact</a>
+                <a href="{{ route("shop") }}" class="hover:text-brand-600 transition-all">Shop</a>
+                <a href="#" class="hover:text-brand-600 transition-all">About</a>
+                <a href="{{ route("recipes") }}" class="hover:text-brand-600 transition-all">Recipes</a>
+                <a href="{{ route("contact") }}" class="hover:text-brand-600 transition-all">Contact</a>
             </nav>
             
             <div class="hidden md:flex items-center gap-4">
@@ -115,10 +115,10 @@
         <div id="mobile-menu" class="hidden w-full md:hidden px-4 py-4 border-t border-gray-100">
             <nav class="flex flex-col space-y-3 text-gray-600">
                 <a href="{{ route('home') }}" class="hover:text-brand-600 transition-all py-1">Home</a>
-               
+                <a href="{{ route('shop') }}" class="hover:text-brand-600 transition-all py-1">Shop</a>
                 <a href="#" class="hover:text-brand-600 transition-all py-1">About</a>
-                <a href="#" class="hover:text-brand-600 transition-all py-1">Recipes</a>
-                <a href="#" class="hover:text-brand-600 transition-all py-1">Contact</a>
+                <a href="{{ route('recipes') }}" class="hover:text-brand-600 transition-all py-1">Recipes</a>
+                <a href="{{ route('contact') }}" class="hover:text-brand-600 transition-all py-1">Contact</a>
                 <div class="flex items-center gap-3 py-2">
                     @livewire('public.cart-count')
                     @auth
