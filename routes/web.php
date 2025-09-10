@@ -13,6 +13,7 @@ use App\Livewire\Public\Contactus;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Livewire\Public\Signup;
 use Illuminate\Support\Facades\Route;
+    
 
 Route::get('/', Homepage::class)->name("home");
 Route::get('/shop', Shop::class)->name("shop");

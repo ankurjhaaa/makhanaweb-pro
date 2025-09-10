@@ -58,7 +58,7 @@
                                 $image = $isGuest ? $item['image'] : $item->product->image;
                                 $category = $isGuest ? ($item['category'] ?? 'General') : ($item->product->category->name ?? 'General');
                                 $weight = $isGuest ? ($item['weight'] ?? '') : ($item->product->weight ?? '');
-                                $price = $isGuest ? $item['price'] : $item->price;
+                                $price = $isGuest ? $item['price'] : $item->product->price;
                                 $originalPrice = $isGuest ? ($item['originalPrice'] ?? $price) : ($item->product->original_price ?? $item->product->price);
                                 $quantity = $isGuest ? $item['quantity'] : $item->quantity;
                             @endphp
