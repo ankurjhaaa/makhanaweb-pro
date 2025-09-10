@@ -38,8 +38,9 @@ class Cart extends Component
                 $cart[$productId] = [
                     'id' => $product->id,
                     'name' => $product->name,
-                    'image' => $product->image,
+                    'image' => $product->image_url,
                     'price' => $product->price,
+                    'category' => $product->category->name ?? null,
                     'quantity' => 1,
                 ];
             }

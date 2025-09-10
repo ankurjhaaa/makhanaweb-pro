@@ -55,7 +55,7 @@
 
                                 $id = $isGuest ? $item['id'] : $item->product_id;
                                 $name = $isGuest ? $item['name'] : ($item->product->name ?? 'Unknown Product');
-                                $image = $isGuest ? $item['image'] : $item->product->image;
+                                $image = $isGuest ? $item['image'] : $item->product->image_url;
                                 $category = $isGuest ? ($item['category'] ?? 'General') : ($item->product->category->name ?? 'General');
                                 $weight = $isGuest ? ($item['weight'] ?? '') : ($item->product->weight ?? '');
                                 $price = $isGuest ? $item['price'] : $item->product->price;
@@ -83,7 +83,7 @@
 
                                             <!-- Product Image -->
                                             <div class="h-20 w-20 ml-3 md:ml-0 bg-gray-100 rounded-md overflow-hidden">
-                                                <img src="{{ asset('storage/' . $image) }}" alt="{{ $name }}"
+                                                <img src="{{ $image }}" alt="{{ $name }}"
                                                     class="h-full w-full object-cover">
                                             </div>
 

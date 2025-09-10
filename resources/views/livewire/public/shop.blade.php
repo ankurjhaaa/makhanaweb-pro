@@ -97,7 +97,7 @@
                             </div>
                         @endif
 
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     </div>
 
