@@ -2,6 +2,10 @@
 
 namespace App\Livewire\Public;
 
+use App\Models\Address;
+use App\Models\CartItem;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -89,7 +93,9 @@ class Checkout extends Component
 
     private function loadCartData()
     {
-        $this->cartItems = session()->get('cart', []);
+        $this->cartItems = CartItem::where('user_id', Auth::id())
+            ->with('product')
+            ->get();
         $this->calculateTotals();
     }
 
@@ -161,72 +167,80 @@ class Checkout extends Component
         }
     }
 
-public function placeOrder()
-{
-    $this->validate();
+    public function placeOrder()
+    {
+        $this->validate();
 
-    if (!$this->same_as_billing) {
-        $this->validate([
-            'shipping_address_line1' => 'required|min:5',
-            'shipping_city' => 'required|min:2',
-            'shipping_state' => 'required|min:2',
-            'shipping_country' => 'required',
-            'shipping_postal_code' => 'required|min:5|max:10',
-            'shipping_phone' => 'required|min:10|max:15',
-        ]);
-    }
+        if (!$this->same_as_billing) {
+            $this->validate([
+                'shipping_address_line1' => 'required|min:5',
+                'shipping_city' => 'required|min:2',
+                'shipping_state' => 'required|min:2',
+                'shipping_country' => 'required',
+                'shipping_postal_code' => 'required|min:5|max:10',
+                'shipping_phone' => 'required|min:10|max:15',
+            ]);
+        }
 
-    // Order create
-    $order = \App\Models\Order::create([
-        'user_id'        => Auth::id(),
-        'order_number'   => 'ORD-' . strtoupper(uniqid()),
-        'subtotal'       => $this->subtotal,
-        'shipping_cost'  => $this->shippingCost,
-        'tax'            => $this->tax,
-        'discount'       => $this->couponDiscount,
-        'total_amount'   => $this->total,
-        'shipping_address_id' => '1',
-        'payment_method' => $this->payment_method,
-        'status'         => 'pending',
-
-        // Billing Address JSON
-        'billing_address' => json_encode([
-            'line1'       => $this->billing_address_line1,
-            'line2'       => $this->billing_address_line2,
-            'city'        => $this->billing_city,
-            'state'       => $this->billing_state,
-            'country'     => $this->billing_country,
+        $billing_address = Address::create([
+            'user_id' => Auth::id(),
+            'type' => 'billing',
+            'address_line1' => $this->billing_address_line1,
+            'address_line2' => $this->billing_address_line2,
+            'city' => $this->billing_city,
+            'state' => $this->billing_state,
+            'country' => $this->billing_country,
             'postal_code' => $this->billing_postal_code,
-            'phone'       => $this->billing_phone,
-        ]),
-
-        // Shipping Address JSON
-        'shipping_address' => json_encode([
-            'line1'       => $this->same_as_billing ? $this->billing_address_line1 : $this->shipping_address_line1,
-            'line2'       => $this->same_as_billing ? $this->billing_address_line2 : $this->shipping_address_line2,
-            'city'        => $this->same_as_billing ? $this->billing_city : $this->shipping_city,
-            'state'       => $this->same_as_billing ? $this->billing_state : $this->shipping_state,
-            'country'     => $this->same_as_billing ? $this->billing_country : $this->shipping_country,
-            'postal_code' => $this->same_as_billing ? $this->billing_postal_code : $this->shipping_postal_code,
-            'phone'       => $this->same_as_billing ? $this->billing_phone : $this->shipping_phone,
-        ]),
-    ]);
-
-    // Order items save
-    foreach ($this->cartItems as $item) {
-        $order->items()->create([
-            'product_id' => $item['id'],
-            'price'      => $item['price'],
-            'quantity'   => $item['quantity'],
+            'phone' => $this->billing_phone,
         ]);
+        if ($this->shipping_address_line1 != null)
+            $shipping_address = Address::create([
+                'user_id' => Auth::id(),
+                'type' => 'shipping',
+                'address_line1' => $this->shipping_address_line1,
+                'address_line2' => $this->shipping_address_line2,
+                'city' => $this->shipping_city,
+                'state' => $this->shipping_state,
+                'country' => $this->shipping_country,
+                'postal_code' => $this->shipping_postal_code,
+                'phone' => $this->shipping_phone,
+            ]);
+        else
+
+
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'order_number' => 'ORD-' . strtoupper(uniqid()),
+                'subtotal' => $this->subtotal,
+                'shipping_cost' => $this->shippingCost,
+                'tax' => $this->tax,
+                'discount' => $this->couponDiscount,
+                'total_amount' => $this->total,
+                'shipping_address_id' => $billing_address->id,
+                'billing_address_id' => $shipping_address->id ?? $billing_address->id,
+                'payment_method' => $this->payment_method,
+                'status' => 'pending',
+
+            ]);
+
+        $cartItems = CartItem::where('user_id', Auth::id())->get();
+        foreach ($cartItems as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'unit_price' => $item->price,
+                'subtotal' => $item->price * $item->quantity,
+            ]);
+        }
+        CartItem::where('user_id', Auth::id())->delete();
+
+
+        session()->flash('success', 'Order placed successfully!');
+        session()->flash('order_id', $order->id);
+
+        return redirect()->route('order.success');
     }
-
-    // Clear cart
-    session()->forget('cart');
-
-    session()->flash('success', 'Order placed successfully!');
-    return redirect()->route('order.success');
-}
 
 
 

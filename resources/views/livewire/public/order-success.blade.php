@@ -20,11 +20,11 @@
             <div class="text-sm text-gray-600">
                 <div class="flex justify-between mb-1">
                     <span>Order Number:</span>
-                    <span class="font-medium">#{{ rand(100000, 999999) }}</span>
+                    <span class="font-medium">#{{ session('order_id') }}</span>
                 </div>
                 <div class="flex justify-between mb-1">
                     <span>Estimated Delivery:</span>
-                    <span class="font-medium">{{ now()->addDays(3)->format('M d, Y') }}</span>
+                    <span class="font-medium">{{ now()->addDays(7)->format('M d, Y') }}</span>
                 </div>
                 @if(session('success'))
                     <div class="mt-4 text-brand-600 text-sm">
