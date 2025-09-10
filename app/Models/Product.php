@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use ImageKit\ImageKit;
 use Str;
 
 class Product extends Model
@@ -32,5 +33,25 @@ class Product extends Model
         }
 
         $this->attributes['slug'] = $slug;
+    }
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return asset('default-image.jpg'); // fallback image
+        }
+
+        $imageKit = new ImageKit(
+            config('services.imagekit.public_key'),
+            config('services.imagekit.private_key'),
+            config('services.imagekit.url_endpoint')
+        );
+
+        $fileDetails = $imageKit->getFileDetails($this->image);
+
+        if (isset($fileDetails->result) && isset($fileDetails->result->url)) {
+            return explode('?', $fileDetails->result->url)[0];
+        }
+
+        return asset('default-image.jpg'); // fallback
     }
 }

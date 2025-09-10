@@ -68,11 +68,10 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse($products as $product)
                             <tr class="hover:bg-gray-50 transition">
-                                {{-- Product --}}
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <img class="h-12 w-12 rounded-lg object-cover border"
-                                            src="{{ asset('storage/' . $product->image) }}" alt="Product">
+                                            src="{{ $product->image_url }}?tr=w-200,h-200,fo-face,q-90" alt="Product">
                                         <div class="ml-4">
                                             <div class="text-sm font-semibold text-gray-900">{{ $product->name }}</div>
                                             <div class="text-xs text-gray-500">SKU: #{{ $product->id }}</div>
@@ -80,12 +79,10 @@
                                     </div>
                                 </td>
 
-                                {{-- Category --}}
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                                     {{ $product->category->name ?? '—' }}
                                 </td>
 
-                                {{-- Price --}}
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">
                                     ₹{{ number_format($product->price, 2) }}
                                 </td>
@@ -120,54 +117,55 @@
 
                             {{-- Single Modal (only once, outside loop) --}}
                             <div id="comboModal" class="hidden">
-                                <div class=" fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                                    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
-                                        <div class="flex justify-between items-center mb-5 border-b pb-3">
-                                            <h2 class="text-xl font-bold text-gray-800">Make Combo</h2>
+                                <div class=" fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-3">
+                                    <div class="bg-white rounded-md shadow-md w-full max-w-lg p-6 animate-fadeIn">
+                                        <div class="flex justify-between items-center mb-6 border-b border-gray-200 pb-3">
+                                            <h2 class="text-2xl font-bold text-gray-800">Make Combo</h2>
                                             <button onclick="closeComboModal()"
-                                                class="text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
+                                                class="text-gray-400 hover:text-gray-700 text-3xl font-light transition">&times;</button>
                                         </div>
 
-                                        <form action="" method="POST" class="space-y-5">
+                                        <form action="{{ route('addProductCombo') }}" method="POST" class="space-y-5">
                                             @csrf
                                             <input type="hidden" name="base_product_id" id="comboBaseProductId">
 
-                                            <div>
-                                                <p class="text-sm text-gray-600">
-                                                    Base Product: <span id="comboBaseProductName"
-                                                        class="font-semibold text-gray-800"></span>
-                                                </p>
-                                            </div>
+                                            <p class="text-sm text-gray-600">
+                                                Base Product:
+                                                <span class="font-semibold text-gray-800">{{ $product->name }}</span>
+                                            </p>
+                                            <p class="text-sm text-gray-600">
+                                                Single Price:
+                                                <span class="font-semibold text-gray-800">{{ $product->price }}</span>
+                                            </p>
 
                                             <div>
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                 <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-                                                <input type="number" name="quantity" min="1"
-                                                    class="block w-full border rounded-lg px-3 py-2 shadow-sm  focus:ring-indigo-500 focus:border-indigo-500"
-                                                    required>
+                                                <input type="number" name="quantity" min="1" required
+                                                    class="block w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm transition">
                                             </div>
 
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
-                                                <input type="number" name="price" step="0.01"
-                                                    class="block w-full border rounded-lg px-3 py-2 shadow-sm  focus:ring-indigo-500 focus:border-indigo-500"
-                                                    required>
+                                                <input type="number" name="price" step="0.01" required
+                                                    class="block w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm transition">
                                             </div>
 
-                                            <div class="flex justify-end gap-3 pt-3 ">
+                                            <div class="flex justify-end gap-3 pt-3">
                                                 <button type="button" onclick="closeComboModal()"
-                                                    class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
+                                                    class="px-5 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
                                                     Cancel
                                                 </button>
                                                 <button type="submit"
-                                                    class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow">
+                                                    class="px-5 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-md transition">
                                                     Save Combo
                                                 </button>
                                             </div>
                                         </form>
                                     </div>
-
                                 </div>
                             </div>
+                            {{-- Script --}}
                             <script>
                                 function openComboModal(productId, productName) {
                                     document.getElementById('comboModal').classList.remove('hidden');
@@ -179,6 +177,7 @@
                                     document.getElementById('comboModal').classList.add('hidden');
                                 }
                             </script>
+
 
 
                             <!-- Edit Modal -->
@@ -199,14 +198,14 @@
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700">Product Name</label>
                                                 <input type="text" name="name" value="{{ $product->name }}"
-                                                    class="mt-1 block w-full border rounded-lg px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500"
+                                                    class="mt-1 block w-full border rounded-md px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500"
                                                     required>
                                             </div>
 
                                             <div>
                                                 <label class="block text-sm font-medium text-gray-700">Category</label>
                                                 <select name="category_id"
-                                                    class="mt-1 block w-full border rounded-lg px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500"
+                                                    class="mt-1 block w-full border rounded-md px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500"
                                                     required>
                                                     @foreach($categories as $cat)
                                                         <option value="{{ $cat->id }}" @if($cat->id == $product->category_id) selected
@@ -221,13 +220,13 @@
                                                 <div>
                                                     <label class="block text-sm font-medium text-gray-700">Price</label>
                                                     <input type="number" step="0.01" name="price" value="{{ $product->price }}"
-                                                        class="mt-1 block w-full border rounded-lg px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500"
+                                                        class="mt-1 block w-full border rounded-md px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500"
                                                         required>
                                                 </div>
                                                 <div>
                                                     <label class="block text-sm font-medium text-gray-700">Stock</label>
                                                     <input type="number" name="stock" value="{{ $product->stock }}"
-                                                        class="mt-1 block w-full border rounded-lg px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500"
+                                                        class="mt-1 block w-full border rounded-md px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500"
                                                         required>
                                                 </div>
                                             </div>
@@ -235,25 +234,22 @@
                                             <div class="mt-2">
                                                 <label class="block text-sm font-medium text-gray-700">Description</label>
                                                 <textarea name="description"
-                                                    class="mt-1 block w-full border rounded-lg px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500">{{ $product->description }}</textarea>
+                                                    class="mt-1 block w-full border rounded-md px-3 py-2 shadow-sm focus:ring-green-500 focus:border-green-500">{{ $product->description }}</textarea>
                                             </div>
 
                                             <div class="mt-2">
                                                 <label class="block text-sm font-medium text-gray-700">Upload Image</label>
                                                 <input type="file" name="image"
-                                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold  file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
-                                                @if($product->image)
-                                                    <img src="{{ asset('storage/' . $product->image) }}"
-                                                        class="h-20 mt-2 rounded-lg" alt="product">
-                                                @endif
+                                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold  file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+
                                             </div>
 
                                             <div class="flex justify-end space-x-3 mt-4">
                                                 <button type="button"
                                                     onclick="document.getElementById('editProductModal-{{ $product->id }}').classList.add('hidden')"
-                                                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Cancel</button>
+                                                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">Cancel</button>
                                                 <button type="submit"
-                                                    class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Update</button>
+                                                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-green-700">Update</button>
                                             </div>
                                         </form>
                                     </div>

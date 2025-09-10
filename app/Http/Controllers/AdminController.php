@@ -10,6 +10,8 @@ use App\Models\product_pricing;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use ImageKit\ImageKit;
+
 
 class AdminController extends Controller
 {
@@ -57,16 +59,27 @@ class AdminController extends Controller
 
     public function allProducts()
     {
+
         $categories = Category::all();
         $products = Product::all();
+
         return view('admin.products', compact('products', 'categories'));
     }
     public function deleteProduct($id)
     {
         $products = Product::findOrFail($id);
+        $imageKit = new ImageKit(
+            config('services.imagekit.public_key'),
+            config('services.imagekit.private_key'),
+            config('services.imagekit.url_endpoint')
+        );
+        if ($products->image) {
+            $imageKit->deleteFile($products->image);
+        }
         $products->delete();
         return back()->with('success', 'product delete successfully');
     }
+
     public function addProducts(Request $request)
     {
         $request->validate([
@@ -74,26 +87,42 @@ class AdminController extends Controller
             'name' => 'required',
             'price' => 'required',
             'stock' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,wepg|max:10000',
-
+            'image' => 'required|image',
         ]);
-        $imagePath = null;
+
+        $imageKit = new ImageKit(
+            config('services.imagekit.public_key'),
+            config('services.imagekit.private_key'),
+            config('services.imagekit.url_endpoint')
+        );
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
+            $file = $request->file('image');
+            $fileContent = file_get_contents($file->getRealPath());
+
+            $uploadFile = $imageKit->upload([
+                'file' => base64_encode($fileContent),
+                'fileName' => time() . '_' . $file->getClientOriginalName(),
+            ]);
+
+            if (isset($uploadFile->result) && isset($uploadFile->result->url)) {
+                $imageFileId = $uploadFile->result->fileId;
+            }
         }
-        $addCategory = Product::create([
+
+        Product::create(attributes: [
             'category_id' => $request->category_id,
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
-            'image' => $imagePath,
+            'image' => $imageFileId,
             'slug' => null,
         ]);
 
-        return back()->with('success', 'add successfully');
+        return back()->with('success', 'Product added successfully');
     }
+
     public function updateProduct(Request $request, $id)
     {
         $request->validate([
@@ -102,17 +131,40 @@ class AdminController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'description' => 'nullable|string',
-            'image' => 'nullable|image',
+            'image' => 'required|image',
         ]);
-
+        $imageKit = new ImageKit(
+            config('services.imagekit.public_key'),
+            config('services.imagekit.private_key'),
+            config('services.imagekit.url_endpoint')
+        );
         $product = Product::findOrFail($id);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-            $product->image = $imagePath;
+            if ($product->image) {
+                $imageKit->deleteFile($product->image); // $product->image = fileId
+            }
+            $file = $request->file('image');
+            $fileContent = file_get_contents($file->getRealPath());
+
+            $uploadFile = $imageKit->upload([
+                'file' => base64_encode($fileContent),
+                'fileName' => time() . '_' . $file->getClientOriginalName(),
+            ]);
+
+            if (isset($uploadFile->result) && isset($uploadFile->result->url)) {
+                $imageFileId = $uploadFile->result->fileId;
+            }
         }
 
-        $product->update($request->only('name', 'category_id', 'price', 'stock', 'description'));
+        $product->update([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'image' => $imageFileId,
+        ]);
 
         return back()->with('success', 'Product updated successfully ');
     }
@@ -244,7 +296,7 @@ class AdminController extends Controller
             'combo_products' => 'nullable',
         ]);
         if (!$request->product_id && (!$request->combo_products || count($request->combo_products) == 0)) {
-            return back()->with('error' , 'Please select either a Single Product or at least one Combo Product.');
+            return back()->with('error', 'Please select either a Single Product or at least one Combo Product.');
         }
 
         Product_pricing::create([
