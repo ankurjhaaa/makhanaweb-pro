@@ -11,7 +11,7 @@
                 + Add New Product
             </button>
         </div>
-        
+
         <div class=" p-1 rounded-md ">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
                 <!-- Search Form -->
@@ -102,6 +102,10 @@
 
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
                                     <button class="text-indigo-600 hover:text-indigo-900 font-medium"
+                                        onclick="openComboModal({{ $product->id }}, '{{ $product->name }}')">
+                                        Make Combo
+                                    </button>
+                                    <button class="text-indigo-600 hover:text-indigo-900 font-medium"
                                         onclick="document.getElementById('editProductModal-{{ $product->id }}').classList.remove('hidden')">
                                         Edit
                                     </button>
@@ -113,6 +117,70 @@
                                     </form>
                                 </td>
                             </tr>
+
+                            {{-- Single Modal (only once, outside loop) --}}
+                            <div id="comboModal" class="hidden">
+                                <div class=" fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                                    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
+                                        <div class="flex justify-between items-center mb-5 border-b pb-3">
+                                            <h2 class="text-xl font-bold text-gray-800">Make Combo</h2>
+                                            <button onclick="closeComboModal()"
+                                                class="text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
+                                        </div>
+
+                                        <form action="" method="POST" class="space-y-5">
+                                            @csrf
+                                            <input type="hidden" name="base_product_id" id="comboBaseProductId">
+
+                                            <div>
+                                                <p class="text-sm text-gray-600">
+                                                    Base Product: <span id="comboBaseProductName"
+                                                        class="font-semibold text-gray-800"></span>
+                                                </p>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                                                <input type="number" name="quantity" min="1"
+                                                    class="block w-full border rounded-lg px-3 py-2 shadow-sm  focus:ring-indigo-500 focus:border-indigo-500"
+                                                    required>
+                                            </div>
+
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
+                                                <input type="number" name="price" step="0.01"
+                                                    class="block w-full border rounded-lg px-3 py-2 shadow-sm  focus:ring-indigo-500 focus:border-indigo-500"
+                                                    required>
+                                            </div>
+
+                                            <div class="flex justify-end gap-3 pt-3 ">
+                                                <button type="button" onclick="closeComboModal()"
+                                                    class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100">
+                                                    Cancel
+                                                </button>
+                                                <button type="submit"
+                                                    class="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow">
+                                                    Save Combo
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <script>
+                                function openComboModal(productId, productName) {
+                                    document.getElementById('comboModal').classList.remove('hidden');
+                                    document.getElementById('comboBaseProductId').value = productId;
+                                    document.getElementById('comboBaseProductName').innerText = productName;
+                                }
+
+                                function closeComboModal() {
+                                    document.getElementById('comboModal').classList.add('hidden');
+                                }
+                            </script>
+
+
                             <!-- Edit Modal -->
                             <div id="editProductModal-{{ $product->id }}" class="hidden">
                                 <div class=" fixed inset-0 z-50 flex items-center justify-center bg-black/40">
