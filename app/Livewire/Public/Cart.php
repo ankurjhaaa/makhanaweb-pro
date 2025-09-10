@@ -26,7 +26,7 @@ class Cart extends Component
 
     public function addToCart($productId, $redirect = true)
     {
-        $product = \App\Models\Product::find($productId);
+        $product = Product::find($productId);
         if (!$product)
             return;
 
@@ -46,7 +46,7 @@ class Cart extends Component
             session()->put('cart', $cart);
             $this->cartItems = $cart;
         } else {
-            $cartItem = \App\Models\CartItem::where('user_id', Auth::id())
+            $cartItem = CartItem::where('user_id', Auth::id())
                 ->where('product_id', $productId)
                 ->first();
 
@@ -54,7 +54,7 @@ class Cart extends Component
                 $cartItem->quantity++;
                 $cartItem->save();
             } else {
-                \App\Models\CartItem::create([
+               CartItem::create([
                     'user_id' => Auth::id(),
                     'product_id' => $product->id,
                     'quantity' => 1,
@@ -63,7 +63,7 @@ class Cart extends Component
                 ]);
             }
 
-            $this->cartItems = \App\Models\CartItem::where('user_id', Auth::id())
+            $this->cartItems =CartItem::where('user_id', Auth::id())
                 ->with('product')
                 ->get()
                 ->toArray();
