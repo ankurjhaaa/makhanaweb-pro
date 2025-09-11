@@ -68,6 +68,10 @@ Route::get('admin/allUsers', [AdminController::class, 'allUsers'])->name('allUse
 Route::get('admin/allOrders', [AdminController::class, 'allOrders'])->name('allOrders');
 
 Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');
+Route::get('/admin/orders/{id}', [AdminController::class, 'viewOrder'])->name('admin.viewOrder');
+Route::delete('/admin/orders/{id}', [AdminController::class, 'deleteOrder'])->name('admin.deleteOrder');
+
+
 
 
 // // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

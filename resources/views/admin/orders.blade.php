@@ -51,7 +51,7 @@
                             <td class="px-4 py-2 whitespace-nowrap">{{ $order->shipping_address_id }}</td>
                             <td class="px-4 py-2 whitespace-nowrap">{{ $order->billing_address_id }}</td>
                             <td class="px-4 py-2 whitespace-nowrap text-center">
-                                <a href=""
+                                <a href="{{ route('admin.viewOrder', $order->id) }}"
                                     class="text-yellow-500 hover:underline mr-2">View</a>
                                 <form action="" method="POST" class="inline-block">
                                     @csrf

@@ -210,6 +210,7 @@ class Checkout extends Component
 
             $order = Order::create([
                 'user_id' => Auth::id(),
+               
                 'order_number' => 'ORD-' . strtoupper(uniqid()),
                 'subtotal' => $this->subtotal,
                 'shipping_cost' => $this->shippingCost,

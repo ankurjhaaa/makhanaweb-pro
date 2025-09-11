@@ -21,7 +21,7 @@
             <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <!-- Search Bar -->
                 <div class="relative flex-1 max-w-md">
-                    <input type="text" wire:model.debounce.500ms="search" placeholder="Search products..."
+                    <input type="text" wire:model.lazy="search" placeholder="Search products..."
                         class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,7 +44,7 @@
                     @foreach($categories as $category)
                         <button type="button" wire:click="setCategory('{{ $category }}')"
                             class="px-4 py-2 rounded-full text-sm font-medium transition-all
-                                    {{ $selectedCategory === $category ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                                        {{ $selectedCategory === $category ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
                             {{ $category }}
                         </button>
                     @endforeach
@@ -55,7 +55,8 @@
             <!-- Results Count and Sort -->
             <div class="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <p class="text-gray-600">
-                    Showing {{ count($filteredProducts) }} of {{ $totalProducts }} products
+                   Showing {{ $filteredProducts->count() }} of {{ $totalProducts }} products
+
                 </p>
 
                 <div class="flex items-center gap-2">
