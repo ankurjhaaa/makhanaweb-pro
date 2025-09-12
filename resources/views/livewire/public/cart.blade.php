@@ -211,47 +211,7 @@
                             <span>₹{{ $total }}</span>
                         </div>
 
-                        <!-- Coupon Code -->
-                        <div class="mt-4">
-                            <div class="text-sm font-medium mb-2">Coupon Code</div>
-                            <div class="flex">
-                                <input type="text" wire:model="couponCode"
-                                    class="flex-1 border border-gray-300 rounded-l-full px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-0 text-sm {{ $couponApplied ? 'bg-brand-50 border-brand-600' : '' }}"
-                                    placeholder="Enter coupon code" {{ $couponApplied ? 'readonly' : '' }}>
-
-                                @if($couponApplied)
-                                    <button type="button" wire:click="removeCoupon"
-                                        class="bg-brand-600 text-white px-4 py-2 rounded-r-full hover:bg-brand-700 transition-all text-sm">
-                                        Remove
-                                    </button>
-                                @else
-                                    <button type="button" wire:click="applyCoupon"
-                                        class="bg-brand-600 text-white px-4 py-2 rounded-r-full hover:bg-brand-700 transition-all text-sm">
-                                        Apply
-                                    </button>
-                                @endif
-                            </div>
-
-                            <!-- Coupon Error/Success Message -->
-                            @if($couponError)
-                                <div class="mt-2 text-red-600 text-xs">
-                                    {{ $couponError }}
-                                </div>
-                            @elseif($couponApplied)
-                                <div class="mt-2 text-brand-600 text-xs">
-                                    Coupon applied successfully!
-                                </div>
-                            @endif
-
-                            <!-- Free Shipping Message -->
-                            <div class="mt-4 text-xs text-gray-500">
-                                @if($subtotal < 999)
-                                    Add items worth ₹{{ 999 - $subtotal }} more for FREE shipping!
-                                @else
-                                    You've qualified for FREE shipping!
-                                @endif
-                            </div>
-                        </div>
+                       
 
                         <!-- Checkout Button -->
                         <div class="mt-6">

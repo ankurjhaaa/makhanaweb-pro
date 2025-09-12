@@ -17,45 +17,38 @@
         @endif
 
         <!-- Search and Filters -->
-       <!-- Top Filters: Search + Categories -->
-<div class="mb-8">
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <!-- Search Bar -->
-        <div class="flex-1 w-full max-w-2xl relative">
-            <input 
-                type="text" 
-                wire:model.lazy="search" 
-                placeholder="Search products..." 
-                class="w-full pl-12 pr-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-            >
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center">
-                <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </div>
-        </div>
+        <!-- Top Filters: Search + Categories -->
+        <div class="mb-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <!-- Search Bar -->
+                <div class="flex-1 w-full max-w-2xl relative">
+                    <input type="text" wire:model.lazy="search" placeholder="Search products..."
+                        class="w-full pl-12 pr-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center">
+                        <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
 
-        <!-- Category Filter -->
-        <div class="flex-1 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-            <div class="flex gap-2 min-w-max">
-                <button 
-                    type="button" 
-                    wire:click="setCategory('All')" 
-                    class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all {{ $selectedCategory === 'All' ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                    All
-                </button>
-                @foreach($categories as $category)
-                    <button 
-                        type="button" 
-                        wire:click="setCategory('{{ $category }}')" 
-                        class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all {{ $selectedCategory === $category ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                        {{ $category }}
-                    </button>
-                @endforeach
+                <!-- Category Filter -->
+                <div class="flex-1 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                    <div class="flex gap-2 min-w-max">
+                        <button type="button" wire:click="setCategory('All')"
+                            class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all {{ $selectedCategory === 'All' ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                            All
+                        </button>
+                        @foreach($categories as $category)
+                            <button type="button" wire:click="setCategory('{{ $category }}')"
+                                class="px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all {{ $selectedCategory === $category ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                                {{ $category }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
 
         <!-- Products Grid -->

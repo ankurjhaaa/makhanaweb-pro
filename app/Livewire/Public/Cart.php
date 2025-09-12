@@ -215,62 +215,7 @@ class Cart extends Component
     }
 
 
-    public function applyCoupon()
-    {
-        $code = strtoupper(trim($this->couponCode));
-        $coupon = Coupon::where('code', $code)->first();
-
-        if (!$coupon) {
-            $this->couponError = 'Invalid coupon code';
-            $this->couponApplied = false;
-            $this->couponDiscount = 0;
-            return;
-        }
-
-        if ($coupon->status !== 'active') {
-            $this->couponError = 'This coupon is inactive';
-            return;
-        }
-
-        $today = Carbon::today();
-        if (
-            ($coupon->valid_from && $today->lt(Carbon::parse($coupon->valid_from))) ||
-            ($coupon->valid_until && $today->gt(Carbon::parse($coupon->valid_until)))
-        ) {
-            $this->couponError = 'This coupon is expired or not yet valid';
-            return;
-        }
-
-        if ($coupon->min_order_amount && $this->subtotal < $coupon->min_order_amount) {
-            $this->couponError = "Minimum order ₹{$coupon->min_order_amount} required for this coupon";
-            return;
-        }
-
-        if ($coupon->discount_type === 'percentage') {
-            $discount = round($this->subtotal * ($coupon->discount_value / 100), 2);
-            if ($coupon->max_discount_amount) {
-                $discount = min($discount, $coupon->max_discount_amount);
-            }
-        } else {
-            $discount = $coupon->discount_value;
-        }
-
-        $this->couponDiscount = $discount;
-        $this->couponApplied = true;
-        $this->couponError = '';
-
-        $this->calculateTotals();
-    }
-
-    public function removeCoupon()
-    {
-        $this->couponCode = '';
-        $this->couponDiscount = 0;
-        $this->couponApplied = false;
-        $this->couponError = '';
-
-        $this->calculateTotals();
-    }
+    
 
     public function checkout()
     {
