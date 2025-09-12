@@ -262,6 +262,14 @@ class AdminController extends Controller
     return view('admin.viewOrder', compact('order'));
 }
 
+public function deleteOrder($id)
+{
+    $order = Order::findOrFail($id);
+    $order->delete();
+
+    return back()->with('success', 'Order deleted successfully');
+}
+
 
     public function deleteUser($id)
     {

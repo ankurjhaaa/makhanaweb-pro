@@ -53,7 +53,7 @@
                             <td class="px-4 py-2 whitespace-nowrap text-center">
                                 <a href="{{ route('admin.viewOrder', $order->id) }}"
                                     class="text-yellow-500 hover:underline mr-2">View</a>
-                                <form action="" method="POST" class="inline-block">
+                                <form action="{{ route('admin.deleteOrder', $order->id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-500 hover:underline"

@@ -60,8 +60,8 @@
             <h4 class="font-semibold text-gray-800 mb-2">Billing Address</h4>
             @if($order->billingAddress)
                 <ul class="space-y-1 text-gray-600 text-sm">
-                    <li>{{ $order->billingAddress->name }}</li>
-                    <li>{{ $order->billingAddress->street }}</li>
+                    <li>{{ $order->billingAddress->address_line1 }}</li>
+                    <li>{{ $order->billingAddress->address_line2 }}</li>
                     <li>{{ $order->billingAddress->city }}, {{ $order->billingAddress->state }}</li>
                     <li>{{ $order->billingAddress->zip }}</li>
                     <li>📞 {{ $order->billingAddress->phone }}</li>
@@ -106,11 +106,11 @@
     </div>
 
     <!-- Back Button -->
-    <div class="mt-6">
-        <a href="{{route('allOrders')}}" 
-           class="inline-block px-5 py-2 bg-brand-600 text-white rounded-xl shadow hover:bg-brand-700 transition">
-            ← Back to Orders
-        </a>
-    </div>
+  <div class="mt-6">
+    <a href="{{ route('allOrders') }}" 
+       class="inline-flex items-center gap-2 px-5 py-2 bg-brand-600 text-yellow-600 rounded-xl shadow hover:bg-brand-700 transition">
+        <span>←</span> Back to Orders
+    </a>
+</div>
 </div>
 @endsection

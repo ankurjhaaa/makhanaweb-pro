@@ -357,14 +357,22 @@
                     
                     <!-- Place Order Button -->
                     <div class="mt-6">
-                        <button type="button" wire:click="placeOrder" 
-                            wire:loading.attr="disabled"
-                            wire:loading.class="opacity-50 cursor-not-allowed"
-                            class="w-full bg-brand-600 text-white px-6 py-3 rounded-full hover:bg-brand-700 transition-all font-medium">
-                            <span wire:loading.remove wire:target="placeOrder">Place Order</span>
-                            <span wire:loading wire:target="placeOrder">Processing...</span>
-                        </button>
-                    </div>
+    @auth
+        <button type="button" wire:click="placeOrder"
+            wire:loading.attr="disabled"
+            wire:loading.class="opacity-50 cursor-not-allowed"
+            class="w-full bg-brand-600 text-white px-6 py-3 rounded-full hover:bg-brand-700 transition-all font-medium">
+            <span wire:loading.remove wire:target="placeOrder">Place Order</span>
+            <span wire:loading wire:target="placeOrder">Processing...</span>
+        </button>
+    @else
+        <a href="{{ route('login') }}"
+            class="w-full inline-block text-center bg-gray-600 text-white px-6 py-3 rounded-full hover:bg-gray-700 transition-all font-medium">
+            Login to Place Order
+        </a>
+    @endauth
+</div>
+
                     
                     <!-- Security Note -->
                     <div class="mt-4 flex items-center justify-center text-xs text-gray-500">
