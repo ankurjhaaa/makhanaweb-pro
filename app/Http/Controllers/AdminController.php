@@ -253,6 +253,23 @@ class AdminController extends Controller
         $allOrders = Order::all();
         return view('admin.orders', compact('allOrders'));
     }
+    
+    public function viewOrder($id)
+{
+    $order = Order::with(['orderItems.product', 'shippingAddress', 'billingAddress'])
+                  ->findOrFail($id);
+
+    return view('admin.viewOrder', compact('order'));
+}
+
+public function deleteOrder($id)
+{
+    $order = Order::findOrFail($id);
+    $order->delete();
+
+    return back()->with('success', 'Order deleted successfully');
+}
+
 
     public function deleteUser($id)
     {
@@ -314,4 +331,6 @@ class AdminController extends Controller
         $combos->delete();
         return back()->with('success', 'combos delete successfuly');
     }
+
+  
 }

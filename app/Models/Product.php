@@ -15,6 +15,8 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+
+    
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
@@ -51,6 +53,8 @@ class Product extends Model
         if (isset($fileDetails->result) && isset($fileDetails->result->url)) {
             return explode('?', $fileDetails->result->url)[0];
         }
+
+        
 
         return asset('default-image.jpg'); // fallback
     }

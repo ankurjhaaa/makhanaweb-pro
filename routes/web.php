@@ -13,14 +13,16 @@ use App\Livewire\Public\Contactus;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Livewire\Public\Signup;
 use Illuminate\Support\Facades\Route;
-    
+
 
 Route::get('/', Homepage::class)->name("home");
 Route::get('/shop', Shop::class)->name("shop");
 Route::get('/recipes', Recipes::class)->name("recipes");
 Route::get('/contact', Contactus::class)->name("contact");
 Route::get('/cart', Cart::class)->name("cart");
-Route::get('/checkout', Checkout::class)->name("checkout");
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', Checkout::class)->name('checkout');
+});
 Route::get('/login', Login::class)->name("login");
 Route::get('/register', Register::class)->name("register");
 
@@ -68,6 +70,10 @@ Route::get('admin/allUsers', [AdminController::class, 'allUsers'])->name('allUse
 Route::get('admin/allOrders', [AdminController::class, 'allOrders'])->name('allOrders');
 
 Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');
+Route::get('/admin/orders/{id}', [AdminController::class, 'viewOrder'])->name('admin.viewOrder');
+Route::delete('/admin/orders/{id}', [AdminController::class, 'deleteOrder'])->name('admin.deleteOrder');
+
+
 
 
 // // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
