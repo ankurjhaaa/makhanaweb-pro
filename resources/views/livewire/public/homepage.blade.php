@@ -66,8 +66,8 @@
                         </div>
 
                         <div class="aspect-w-1 aspect-h-1 mb-5">
-                            <img src="{{ $product->image_url }}?tr=w-200,h-200,fo-face,f-auto,q-10" alt="{{ $product->name }}"
-                                class="w-full h-48 object-cover rounded-md">
+                            <img src="{{ $product->image_url }}?tr=w-200,h-200,fo-face,f-auto,q-10"
+                                alt="{{ $product->name }}" loading="lazy" class="w-full h-48 object-cover rounded-md">
                         </div>
 
                         <h3 class="font-poppins font-semibold text-lg">{{ $product->name }}</h3>
@@ -80,10 +80,18 @@
                                     <span class="text-gray-400 text-sm line-through ml-2">₹{{ $product->old_price }}</span>
                                 @endif
                             </div>
-                            <a href="{{ route('cart', ['add' => $product->id]) }}"
-                                class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">
-                                Add to Cart
-                            </a>
+                            @if ($product->stock === 0)
+                                <a 
+                                    class="bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">
+                                    Sold Out
+                                </a>
+                            @else
+                                <a href="{{ route('cart', ['add' => $product->id]) }}"
+                                    class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">
+                                    Add to Cart
+                                </a>
+                            @endif
+
                         </div>
                     </div>
                 @endforeach

@@ -18,7 +18,7 @@ class Homepage extends Component
         $product = Product::with('category')->first();
 
 
-        $products = Product::select('id','name', 'image', 'price')->get();
+        $products = Product::all();
         return view('livewire.public.homepage', compact('products'));
     }
 }

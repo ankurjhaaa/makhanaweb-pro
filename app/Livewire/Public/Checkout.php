@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -89,7 +90,7 @@ class Checkout extends Component
     {
         $code = strtoupper(trim($this->couponCode));
         $coupon = Coupon::where('code', $code)->first();
-        
+
         if (!$coupon) {
             $this->couponError = 'Invalid coupon code';
             $this->couponApplied = false;
@@ -277,7 +278,7 @@ class Checkout extends Component
             'phone' => $this->shipping_phone ?: $this->billing_phone,
         ]);
 
-        $coupondetail = Coupon::where('code',$this->couponCode)->first();
+        $coupondetail = Coupon::where('code', $this->couponCode)->first();
         $coupon_id = $coupondetail->id ?? null;
         // ✅ always create order here
         $order = Order::create([
@@ -305,7 +306,11 @@ class Checkout extends Component
                 'unit_price' => $item->price,
                 'subtotal' => $item->price * $item->quantity,
             ]);
+            $produtdetail = Product::findOrFail($item->product_id);
+            $produtdetail->stock = $produtdetail->stock - $item->quantity;
+            $produtdetail->save();
         }
+
 
         // clear cart
         CartItem::where('user_id', Auth::id())->delete();

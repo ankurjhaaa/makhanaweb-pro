@@ -54,6 +54,7 @@
                                 $isGuest = is_array($item);
 
                                 $id = $isGuest ? $item['id'] : $item->product_id;
+                                $stock = $isGuest ? $item['stock'] : $item->product->stock;
                                 $name = $isGuest ? $item['name'] : ($item->product->name ?? 'Unknown Product');
                                 $image = $isGuest ? $item['image'] : $item->product->image_url;
                                 $category = $isGuest ? ($item['category'] ?? 'General') : ($item->product->category->name ?? 'General');
@@ -83,8 +84,7 @@
 
                                             <!-- Product Image -->
                                             <div class="h-20 w-20 ml-3 md:ml-0 bg-gray-100 rounded-md overflow-hidden">
-                                                <img src="{{ $image }}" alt="{{ $name }}"
-                                                    class="h-full w-full object-cover">
+                                                <img src="{{ $image }}" alt="{{ $name }}" class="h-full w-full object-cover">
                                             </div>
 
                                             <!-- Product Details -->
@@ -124,10 +124,13 @@
                                                 wire:change="updateQuantity({{ $id }}, $event.target.value)"
                                                 class="w-10 text-center border-0 focus:ring-0 text-gray-900 text-sm px-0"
                                                 readonly>
-                                            <button type="button" wire:click="updateQuantity({{ $id }}, {{ $quantity + 1 }})"
-                                                class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brand-600">
-                                                +
-                                            </button>
+                                            @if ($stock > $quantity)
+                                                <button type="button" wire:click="updateQuantity({{ $id }}, {{ $quantity + 1 }})"
+                                                    class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-brand-600">
+                                                    +
+                                                </button>
+                                            @endif
+
                                         </div>
                                     </div>
 
@@ -211,7 +214,7 @@
                             <span>₹{{ $total }}</span>
                         </div>
 
-                       
+
 
                         <!-- Checkout Button -->
                         <div class="mt-6">

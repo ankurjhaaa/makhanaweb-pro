@@ -131,7 +131,7 @@ class AdminController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'description' => 'nullable|string',
-            'image' => 'required|image',
+            'image' => 'nullable|image',
         ]);
         $imageKit = new ImageKit(
             config('services.imagekit.public_key'),

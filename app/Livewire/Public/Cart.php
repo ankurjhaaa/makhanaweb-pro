@@ -22,6 +22,7 @@ class Cart extends Component
     public $couponDiscount = 0;
     public $couponApplied = false;
     public $couponError = '';
+    public $stock = '5';
 
 
     public function addToCart($productId, $redirect = true)
