@@ -9,7 +9,7 @@
                 <h1 class="text-2xl font-bold text-gray-900">Products</h1>
                 <p class="text-gray-600 mt-1">Manage your product catalog</p>
             </div>
-            
+
             <div class="mt-4 md:mt-0">
                 <button onclick="document.getElementById('addProductModal').classList.remove('hidden')"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow flex items-center gap-2">
@@ -78,7 +78,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <img class="h-12 w-12 rounded-lg object-cover border"
-                                            src="{{ $product->image_url }}?tr=w-200,h-200,fo-face,q-90" alt="Product">
+                                            src="{{ $product->imagelink }}?tr=w-200,h-200,fo-face,q-10" alt="Product">
                                         <div class="ml-4">
                                             <div class="text-sm font-semibold text-gray-900">{{ $product->name }}</div>
                                             <div class="text-xs text-gray-500">SKU: #{{ $product->id }}</div>
@@ -114,8 +114,7 @@
 
                                 <td class="px-6 py-4 whitespace-nowrap text-right">
                                     <div class="flex items-center justify-end space-x-3">
-                                        <button
-                                            onclick="openComboModal({{ $product->id }}, '{{ $product->name }}')"
+                                        <button onclick="openComboModal({{ $product->id }}, '{{ $product->name }}')"
                                             class="text-blue-600 hover:text-blue-900" title="Make Combo">
                                             <i class="fas fa-object-group"></i>
                                         </button>
@@ -127,7 +126,8 @@
                                         <form action="{{ route('deleteProduct', $product->id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Are you sure you want to delete this product?')"
+                                            <button type="submit"
+                                                onclick="return confirm('Are you sure you want to delete this product?')"
                                                 class="text-red-600 hover:text-red-900" title="Delete Product">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -142,7 +142,8 @@
 
                             <!-- Edit Modal -->
                             <div id="editProductModal-{{ $product->id }}" class="hidden">
-                                <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+                                <div
+                                    class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
                                     <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg relative">
                                         <div class="px-6 py-4 border-b border-gray-200">
                                             <div class="flex items-center justify-between">
@@ -160,9 +161,10 @@
                                                 enctype="multipart/form-data" class="space-y-5">
                                                 @csrf
                                                 @method('PUT')
-                                                
+
                                                 <div>
-                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Product
+                                                        Name</label>
                                                     <input type="text" name="name" value="{{ $product->name }}"
                                                         class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
                                                         required>
@@ -175,12 +177,14 @@
                                                             class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-white focus:ring-blue-500 focus:border-blue-500 appearance-none"
                                                             required>
                                                             @foreach($categories as $cat)
-                                                                <option value="{{ $cat->id }}" @if($cat->id == $product->category_id) selected @endif>
+                                                                <option value="{{ $cat->id }}" @if($cat->id == $product->category_id)
+                                                                selected @endif>
                                                                     {{ $cat->name }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
-                                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                        <div
+                                                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                                             <i class="fas fa-chevron-down text-xs"></i>
                                                         </div>
                                                     </div>
@@ -188,18 +192,22 @@
 
                                                 <div class="grid grid-cols-2 gap-4">
                                                     <div>
-                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Price</label>
+                                                        <label
+                                                            class="block text-sm font-medium text-gray-700 mb-1">Price</label>
                                                         <div class="relative">
-                                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                            <div
+                                                                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                                                 <span class="text-gray-500">₹</span>
                                                             </div>
-                                                            <input type="number" step="0.01" name="price" value="{{ $product->price }}"
+                                                            <input type="number" step="0.01" name="price"
+                                                                value="{{ $product->price }}"
                                                                 class="w-full border border-gray-300 pl-8 px-4 py-2 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                                                                 required>
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
+                                                        <label
+                                                            class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
                                                         <input type="number" name="stock" value="{{ $product->stock }}"
                                                             class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
                                                             required>
@@ -207,20 +215,23 @@
                                                 </div>
 
                                                 <div>
-                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                                    <label
+                                                        class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                                                     <textarea name="description" rows="3"
                                                         class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500">{{ $product->description }}</textarea>
                                                 </div>
 
                                                 <div>
-                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-1">Product
+                                                        Image</label>
                                                     <div class="flex items-center space-x-4">
                                                         <div class="h-16 w-16 rounded-lg overflow-hidden bg-gray-100 border">
-                                                            <img src="{{ $product->image_url }}?tr=w-100,h-100" alt="{{ $product->name }}" 
-                                                                class="h-full w-full object-cover">
+                                                            <img src="{{ $product->image_url }}?tr=w-100,h-100"
+                                                                alt="{{ $product->name }}" class="h-full w-full object-cover">
                                                         </div>
                                                         <div class="flex-1">
-                                                            <label class="cursor-pointer block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 text-center">
+                                                            <label
+                                                                class="cursor-pointer block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 text-center">
                                                                 <span>Change image</span>
                                                                 <input type="file" name="image" class="hidden">
                                                             </label>
@@ -252,7 +263,7 @@
                                         <i class="fas fa-box-open text-gray-300 text-5xl mb-4"></i>
                                         <p class="text-lg font-medium text-gray-600">No products available</p>
                                         <p class="text-gray-400 mt-1">Add your first product to start selling</p>
-                                        <button onclick="document.getElementById('addProductModal').classList.remove('hidden')" 
+                                        <button onclick="document.getElementById('addProductModal').classList.remove('hidden')"
                                             class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2">
                                             <i class="fas fa-plus"></i>
                                             <span>Add Product</span>
@@ -264,14 +275,14 @@
                     </tbody>
                 </table>
             </div>
-            
+
             @if(count($products) > 0)
-            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-                <div class="flex items-center justify-between">
-                    <p class="text-sm text-gray-600">Showing {{ count($products) }} products</p>
-                    <!-- Pagination could be added here if needed -->
+                <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm text-gray-600">Showing {{ count($products) }} products</p>
+                        <!-- Pagination could be added here if needed -->
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>
@@ -290,10 +301,10 @@
                     </div>
                 </div>
 
-                <div class="p-6">
+                <div class="p-6 max-h-[80vh] overflow-y-auto">
                     <form method="POST" action="{{ route('addProducts') }}" enctype="multipart/form-data" class="space-y-5">
                         @csrf
-                        
+
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
                             <input type="text" name="name" placeholder="Enter product name"
@@ -312,7 +323,8 @@
                                         <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                     @endforeach
                                 </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                     <i class="fas fa-chevron-down text-xs"></i>
                                 </div>
                             </div>
@@ -337,6 +349,43 @@
                                     required>
                             </div>
                         </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">mrp</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500">₹</span>
+                                    </div>
+                                    <input type="number" step="0.01" name="mrp" placeholder="0.00"
+                                        class="w-full border border-gray-300 pl-8 px-4 py-2 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- Quantity Input -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                                    <input type="number" name="quantity" placeholder="1" min="1"
+                                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                        required>
+                                </div>
+
+                                <!-- Unit Select -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+                                    <select name="unit"
+                                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                        required>
+                                        <option value="kg">Kg</option>
+                                        <option value="g">Gram</option>
+                                        <option value="l">Litre</option>
+                                        <option value="ml">Millilitre</option>
+                                        <option value="pcs">Pieces</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
@@ -359,7 +408,8 @@
                         </div>
 
                         <div class="pt-4 border-t border-gray-200 flex justify-end gap-3">
-                            <button type="button" onclick="document.getElementById('addProductModal').classList.add('hidden')"
+                            <button type="button"
+                                onclick="document.getElementById('addProductModal').classList.add('hidden')"
                                 class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300">
                                 Cancel
                             </button>
@@ -370,6 +420,8 @@
                         </div>
                     </form>
                 </div>
+
+
             </div>
         </div>
     </div>
@@ -381,8 +433,7 @@
                 <div class="px-6 py-4 border-b border-gray-200">
                     <div class="flex items-center justify-between">
                         <h2 class="text-xl font-bold text-gray-800">Create Product Combo</h2>
-                        <button onclick="closeComboModal()"
-                            class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                        <button onclick="closeComboModal()" class="text-gray-400 hover:text-gray-600 focus:outline-none">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
