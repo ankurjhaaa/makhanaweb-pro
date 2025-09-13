@@ -348,11 +348,11 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     <div class="h-12 w-12 bg-gray-100 rounded-md overflow-hidden mr-3">
-                                        <img src="{{ $item->product->image_url }}" alt="{{ $item['name'] }}"
+                                        <img src="{{ $item->product->imagelink }}" alt="{{ $item->product->name }}"
                                             class="h-full w-full object-cover">
                                     </div>
                                     <div>
-                                        <div class="font-medium text-sm">{{ $item['name'] }}</div>
+                                        <div class="font-medium text-sm">{{ $item->product->name }}</div>
                                         <div class="text-xs text-gray-500">Qty: {{ $item['quantity'] }}</div>
                                     </div>
                                 </div>

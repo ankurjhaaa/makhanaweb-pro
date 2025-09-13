@@ -15,8 +15,12 @@ class CreateProductsTable extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
+            $table->decimal('mrp', 10, 2);
+            $table->integer('quantity');
+            $table->string('unit');
             $table->unsignedInteger('stock')->default(0);
             $table->string('image')->nullable();
+            $table->string('imagelink')->nullable();
             $table->timestamps();
         });
     }

@@ -88,6 +88,9 @@ class AdminController extends Controller
             'price' => 'required',
             'stock' => 'required',
             'image' => 'required|image',
+            'mrp' => 'required',
+            'quantity' => 'required',
+            'unit' => 'required',
         ]);
 
         $imageKit = new ImageKit(
@@ -107,6 +110,7 @@ class AdminController extends Controller
 
             if (isset($uploadFile->result) && isset($uploadFile->result->url)) {
                 $imageFileId = $uploadFile->result->fileId;
+                $imagelink = $uploadFile->result->url;
             }
         }
 
@@ -117,6 +121,10 @@ class AdminController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'image' => $imageFileId,
+            'imagelink' => $imagelink,
+            'mrp' => $request->mrp,
+            'quantity' => $request->quantity,
+            'unit' => $request->unit,
             'slug' => null,
         ]);
 
@@ -131,7 +139,7 @@ class AdminController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'description' => 'nullable|string',
-            'image' => 'required|image',
+            'image' => 'nullable|image',
         ]);
         $imageKit = new ImageKit(
             config('services.imagekit.public_key'),
@@ -253,22 +261,22 @@ class AdminController extends Controller
         $allOrders = Order::all();
         return view('admin.orders', compact('allOrders'));
     }
-    
+
     public function viewOrder($id)
-{
-    $order = Order::with(['orderItems.product', 'shippingAddress', 'billingAddress'])
-                  ->findOrFail($id);
+    {
+        $order = Order::with(['orderItems.product', 'shippingAddress', 'billingAddress'])
+            ->findOrFail($id);
 
-    return view('admin.viewOrder', compact('order'));
-}
+        return view('admin.viewOrder', compact('order'));
+    }
 
-public function deleteOrder($id)
-{
-    $order = Order::findOrFail($id);
-    $order->delete();
+    public function deleteOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
 
-    return back()->with('success', 'Order deleted successfully');
-}
+        return back()->with('success', 'Order deleted successfully');
+    }
 
 
     public function deleteUser($id)
@@ -332,5 +340,5 @@ public function deleteOrder($id)
         return back()->with('success', 'combos delete successfuly');
     }
 
-  
+
 }

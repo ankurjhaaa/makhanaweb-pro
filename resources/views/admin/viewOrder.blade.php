@@ -111,6 +111,12 @@
        class="inline-flex items-center gap-2 px-5 py-2 bg-brand-600 text-yellow-600 rounded-xl shadow hover:bg-brand-700 transition">
         <span>←</span> Back to Orders
     </a>
+    <div class="mt-4">
+    <a href="{{ route('orders.deliverySlip', $order->id) }}" target="_blank"
+        class="inline-flex items-center gap-2 px-5 py-2 bg-green-600 text-white rounded-xl shadow hover:bg-green-700 transition">
+        🖨️ Print Delivery Slip
+    </a>
+</div>
 </div>
 </div>
 @endsection
