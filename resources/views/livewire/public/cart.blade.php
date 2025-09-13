@@ -54,7 +54,6 @@
                                 $isGuest = is_array($item);
 
                                 $id = $isGuest ? $item['id'] : $item->product_id;
-                                $stock = $isGuest ? $item['stock'] : $item->product->stock;
                                 $name = $isGuest ? $item['name'] : ($item->product->name ?? 'Unknown Product');
                                 $image = $isGuest ? $item['image'] : $item->product->imagelink;
                                 $category = $isGuest ? ($item['category'] ?? 'General') : ($item->product->category->name ?? 'General');
