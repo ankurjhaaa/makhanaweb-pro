@@ -4,6 +4,9 @@ use App\Http\Controllers\AdminController;
 use App\Livewire\Public\Cart;
 use App\Livewire\Public\Checkout;
 use App\Livewire\Public\Homepage;
+
+// Include user routes from separate file
+require __DIR__ . '/user.php';
 use App\Livewire\Public\Login;
 use App\Livewire\Public\Register;
 use App\Livewire\Public\OrderSuccess;
@@ -72,6 +75,8 @@ Route::get('admin/allOrders', [AdminController::class, 'allOrders'])->name('allO
 Route::get('admin/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');
 Route::get('/admin/orders/{id}', [AdminController::class, 'viewOrder'])->name('admin.viewOrder');
 Route::delete('/admin/orders/{id}', [AdminController::class, 'deleteOrder'])->name('admin.deleteOrder');
+
+
 
 
 
