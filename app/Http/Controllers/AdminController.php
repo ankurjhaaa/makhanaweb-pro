@@ -332,5 +332,9 @@ public function deleteOrder($id)
         return back()->with('success', 'combos delete successfuly');
     }
 
-  
+  public function deliverySlip($id)
+{
+    $order = Order::with(['orderItems.product', 'shippingAddress', 'billingAddress'])->findOrFail($id);
+    return view('admin.delivery-slip', compact('order'));
+}
 }

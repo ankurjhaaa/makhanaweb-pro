@@ -58,7 +58,7 @@
       <header class="bg-white border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between">
             <div class="flex items-center gap-4 w-full justify-between md:w-auto">
-                <a href="{{ route("home") }}" class="text-brand-600 font-bold text-2xl font-poppins tracking-tight">Your's Snacks</a>
+                <a wire:navigate href="{{ route("home") }}" class="text-brand-600 font-bold text-2xl font-poppins tracking-tight">Your's Snacks</a>
                 <button id="mobile-menu-button" class="md:hidden text-gray-500 hover:text-brand-600 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -67,11 +67,11 @@
             </div>
             
             <nav class="hidden md:flex gap-8 text-gray-600 font-medium">
-                <a href="{{ route("home") }}" class="hover:text-brand-600 transition-all">Home</a>
-                <a href="{{ route("shop") }}" class="hover:text-brand-600 transition-all">Shop</a>
-                <a href="#" class="hover:text-brand-600 transition-all">About</a>
-                <a href="{{ route("recipes") }}" class="hover:text-brand-600 transition-all">Recipes</a>
-                <a href="{{ route("contact") }}" class="hover:text-brand-600 transition-all">Contact</a>
+                <a wire:navigate href="{{ route("home") }}" class="hover:text-brand-600 transition-all">Home</a>
+                <a wire:navigate href="{{ route("shop") }}" class="hover:text-brand-600 transition-all">Shop</a>
+                <a wire:navigate href="#" class="hover:text-brand-600 transition-all">About</a>
+                <a wire:navigate href="{{ route("recipes") }}" class="hover:text-brand-600 transition-all">Recipes</a>
+                <a wire:navigate href="{{ route("contact") }}" class="hover:text-brand-600 transition-all">Contact</a>
             </nav>
             
             <div class="hidden md:flex items-center gap-4">

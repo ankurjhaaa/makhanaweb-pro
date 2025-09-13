@@ -65,18 +65,35 @@
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-center">
                                     <div class="flex justify-center space-x-2">
-                                        <button class="text-blue-600 hover:text-blue-900" title="View Details">
+                                        <!-- View Order -->
+                                        <a href="{{ route('admin.viewOrder', $order->id) }}" 
+                                        class="text-blue-600 hover:text-blue-900" 
+                                        title="View Details">
                                             <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="text-green-600 hover:text-green-900" title="Edit Order">
+                                        </a>
+
+                                        <!-- Edit Order (optional, if you have an edit route) -->
+                                        <a href="" 
+                                        class="text-green-600 hover:text-green-900" 
+                                        title="Edit Order">
                                             <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-900" title="Delete Order" 
-                                            onclick="return confirm('Are you sure you want to delete this order?')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        </a>
+
+                                        <!-- Delete Order -->
+                                        <form action="{{ route('admin.deleteOrder', $order->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                class="text-red-600 hover:text-red-900" 
+                                                title="Delete Order"
+                                                onclick="return confirm('Are you sure you want to delete this order?')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
+
+
                             </tr>
                         @empty
                             <tr>

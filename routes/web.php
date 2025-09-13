@@ -81,6 +81,8 @@ Route::middleware(['auth', 'role:admin'])->controller(AdminController::class)->g
     Route::get('/admin/orders/{id}', 'viewOrder')->name('admin.viewOrder');
     Route::delete('/admin/orders/{id}', 'deleteOrder')->name('admin.deleteOrder');
 
+    Route::get('/admin/orders/{id}', [AdminController::class, 'viewOrder'])->name('admin.viewOrder');
+    Route::get('/admin/orders/{id}/delivery-slip', [AdminController::class, 'deliverySlip'])->name('orders.deliverySlip');
 
 });
 
