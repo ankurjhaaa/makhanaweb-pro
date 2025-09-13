@@ -32,7 +32,7 @@ Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleC
 Route::post('/logout', [SocialAuthController::class, 'logout'])->name('logout');
 
 Route::get('/admin', function () {
-    return view('admin/layout');
+    return redirect()->route('admindashboard');
 });
 
 Route::get('admin/category', [AdminController::class, 'adminCategoryPage'])->name('adminCategoryPage');
