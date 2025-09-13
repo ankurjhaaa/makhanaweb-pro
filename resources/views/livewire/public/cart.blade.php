@@ -56,7 +56,7 @@
                                 $id = $isGuest ? $item['id'] : $item->product_id;
                                 $stock = $isGuest ? $item['stock'] : $item->product->stock;
                                 $name = $isGuest ? $item['name'] : ($item->product->name ?? 'Unknown Product');
-                                $image = $isGuest ? $item['image'] : $item->product->image_url;
+                                $image = $isGuest ? $item['image'] : $item->product->imagelink;
                                 $category = $isGuest ? ($item['category'] ?? 'General') : ($item->product->category->name ?? 'General');
                                 $weight = $isGuest ? ($item['weight'] ?? '') : ($item->product->weight ?? '');
                                 $price = $isGuest ? $item['price'] : $item->product->price;

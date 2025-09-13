@@ -66,7 +66,7 @@
                         </div>
 
                         <div class="aspect-w-1 aspect-h-1 mb-5">
-                            <img src="{{ $product->image_url }}?tr=w-200,h-200,fo-face,f-auto,q-10"
+                            <img src="{{ $product->imagelink }}?tr=w-200,h-200,fo-face,f-auto,q-10"
                                 alt="{{ $product->name }}" loading="lazy" class="w-full h-48 object-cover rounded-md">
                         </div>
 
