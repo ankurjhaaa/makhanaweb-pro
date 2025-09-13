@@ -35,22 +35,20 @@ Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleC
 Route::post('/logout', [SocialAuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth', 'role:admin'])->controller(AdminController::class)->group(function () {
-    Route::get('/admin', function () {
-        return view('admin/layout');
-    });
+
     Route::get('admin/category', 'adminCategoryPage')->name('adminCategoryPage');
 
     Route::post('admin/addCategory', 'adminCategory')->name('addAdminCategory');
     Route::delete('admin/deleteCategory/{id}', 'deleteCategory')->name('deleteAdminCategory');
     Route::put('admin/editCategory/{id}', 'editCategory')->name('editAdminCategory');
-Route::get('/admin', function () {
-    return redirect()->route('admindashboard');
-});
+    Route::get('/admin', function () {
+        return redirect()->route('admindashboard');
+    });
 
-Route::get('admin/category', [AdminController::class, 'adminCategoryPage'])->name('adminCategoryPage');
-Route::post('admin/addCategory', [AdminController::class, 'adminCategory'])->name('addAdminCategory');
-Route::delete('admin/deleteCategory/{id}', [AdminController::class, 'deleteCategory'])->name('deleteAdminCategory');
-Route::put('admin/editCategory/{id}', [AdminController::class, 'editCategory'])->name('editAdminCategory');
+    Route::get('admin/category', 'adminCategoryPage')->name('adminCategoryPage');
+    Route::post('admin/addCategory', 'adminCategory')->name('addAdminCategory');
+    Route::delete('admin/deleteCategory/{id}', 'deleteCategory')->name('deleteAdminCategory');
+    Route::put('admin/editCategory/{id}', 'editCategory')->name('editAdminCategory');
 
     Route::get('admin/products', 'allProducts')->name('allProducts');
     Route::post('admin/addProducts', 'addProducts')->name('addProducts');
