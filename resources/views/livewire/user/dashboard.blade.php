@@ -1,7 +1,7 @@
 <div>
     <div class="bg-white rounded-lg shadow-sm p-6">
         <h1 class="text-2xl font-semibold text-gray-800 mb-6">User Dashboard</h1>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Recent Orders Card -->
             <div class="bg-white border border-gray-100 rounded-lg shadow-sm p-6">
@@ -11,7 +11,9 @@
                         <i class="fas fa-shopping-bag text-blue-500"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-bold mb-1">0</div>
+                <div class="text-2xl font-bold mb-1">
+                    {{ $recentOrders ?? 'N/A' }}
+                </div>
                 <div class="text-sm text-gray-500">In the last 30 days</div>
             </div>
 
@@ -23,7 +25,9 @@
                         <i class="fas fa-rupee-sign text-green-500"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-bold mb-1">₹0.00</div>
+                <div class="text-2xl font-bold mb-1">
+                    {{ $totalSpent ? '₹' . number_format($totalSpent, 2) : 'N/A' }}
+                </div>
                 <div class="text-sm text-gray-500">Lifetime purchases</div>
             </div>
 
@@ -35,7 +39,9 @@
                         <i class="fas fa-heart text-red-500"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-bold mb-1">0</div>
+                <div class="text-2xl font-bold mb-1">
+                    {{ $wishlistCount ?? 'N/A' }}
+                </div>
                 <div class="text-sm text-gray-500">Saved items</div>
             </div>
 
@@ -47,9 +53,12 @@
                         <i class="fas fa-map-marker-alt text-purple-500"></i>
                     </div>
                 </div>
-                <div class="text-2xl font-bold mb-1">0</div>
+                <div class="text-2xl font-bold mb-1">
+                    {{ $addressesCount ?? 'N/A' }}
+                </div>
                 <div class="text-sm text-gray-500">Saved addresses</div>
             </div>
+
         </div>
 
         <!-- Placeholder for more dashboard content -->
@@ -60,7 +69,8 @@
                 </div>
                 <h3 class="text-lg font-medium text-gray-900 mb-1">Start shopping now!</h3>
                 <p class="text-gray-500 mb-6">Explore our latest products and add them to your cart.</p>
-                <a href="/shop" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
+                <a href="/shop"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
                     <i class="fas fa-shopping-cart mr-2"></i>
                     Browse Products
                 </a>

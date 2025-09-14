@@ -159,8 +159,8 @@
                                 <div class="py-4 {{ !$loop->last ? 'border-b border-gray-100' : '' }}">
                                     <div class="flex items-center">
                                         <div class="h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                            @if($item->product && $item->product->image_url)
-                                                <img src="{{ $item->product->image_url }}?tr=w-100,h-100" alt="{{ $item->product->name }}" class="h-full w-full object-cover object-center">
+                                            @if($item->product && $item->product->imagelink)
+                                                <img src="{{ $item->product->imagelink }}?tr=w-100,h-100" alt="{{ $item->product->name }}" class="h-full w-full object-cover object-center">
                                             @else
                                                 <div class="h-full w-full bg-gray-100 flex items-center justify-center">
                                                     <i class="fas fa-box text-gray-400"></i>
