@@ -25,6 +25,7 @@ class Profile extends Component
         $this->first_name = $user->first_name ?? '';
         $this->last_name = $user->last_name ?? '';
         $this->email = $user->email ?? '';
+        $this->phone = $user->phone ?? '';
     }
 
     public function updateProfile()
@@ -32,11 +33,13 @@ class Profile extends Component
         $this->validate([
             'first_name' => 'required|string|max:100',
             'last_name' => 'nullable|string|max:100',
+            'phone' => 'nullable|string|max:15',
         ]);
 
         $user = Auth::user();
         $user->first_name = $this->first_name;
         $user->last_name = $this->last_name;
+        $user->phone = $this->phone;
         $user->save();
 
         session()->flash('success', 'Profile updated successfully!');

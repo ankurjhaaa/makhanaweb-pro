@@ -31,7 +31,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
                         <select wire:model="type"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500">
+                            class="w-full border-gray-300 rounded-sm p-2 shadow-sm focus:ring-brand-500 focus:border-brand-500">
                             <option value="">Select</option>
                             <option value="shipping">Shipping</option>
                             <option value="billing">Billing</option>
@@ -42,7 +42,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                         <input type="text" wire:model="phone"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500">
+                            class="w-full border-gray-300 rounded-sm p-2 shadow-sm focus:ring-brand-500 focus:border-brand-500">
                         @error('phone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -50,33 +50,33 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Address Line 1</label>
                     <input type="text" wire:model="address_line1"
-                        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500">
+                        class="w-full border-gray-300 rounded-sm p-2 shadow-sm focus:ring-brand-500 focus:border-brand-500">
                     @error('address_line1') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Address Line 2</label>
                     <input type="text" wire:model="address_line2"
-                        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500">
+                        class="w-full border-gray-300 rounded-sm p-2 shadow-sm focus:ring-brand-500 focus:border-brand-500">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
                         <input type="text" wire:model="city"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500">
+                            class="w-full border-gray-300 rounded-sm p-2 shadow-sm focus:ring-brand-500 focus:border-brand-500">
                         @error('city') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
                         <input type="text" wire:model="state"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500">
+                            class="w-full border-gray-300 rounded-sm p-2 shadow-sm focus:ring-brand-500 focus:border-brand-500">
                         @error('state') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
                         <input type="text" wire:model="postal_code"
-                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500">
+                            class="w-full border-gray-300 rounded-sm p-2 shadow-sm focus:ring-brand-500 focus:border-brand-500">
                         @error('postal_code') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Country</label>
                     <input type="text" wire:model="country"
-                        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-brand-500 focus:border-brand-500">
+                        class="w-full border-gray-300 rounded-sm p-2 shadow-sm focus:ring-brand-500 focus:border-brand-500">
                     @error('country') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
 

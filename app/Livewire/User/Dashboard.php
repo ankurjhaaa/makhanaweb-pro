@@ -32,7 +32,7 @@ class Dashboard extends Component
             ->sum('total_amount');
 
         // Wishlist count
-        $this->wishlistCount = 10;
+        $this->wishlistCount = Wishlist::where('user_id', $user->id)->count();
 
         // Saved addresses
         $this->addressesCount = Address::where('user_id', $user->id)->count();

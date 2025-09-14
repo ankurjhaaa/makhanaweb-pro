@@ -17,6 +17,7 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Livewire\Public\Signup;
 use Illuminate\Support\Facades\Route;
 use App\Enums\Role;
+use App\Livewire\User\WishlistComponent;
 
 
 Route::get('/', Homepage::class)->name("home");

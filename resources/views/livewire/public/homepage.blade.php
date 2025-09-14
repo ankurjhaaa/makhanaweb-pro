@@ -60,7 +60,18 @@
             <!-- Product Grid -->
             <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($products as $product)
-                    <div class="bg-white rounded-lg border border-gray-100 p-6 transition-all hover:border-brand-200">
+                    <div
+                        class="bg-white rounded-lg border border-gray-100 p-6 transition-all hover:border-brand-200 relative">
+
+                        <!-- Wishlist Button -->
+                        <button wire:click="toggleWishlist({{ $product->id }})" @class([
+                            'absolute top-3 right-3 h-9 w-9 flex items-center justify-center rounded-full border shadow-sm transition-colors',
+                            'text-red-500 bg-red-50 hover:bg-red-100' => $wishlistIds->contains($product->id),
+                            'text-gray-400 bg-white hover:bg-gray-100' => !$wishlistIds->contains($product->id),
+                        ])>
+                            <i class="fas fa-heart"></i>
+                        </button>
+
                         <div class="text-xs uppercase tracking-wider font-medium text-brand-600 mb-3">
                             {{ $product->category->name ?? 'Uncategorized' }}
                         </div>
@@ -81,7 +92,7 @@
                                 @endif
                             </div>
                             @if ($product->stock === 0)
-                                <a 
+                                <a
                                     class="bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">
                                     Sold Out
                                 </a>
@@ -91,11 +102,11 @@
                                     Add to Cart
                                 </a>
                             @endif
-
                         </div>
                     </div>
                 @endforeach
             </div>
+
 
             <div class="mt-10 text-center">
                 <a href=""
