@@ -278,7 +278,15 @@ class AdminController extends Controller
         return back()->with('success', 'Order deleted successfully');
     }
 
+    public function deliverySlip($id)
+    {
+       
+        $order = Order::with(['orderItems.product', 'shippingAddress', 'billingAddress'])
+            ->findOrFail($id);
 
+      
+        return view('admin.delivery-slip', compact('order'));
+    }
     public function deleteUser($id)
     {
         $user = User::findOrFail($id);
