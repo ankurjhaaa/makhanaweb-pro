@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentController;
 use App\Livewire\Public\Cart;
 use App\Livewire\Public\Checkout;
 use App\Livewire\Public\Homepage;
@@ -28,6 +29,9 @@ Route::get('/cart', Cart::class)->name("cart");
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', Checkout::class)->name('checkout');
 });
+// Route::get('/order/success', function () {
+//     return view('order-success');
+// })->name('order.success');
 Route::get('/login', Login::class)->name("login");
 Route::get('/register', Register::class)->name("register");
 
@@ -90,9 +94,21 @@ Route::middleware(['auth', 'role:admin'])->controller(AdminController::class)->g
 
 });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', Checkout::class)->name('checkout');
+    Route::get('/online-payment/{order}', [PaymentController::class, 'showPaymentPage'])->name('online.payment');
+    Route::post('/online-payment/{order}', [PaymentController::class, 'processPayment'])->name('online.payment.process');
+    Route::get('/payment-success/{id}', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+    Route::get('/payment/online/{id}', [PaymentController::class, 'pay'])->name('payment.online');
+});
+// Route::get('/online-payment/{order}', [App\Http\Controllers\PaymentController::class, 'showPaymentPage'])
+//     ->name('online.payment');
+// Route::post('/online-payment/{order}', [App\Http\Controllers\PaymentController::class, 'processPayment'])
+//     ->name('online.payment.process');
 
+// Route::post('/online-payment/save', [\App\Http\Controllers\PaymentController::class, 'savePayment']);
 
-
+// Route::get('/payment-success/{order}', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
 
 
 // // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

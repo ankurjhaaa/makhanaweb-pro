@@ -2,13 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'user_id', 'coupon_id', 'order_number', 'subtotal', 'discount',
-        'shipping_cost', 'total_amount', 'status', 'shipping_address_id', 'billing_address_id'
+        'user_id',
+        'coupon_id',
+        'order_number',
+        'subtotal',
+        'discount',
+        'shipping_cost',
+        'total_amount',
+        'status',
+        'shipping_address_id',
+        'billing_address_id',
+        'payment_method', // Added to support payment method storage
+        'notes',         // Added to support order notes
     ];
 
     public function user()
@@ -34,5 +47,10 @@ class Order extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }

@@ -46,6 +46,11 @@
         <link rel="stylesheet" href="/css/app.css">
     @endif
     @livewireStyles
+    <script>
+    window.addEventListener('redirect', event => {
+        window.location.href = event.detail.url;
+    });
+</script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -203,3 +208,8 @@
 </body>
 
 </html>
+<script>
+    window.addEventListener('redirect', event => {
+        window.location.href = event.detail.url;
+    });
+</script>
