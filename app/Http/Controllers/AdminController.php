@@ -15,10 +15,12 @@ use ImageKit\ImageKit;
 
 class AdminController extends Controller
 {
-    public function dashboard()
+     public function dashboard()
     {
+       $orders = Order::with('user')->latest()->get();
+        $users  = User::latest()->take(2)->get();
 
-        return view('admin.dashboard');
+        return view('admin.dashboard', compact('orders', 'users'));
     }
     public function adminCategoryPage()
     {
@@ -132,72 +134,72 @@ class AdminController extends Controller
     }
 
     public function updateProduct(Request $request, $id)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'category_id' => 'required|exists:categories,id',
-        'price' => 'required|numeric',
-        'stock' => 'required|integer',
-        'description' => 'nullable|string',
-        'image' => 'nullable|image',
-        'mrp' => 'required|numeric',
-        'quantity' => 'required|numeric',
-        'unit' => 'required|string|max:50',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image',
+            'mrp' => 'required|numeric',
+            'quantity' => 'required|numeric',
+            'unit' => 'required|string|max:50',
+        ]);
 
-    $imageKit = new ImageKit(
-        config('services.imagekit.public_key'),
-        config('services.imagekit.private_key'),
-        config('services.imagekit.url_endpoint')
-    );
+        $imageKit = new ImageKit(
+            config('services.imagekit.public_key'),
+            config('services.imagekit.private_key'),
+            config('services.imagekit.url_endpoint')
+        );
 
-    $product = Product::findOrFail($id);
+        $product = Product::findOrFail($id);
 
-    $imageFileId = $product->image;       // by default old image
-    $imagelink   = $product->imagelink;   // by default old image link
+        $imageFileId = $product->image;       // by default old image
+        $imagelink = $product->imagelink;   // by default old image link
 
-    // Agar nayi image upload ho rahi hai
-    if ($request->hasFile('image')) {
-        // Purani image delete kar do
-        if ($product->image) {
-            try {
-                $imageKit->deleteFile($product->image);
-            } catch (\Exception $e) {
-                \Log::error('Image delete failed: ' . $e->getMessage());
+        // Agar nayi image upload ho rahi hai
+        if ($request->hasFile('image')) {
+            // Purani image delete kar do
+            if ($product->image) {
+                try {
+                    $imageKit->deleteFile($product->image);
+                } catch (\Exception $e) {
+                    \Log::error('Image delete failed: ' . $e->getMessage());
+                }
+            }
+
+            // Nayi image upload
+            $file = $request->file('image');
+            $fileContent = file_get_contents($file->getRealPath());
+
+            $uploadFile = $imageKit->upload([
+                'file' => base64_encode($fileContent),
+                'fileName' => time() . '_' . $file->getClientOriginalName(),
+            ]);
+
+            if (isset($uploadFile->result) && isset($uploadFile->result->url)) {
+                $imageFileId = $uploadFile->result->fileId;
+                $imagelink = $uploadFile->result->url;
             }
         }
 
-        // Nayi image upload
-        $file = $request->file('image');
-        $fileContent = file_get_contents($file->getRealPath());
-
-        $uploadFile = $imageKit->upload([
-            'file' => base64_encode($fileContent),
-            'fileName' => time() . '_' . $file->getClientOriginalName(),
+        // Update product
+        $product->update([
+            'category_id' => $request->category_id,
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'mrp' => $request->mrp,
+            'quantity' => $request->quantity,
+            'unit' => $request->unit,
+            'image' => $imageFileId,
+            'imagelink' => $imagelink,
         ]);
 
-        if (isset($uploadFile->result) && isset($uploadFile->result->url)) {
-            $imageFileId = $uploadFile->result->fileId;
-            $imagelink   = $uploadFile->result->url;
-        }
+        return back()->with('success', 'Product updated successfully');
     }
-
-    // Update product
-    $product->update([
-        'category_id' => $request->category_id,
-        'name'        => $request->name,
-        'description' => $request->description,
-        'price'       => $request->price,
-        'stock'       => $request->stock,
-        'mrp'         => $request->mrp,
-        'quantity'    => $request->quantity,
-        'unit'        => $request->unit,
-        'image'       => $imageFileId,
-        'imagelink'   => $imagelink,
-    ]);
-
-    return back()->with('success', 'Product updated successfully');
-}
 
     public function searchProducts(Request $request)
     {
@@ -292,6 +294,18 @@ class AdminController extends Controller
 
         return view('admin.viewOrder', compact('order'));
     }
+    public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,processing,shipped,delivered,cancelled'
+        ]);
+
+        $order->status = $request->status;
+        $order->save();
+
+        return back()->with('success', 'Order status updated successfully!');
+    }
+
 
     public function deleteOrder($id)
     {
@@ -303,11 +317,11 @@ class AdminController extends Controller
 
     public function deliverySlip($id)
     {
-       
+
         $order = Order::with(['orderItems.product', 'shippingAddress', 'billingAddress'])
             ->findOrFail($id);
 
-      
+
         return view('admin.delivery-slip', compact('order'));
     }
     public function deleteUser($id)

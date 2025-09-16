@@ -86,16 +86,17 @@
                         <h3 class="text-lg font-semibold text-gray-800">Total Order Overview</h3>
                         <p class="text-sm text-gray-500">Last update: May 12, 2024</p>
                     </div>
-                    
+
                     <div class="mt-2 md:mt-0">
-                        <select class="py-1 px-3 border border-gray-300 rounded-md text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <select
+                            class="py-1 px-3 border border-gray-300 rounded-md text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             <option>Month</option>
                             <option>Week</option>
                             <option>Year</option>
                         </select>
                     </div>
                 </div>
-                
+
                 <!-- Chart placeholder - in a real app, you'd use a JS chart library here -->
                 <div class="bg-gray-100 rounded-lg h-60 flex items-center justify-center">
                     <p class="text-gray-500">Order statistics chart would appear here</p>
@@ -107,23 +108,26 @@
                 <div class="flex flex-wrap justify-between items-center mb-6">
                     <h3 class="text-lg font-semibold text-gray-800">Stock Unit</h3>
                     <div class="mt-2 md:mt-0">
-                        <select class="py-1 px-3 border border-gray-300 rounded-md text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <select
+                            class="py-1 px-3 border border-gray-300 rounded-md text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             <option>All time</option>
                             <option>This month</option>
                             <option>This year</option>
                         </select>
                     </div>
                 </div>
-                
+
                 <!-- Donut chart placeholder -->
                 <div class="relative h-52 w-52 mx-auto">
                     <!-- This would be replaced with an actual chart in a real implementation -->
-                    <div class="rounded-full h-full w-full border-8 border-l-green-600 border-r-yellow-400 border-t-red-500 border-b-green-600 rotate-45"></div>
+                    <div
+                        class="rounded-full h-full w-full border-8 border-l-green-600 border-r-yellow-400 border-t-red-500 border-b-green-600 rotate-45">
+                    </div>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <div class="bg-white h-32 w-32 rounded-full"></div>
                     </div>
                 </div>
-                
+
                 <!-- Chart legend -->
                 <div class="mt-6 grid grid-cols-3 gap-2 text-center">
                     <div>
@@ -150,7 +154,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Top Products -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
             <div class="flex justify-between items-center mb-6">
@@ -158,17 +162,19 @@
                 <div class="flex items-center gap-4">
                     <div class="flex items-center gap-2">
                         <span class="text-sm text-gray-600">Sort by:</span>
-                        <select class="py-1 px-3 border border-gray-300 rounded-md text-sm bg-white shadow-sm focus:outline-none">
+                        <select
+                            class="py-1 px-3 border border-gray-300 rounded-md text-sm bg-white shadow-sm focus:outline-none">
                             <option>Most sales</option>
                             <option>Highest rated</option>
                         </select>
                     </div>
-                    <button class="bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded-md text-sm flex items-center gap-1">
+                    <button
+                        class="bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded-md text-sm flex items-center gap-1">
                         <i class="fas fa-plus"></i> Add products
                     </button>
                 </div>
             </div>
-            
+
             <!-- Product cards -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
                 <!-- Product card 1 -->
@@ -184,7 +190,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Product card 2 -->
                 <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all">
                     <div class="bg-blue-100 h-24 flex items-center justify-center">
@@ -198,7 +204,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- More product cards would be here -->
                 <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all">
                     <div class="bg-purple-100 h-24 flex items-center justify-center">
@@ -212,7 +218,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all">
                     <div class="bg-red-100 h-24 flex items-center justify-center">
                         <i class="fas fa-tshirt text-2xl text-red-600"></i>
@@ -227,7 +233,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Tables grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Recent Orders -->
@@ -237,40 +243,56 @@
                     <table class="min-w-full">
                         <thead>
                             <tr class="border-b border-gray-200">
-                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Order #</th>
-                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase">Order #</th>
+                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase">Customer</th>
+                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase">Total</th>
+                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase">Status</th>
+                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase">Date</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-3 whitespace-nowrap">4</td>
-                                <td class="py-3 px-3 whitespace-nowrap">John Doe</td>
-                                <td class="py-3 px-3 whitespace-nowrap">₹500.00</td>
-                                <td class="py-3 px-3 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">
-                                        Completed
-                                    </span>
-                                </td>
-                                <td class="py-3 px-3 whitespace-nowrap text-gray-500">Jun 3, 2024</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-3 whitespace-nowrap">5</td>
-                                <td class="py-3 px-3 whitespace-nowrap">Jane Smith</td>
-                                <td class="py-3 px-3 whitespace-nowrap">₹750.00</td>
-                                <td class="py-3 px-3 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td class="py-3 px-3 whitespace-nowrap text-gray-500">Jun 5, 2024</td>
-                            </tr>
+                            @forelse($orders->take(2) as $order)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-3 px-3 whitespace-nowrap">{{ $order->id }}</td>
+                                    <td class="py-3 px-3 whitespace-nowrap"> {{ $order->user->name ?? 'Guest User' }}</td>
+                                    <td class="py-3 px-3 whitespace-nowrap">₹{{ number_format($order->total_amount, 2) }}</td>
+                                    <td class="py-3 px-3 whitespace-nowrap">
+                                        <span
+                                            class="px-2 py-1 text-xs rounded-full 
+                                                                                        {{ $order->status == 'completed' ? 'bg-green-100 text-green-800' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
+                                            {{ ucfirst($order->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 px-3 whitespace-nowrap text-gray-500">
+                                        {{ $order->created_at->format('M d, Y') }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <!-- Placeholder Rows -->
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-3 px-3">-</td>
+                                    <td class="py-3 px-3">No orders yet</td>
+                                    <td class="py-3 px-3">₹0.00</td>
+                                    <td class="py-3 px-3">
+                                        <span class="px-2 py-1 text-xs bg-gray-100 text-gray-500 rounded-full">N/A</span>
+                                    </td>
+                                    <td class="py-3 px-3 text-gray-500">-</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-3 px-3">-</td>
+                                    <td class="py-3 px-3">No orders yet</td>
+                                    <td class="py-3 px-3">₹0.00</td>
+                                    <td class="py-3 px-3">
+                                        <span class="px-2 py-1 text-xs bg-gray-100 text-gray-500 rounded-full">N/A</span>
+                                    </td>
+                                    <td class="py-3 px-3 text-gray-500">-</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
+
 
             <!-- Recent Users -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -279,34 +301,34 @@
                     <table class="min-w-full">
                         <thead>
                             <tr class="border-b border-gray-200">
-                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
+                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name</th>
+                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Email</th>
+                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Role</th>
+                                <th class="text-left py-3 px-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Joined</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-3 whitespace-nowrap font-medium">Ankur Jha</td>
-                                <td class="py-3 px-3 whitespace-nowrap">akj41731@gmail.com</td>
-                                <td class="py-3 px-3 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
-                                        Admin
-                                    </span>
-                                </td>
-                                <td class="py-3 px-3 whitespace-nowrap text-gray-500">May 5, 2024</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-3 whitespace-nowrap font-medium">Mac Gibson</td>
-                                <td class="py-3 px-3 whitespace-nowrap">mac@example.com</td>
-                                <td class="py-3 px-3 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full">
-                                        Customer
-                                    </span>
-                                </td>
-                                <td class="py-3 px-3 whitespace-nowrap text-gray-500">May 10, 2024</td>
-                            </tr>
+                            @foreach($users as $user)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-3 px-3 whitespace-nowrap font-medium">{{ $user->name }}</td>
+                                        <td class="py-3 px-3 whitespace-nowrap">{{ $user->email }}</td>
+                                        <td class="py-3 px-3 whitespace-nowrap">
+                                            <span class="px-2 py-1 text-xs rounded-full
+                                {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
+                                                {{ ucfirst($user->role) }}
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-3 whitespace-nowrap text-gray-500">
+                                            {{ $user->created_at->format('M d, Y') }}
+                                        </td>
+                                    </tr>
+                            @endforeach
                         </tbody>
+
                     </table>
                 </div>
             </div>
