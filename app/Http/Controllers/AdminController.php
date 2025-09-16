@@ -132,50 +132,73 @@ class AdminController extends Controller
     }
 
     public function updateProduct(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image',
-        ]);
-        $imageKit = new ImageKit(
-            config('services.imagekit.public_key'),
-            config('services.imagekit.private_key'),
-            config('services.imagekit.url_endpoint')
-        );
-        $product = Product::findOrFail($id);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'category_id' => 'required|exists:categories,id',
+        'price' => 'required|numeric',
+        'stock' => 'required|integer',
+        'description' => 'nullable|string',
+        'image' => 'nullable|image',
+        'mrp' => 'required|numeric',
+        'quantity' => 'required|numeric',
+        'unit' => 'required|string|max:50',
+    ]);
 
-        if ($request->hasFile('image')) {
-            if ($product->image) {
-                $imageKit->deleteFile($product->image); // $product->image = fileId
-            }
-            $file = $request->file('image');
-            $fileContent = file_get_contents($file->getRealPath());
+    $imageKit = new ImageKit(
+        config('services.imagekit.public_key'),
+        config('services.imagekit.private_key'),
+        config('services.imagekit.url_endpoint')
+    );
 
-            $uploadFile = $imageKit->upload([
-                'file' => base64_encode($fileContent),
-                'fileName' => time() . '_' . $file->getClientOriginalName(),
-            ]);
+    $product = Product::findOrFail($id);
 
-            if (isset($uploadFile->result) && isset($uploadFile->result->url)) {
-                $imageFileId = $uploadFile->result->fileId;
+    $imageFileId = $product->image;       // by default old image
+    $imagelink   = $product->imagelink;   // by default old image link
+
+    // Agar nayi image upload ho rahi hai
+    if ($request->hasFile('image')) {
+        // Purani image delete kar do
+        if ($product->image) {
+            try {
+                $imageKit->deleteFile($product->image);
+            } catch (\Exception $e) {
+                \Log::error('Image delete failed: ' . $e->getMessage());
             }
         }
 
-        $product->update([
-            'category_id' => $request->category_id,
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'image' => $imageFileId,
+        // Nayi image upload
+        $file = $request->file('image');
+        $fileContent = file_get_contents($file->getRealPath());
+
+        $uploadFile = $imageKit->upload([
+            'file' => base64_encode($fileContent),
+            'fileName' => time() . '_' . $file->getClientOriginalName(),
         ]);
 
-        return back()->with('success', 'Product updated successfully ');
+        if (isset($uploadFile->result) && isset($uploadFile->result->url)) {
+            $imageFileId = $uploadFile->result->fileId;
+            $imagelink   = $uploadFile->result->url;
+        }
     }
+
+    // Update product
+    $product->update([
+        'category_id' => $request->category_id,
+        'name'        => $request->name,
+        'description' => $request->description,
+        'price'       => $request->price,
+        'stock'       => $request->stock,
+        'mrp'         => $request->mrp,
+        'quantity'    => $request->quantity,
+        'unit'        => $request->unit,
+        'image'       => $imageFileId,
+        'imagelink'   => $imagelink,
+    ]);
+
+    return back()->with('success', 'Product updated successfully');
+}
+
     public function searchProducts(Request $request)
     {
         $query = Product::query();
