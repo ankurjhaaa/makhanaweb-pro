@@ -15,13 +15,78 @@ use ImageKit\ImageKit;
 
 class AdminController extends Controller
 {
-     public function dashboard()
-    {
-       $orders = Order::with('user')->latest()->get();
-        $users  = User::latest()->take(2)->get();
+public function dashboard(Request $request)
+{
+    $orders = Order::with('user')->latest()->get();
+    $users  = User::latest()->take(2)->get();
 
-        return view('admin.dashboard', compact('orders', 'users'));
+
+    $totalOrders = Order::count();
+
+ 
+    $currentWeekOrders = Order::whereBetween('created_at', [
+        now()->startOfWeek(), now()->endOfWeek()
+    ])->count();
+
+    $lastWeekOrders = Order::whereBetween('created_at', [
+        now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()
+    ])->count();
+
+    if ($lastWeekOrders > 0) {
+        $growth = (($currentWeekOrders - $lastWeekOrders) / $lastWeekOrders) * 100;
+    } else {
+        $growth = 0;
     }
+
+    $filter = $request->get('filter', 'month');
+    if ($filter === 'week') {
+        $ordersBy = Order::selectRaw('WEEK(created_at) as period, COUNT(*) as total')
+            ->whereYear('created_at', now()->year)
+            ->groupBy('period')
+            ->orderBy('period')
+            ->pluck('total', 'period');
+
+        $labels = [];
+        $data = [];
+        for ($i = 1; $i <= 6; $i++) {
+            $labels[] = "Week $i";
+            $data[] = $ordersBy[$i] ?? 0;
+        }
+    } elseif ($filter === 'year') {
+        $ordersBy = Order::selectRaw('YEAR(created_at) as period, COUNT(*) as total')
+            ->groupBy('period')
+            ->orderBy('period')
+            ->pluck('total', 'period');
+
+        $labels = $ordersBy->keys()->toArray();
+        $data   = $ordersBy->values()->toArray();
+    } else {
+        $ordersBy = Order::selectRaw('MONTH(created_at) as period, COUNT(*) as total')
+            ->whereYear('created_at', now()->year)
+            ->groupBy('period')
+            ->orderBy('period')
+            ->pluck('total', 'period');
+
+        $labels = [];
+        $data = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $labels[] = date('M', mktime(0, 0, 0, $i, 1));
+            $data[] = $ordersBy[$i] ?? 0;
+        }
+    }
+
+    return view('admin.dashboard', compact(
+        'orders',
+        'users',
+        'totalOrders',
+        'growth',
+        'labels',
+        'data',
+        'filter'
+    ));
+}
+
+
     public function adminCategoryPage()
     {
         $categories = Category::all();

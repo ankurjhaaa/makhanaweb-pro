@@ -93,6 +93,8 @@ Route::middleware(['auth', 'role:admin'])->controller(AdminController::class)->g
     Route::put('/orders/{order}/status', [AdminController::class, 'updateStatus'])->name('orders.updateStatus');
 
     Route::get('/admin/orders/{id}/delivery-slip', [AdminController::class, 'deliverySlip'])->name('orders.deliverySlip');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');
+
 
 });
 

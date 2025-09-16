@@ -33,9 +33,9 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-sm text-gray-500 mb-1">Total Orders</p>
-                        <h3 class="text-2xl font-bold text-gray-800">1,256</h3>
-                        <p class="flex items-center mt-1 text-xs text-green-600">
-                            <span>+1.0% from last week</span>
+                        <h3 class="text-2xl font-bold text-gray-800">{{ number_format($totalOrders) }}</h3>
+                        <p class="flex items-center mt-1 text-xs {{ $growth >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            {{ $growth >= 0 ? '+' : '' }}{{ number_format($growth, 1) }}% from last week
                         </p>
                     </div>
                     <div class="bg-blue-100 p-3 rounded-full">
@@ -43,6 +43,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!-- Net Sales Card -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all stat-card">
@@ -84,26 +85,28 @@
                 <div class="flex flex-wrap justify-between items-center mb-6">
                     <div>
                         <h3 class="text-lg font-semibold text-gray-800">Total Order Overview</h3>
-                        <p class="text-sm text-gray-500">Last update: May 12, 2024</p>
+                        <p class="text-sm text-gray-500">Last update: {{ now()->format('M d, Y') }}</p>
                     </div>
 
                     <div class="mt-2 md:mt-0">
-                        <select
-                            class="py-1 px-3 border border-gray-300 rounded-md text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option>Month</option>
-                            <option>Week</option>
-                            <option>Year</option>
-                        </select>
+                        <form method="GET" action="{{ route('admindashboard') }}">
+                            <select name="filter" onchange="this.form.submit()"
+                                class="py-1 px-3 border border-gray-300 rounded-md text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="month" {{ $filter === 'month' ? 'selected' : '' }}>Month</option>
+                                <option value="week" {{ $filter === 'week' ? 'selected' : '' }}>Week</option>
+                                <option value="year" {{ $filter === 'year' ? 'selected' : '' }}>Year</option>
+                            </select>
+                        </form>
                     </div>
                 </div>
 
-                <!-- Chart placeholder - in a real app, you'd use a JS chart library here -->
-                <div class="bg-gray-100 rounded-lg h-60 flex items-center justify-center">
-                    <p class="text-gray-500">Order statistics chart would appear here</p>
+                <!-- Chart -->
+                <div class="bg-gray-50 rounded-lg h-60 flex items-center justify-center">
+                    <canvas id="ordersChart"></canvas>
                 </div>
             </div>
 
-            <!-- Stock Unit -->
+            <!-- Stock Unit (placeholder as in your code) -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <div class="flex flex-wrap justify-between items-center mb-6">
                     <h3 class="text-lg font-semibold text-gray-800">Stock Unit</h3>
@@ -117,9 +120,7 @@
                     </div>
                 </div>
 
-                <!-- Donut chart placeholder -->
                 <div class="relative h-52 w-52 mx-auto">
-                    <!-- This would be replaced with an actual chart in a real implementation -->
                     <div
                         class="rounded-full h-full w-full border-8 border-l-green-600 border-r-yellow-400 border-t-red-500 border-b-green-600 rotate-45">
                     </div>
@@ -128,7 +129,6 @@
                     </div>
                 </div>
 
-                <!-- Chart legend -->
                 <div class="mt-6 grid grid-cols-3 gap-2 text-center">
                     <div>
                         <div class="flex items-center justify-center gap-1">
@@ -155,6 +155,41 @@
             </div>
         </div>
 
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx = document.getElementById('ordersChart');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: @json($labels),
+                    datasets: [{
+                        label: 'Orders',
+                        data: @json($data),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        tension: 0.3,
+                        fill: true,
+                        borderWidth: 2,
+                        pointBackgroundColor: '#2563eb',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 }
+                        }
+                    }
+                }
+            });
+        </script>
+
         <!-- Top Products -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
             <div class="flex justify-between items-center mb-6">
@@ -168,10 +203,14 @@
                             <option>Highest rated</option>
                         </select>
                     </div>
-                    <button
-                        class="bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded-md text-sm flex items-center gap-1">
-                        <i class="fas fa-plus"></i> Add products
-                    </button>
+                    <a href="{{ route('searchProducts') }}" class="bg-green-600 hover:bg-green-700 text-white 
+              py-1 px-2 sm:py-2 sm:px-4 
+              rounded-md text-xs sm:text-sm md:text-base 
+              flex items-center justify-center gap-1 sm:gap-2">
+                        <i class="fas fa-plus text-xs sm:text-sm"></i>
+                        <span class="hidden xs:inline">Add products</span>
+                    </a>
+
                 </div>
             </div>
 
@@ -259,7 +298,7 @@
                                     <td class="py-3 px-3 whitespace-nowrap">
                                         <span
                                             class="px-2 py-1 text-xs rounded-full 
-                                                                                        {{ $order->status == 'completed' ? 'bg-green-100 text-green-800' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
+                                                                                                                {{ $order->status == 'completed' ? 'bg-green-100 text-green-800' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
                                             {{ ucfirst($order->status) }}
                                         </span>
                                     </td>
@@ -313,19 +352,20 @@
                         </thead>
                         <tbody>
                             @foreach($users as $user)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="py-3 px-3 whitespace-nowrap font-medium">{{ $user->name }}</td>
-                                        <td class="py-3 px-3 whitespace-nowrap">{{ $user->email }}</td>
-                                        <td class="py-3 px-3 whitespace-nowrap">
-                                            <span class="px-2 py-1 text-xs rounded-full
-                                {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
-                                                {{ ucfirst($user->role) }}
-                                            </span>
-                                        </td>
-                                        <td class="py-3 px-3 whitespace-nowrap text-gray-500">
-                                            {{ $user->created_at->format('M d, Y') }}
-                                        </td>
-                                    </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="py-3 px-3 whitespace-nowrap font-medium">{{ $user->name }}</td>
+                                    <td class="py-3 px-3 whitespace-nowrap">{{ $user->email }}</td>
+                                    <td class="py-3 px-3 whitespace-nowrap">
+                                        <span
+                                            class="px-2 py-1 text-xs rounded-full
+                                                        {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
+                                            {{ ucfirst($user->role) }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3 px-3 whitespace-nowrap text-gray-500">
+                                        {{ $user->created_at->format('M d, Y') }}
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
 
