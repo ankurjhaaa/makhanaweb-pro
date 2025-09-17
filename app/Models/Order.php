@@ -21,6 +21,7 @@ class Order extends Model
         'shipping_address_id',
         'billing_address_id',
         'payment_method', // Added to support payment method storage
+        'payment_id',
         'notes',         // Added to support order notes
     ];
 

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->string('payment_method')->nullable()->after('billing_address_id'); // Add payment_method column
-            $table->text('notes')->nullable()->after('payment_method'); // Add notes column
+            $table->integer('payment_id')->nullable()->after('payment_method'); // Add payment_method column
+            $table->text('notes')->nullable()->after('payment_id'); // Add notes column
         });
     }
 
@@ -23,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn(['payment_method', 'notes']);
+            $table->dropColumn(['payment_method', 'notes','payment_id']);
         });
     }
 };

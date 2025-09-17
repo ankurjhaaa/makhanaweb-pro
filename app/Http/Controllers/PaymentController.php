@@ -15,6 +15,9 @@ class PaymentController extends Controller
 {
     public function paymentpage($id)
     {
+        if (!session()->has('success')) {
+            return redirect()->route('checkout')->with('error', 'No order confirmation found.');
+        }
         $orderdetail = Order::findOrFail($id);
 
         return view('payment.online', compact('orderdetail'));
@@ -24,9 +27,10 @@ class PaymentController extends Controller
 
     public function paymentSuccess(Request $request, $id)
     {
-        try {
-            $paymentId = $request->get('razorpay_payment_id');
 
+        try {
+
+            $paymentId = $request->get('razorpay_payment_id');
             if (!$paymentId) {
                 return redirect()->back()->with('error', 'Payment ID not received.');
             }
@@ -45,14 +49,18 @@ class PaymentController extends Controller
             $payment = $api->payment->fetch($paymentId);
 
             if ($payment->status === 'captured') {
-                Payment::create([
-                    'user_id' => Auth::id(), // ✅ save user ID
+                $paymentDetail = Payment::create([
                     'order_id' => $id, // ✅ save user ID
                     'payment_status' => $payment->status,
                     'payment_method' => 'online',
                     'transaction_id' => $payment->id,
                     'payment_details' => 'successful', // ✅ store full response
                 ]);
+                $orderid = Order::findOrFail($id);
+                $orderid->payment_id = $paymentDetail->id;
+                $orderid->status = 'processing';
+                $orderid->save();
+                CartItem::where('user_id', Auth::id())->delete();
 
                 return redirect()->route('order.success')->with('success', 'Payment successful!');
             } else {

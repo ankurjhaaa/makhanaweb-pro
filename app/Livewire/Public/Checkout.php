@@ -86,6 +86,7 @@ class Checkout extends Component
         'billing_phone.min' => 'Phone number must be at least 10 digits',
     ];
 
+    
     public function applyCoupon()
     {
         $code = strtoupper(trim($this->couponCode));
@@ -390,7 +391,7 @@ class Checkout extends Component
                 'billing_address_id' => $billing_address->id,
                 'shipping_address_id' => $shipping_address->id,
                 'payment_method' => $this->payment_method,
-                $status = $this->payment_method === 'online' ? 'completed' : 'pending'
+                'status' => 'cancelled',
             ]);
 
             // Move cart items
@@ -410,8 +411,7 @@ class Checkout extends Component
             }
 
             // Clear cart
-
-            CartItem::where('user_id', Auth::id())->delete();
+            session()->flash('success', 'Order placed successfully!');
             return redirect()->route('payment.online',$order->id);
             
 
