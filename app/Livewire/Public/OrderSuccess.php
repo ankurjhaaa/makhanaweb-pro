@@ -13,7 +13,7 @@ class OrderSuccess extends Component
     public function mount()
     {
         if (!session()->has('success')) {
-            return redirect()->route('checkout')->with('error', 'No order confirmation found.');
+            return redirect()->route('home')->with('error', 'No order confirmation found.');
         }
     }
 

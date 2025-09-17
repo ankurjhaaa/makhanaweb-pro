@@ -49,150 +49,170 @@
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-100 rounded-lg p-6">
-                    <h2 class="font-poppins text-xl font-semibold mb-4">Billing Address</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 1 *</label>
-                            <input type="text" wire:model.blur="billing_address_line1"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                placeholder="House/Flat number, Street name">
-                            @error('billing_address_line1') <span
-                            class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                <div class="grid grid-cols-1 gap-6">
+
+                    <!-- BILLING -->
+                    <div class="bg-white border border-gray-100 rounded-lg p-6">
+                        <h2 class="font-poppins text-xl font-semibold mb-4">Billing Address</h2>
+
+                        <!-- Existing addresses list -->
+                        @if($addresses->count())
+                            <div class="space-y-3 max-h-64 overflow-y-auto">
+                                @foreach($addresses as $addr)
+                                    <label class="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                                        <input type="radio" wire:model="billing_address_id" value="{{ $addr->id }}"
+                                            class="mt-1">
+                                        <div>
+                                            <div class="font-medium">{{ $addr->line1 }} @if($addr->line2) — {{ $addr->line2 }}
+                                            @endif</div>
+                                            <div class="text-sm text-gray-600">{{ $addr->city }}, {{ $addr->state }} —
+                                                {{ $addr->postal_code }}
+                                            </div>
+                                            <div class="text-sm text-gray-600">{{ $addr->country }} • {{ $addr->phone }}</div>
+                                        </div>
+                                        <!-- <div class="ml-auto space-x-2">
+                                            <button wire:click.prevent="removeAddress({{ $addr->id }})"
+                                                class="text-sm text-red-500">Delete</button>
+                                        </div> -->
+                                    </label>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-sm text-gray-600 mb-3">No saved addresses yet.</div>
+                        @endif
+
+
+                        <div class="mt-4 flex items-center gap-3">
+                            <button wire:click.prevent="openAddAddress('billing')"
+                                class="px-4 py-2 bg-brand-600 text-white rounded-lg">Add new address</button>
+                            <span class="text-sm text-gray-600">or choose from saved addresses above</span>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 2</label>
-                            <input type="text" wire:model="billing_address_line2"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                placeholder="Landmark, Area (Optional)">
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
-                                <input type="text" wire:model.blur="billing_city"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                    placeholder="City">
-                                @error('billing_city') <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                @enderror
+
+                        <!-- Inline Add Address Form (for billing) -->
+                        @if($showAddAddressFor === 'billing')
+                            <div class="mt-4 border-t pt-4">
+                                <h3 class="font-semibold mb-2">Add Billing Address</h3>
+                                <div class="space-y-3">
+                                    <input type="text" wire:model.defer="new_line1" placeholder="Address Line 1 *"
+                                        class="w-full border rounded-lg px-3 py-2">
+                                    <input type="text" wire:model.defer="new_line2" placeholder="Address Line 2"
+                                        class="w-full border rounded-lg px-3 py-2">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <input type="text" wire:model.defer="new_city" placeholder="City *"
+                                            class="border rounded-lg px-3 py-2">
+                                        <input type="text" wire:model.defer="new_state" placeholder="State *"
+                                            class="border rounded-lg px-3 py-2">
+                                        <input type="text" wire:model.defer="new_postal_code" placeholder="PIN Code *"
+                                            class="border rounded-lg px-3 py-2">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <select wire:model.defer="new_country" class="border rounded-lg px-3 py-2">
+                                            <option>India</option>
+                                            <option>USA</option>
+                                            <option>UK</option>
+                                            <option>Canada</option>
+                                        </select>
+                                        <input type="tel" wire:model.defer="new_phone" placeholder="Phone *"
+                                            class="border rounded-lg px-3 py-2">
+                                    </div>
+
+                                    @error('new_line1') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+                                    @error('new_city') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+                                    @error('new_state') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+                                    @error('new_postal_code') <div class="text-red-500 text-sm">{{ $message }}</div>
+                                    @enderror
+                                    @error('new_phone') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+
+                                    <div class="flex gap-2">
+                                        <button wire:click.prevent="saveNewAddress('billing')"
+                                            class="px-4 py-2 bg-brand-600 text-white rounded-lg">Save & select</button>
+                                        <button wire:click.prevent="closeAddAddress"
+                                            class="px-4 py-2 border rounded-lg">Cancel</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">State *</label>
-                                <input type="text" wire:model.blur="billing_state"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                    placeholder="State">
-                                @error('billing_state') <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
-                                <input type="text" wire:model.blur="billing_postal_code"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                    placeholder="PIN Code">
-                                @error('billing_postal_code') <span
-                                class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
-                                <select wire:model="billing_country"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600">
-                                    <option value="India">India</option>
-                                    <option value="USA">USA</option>
-                                    <option value="UK">UK</option>
-                                    <option value="Canada">Canada</option>
-                                </select>
-                                @error('billing_country') <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
-                                <input type="tel" wire:model.blur="billing_phone"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                    placeholder="+91 XXXXX XXXXX">
-                                @error('billing_phone') <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        @endif
+
                     </div>
+
+                    <!-- SHIPPING -->
+                    <div class="bg-white border border-gray-100 rounded-lg p-6">
+                        <h2 class="font-poppins text-xl font-semibold mb-4">Shipping Address</h2>
+
+
+                        @if($addresses->count())
+                            <div class="space-y-3 max-h-64 overflow-y-auto">
+                                @foreach($addresses as $addr)
+                                    <label class="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                                        <input type="radio" wire:model="shipping_address_id" value="{{ $addr->id }}"
+                                            class="mt-1">
+                                        <div>
+                                            <div class="font-medium">{{ $addr->line1 }} @if($addr->line2) — {{ $addr->line2 }}
+                                            @endif
+                                            </div>
+                                            <div class="text-sm text-gray-600">{{ $addr->city }}, {{ $addr->state }} —
+                                                {{ $addr->postal_code }}
+                                            </div>
+                                            <div class="text-sm text-gray-600">{{ $addr->country }} • {{ $addr->phone }}</div>
+                                        </div>
+                                        <!-- <div class="ml-auto space-x-2">
+                                            <button wire:click.prevent="removeAddress({{ $addr->id }})"
+                                                class="text-sm text-red-500">Delete</button>
+                                        </div> -->
+                                    </label>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-sm text-gray-600 mb-3">No saved addresses yet.</div>
+                        @endif
+
+
+
+                        @if($showAddAddressFor === 'shipping')
+                            <div class="mt-4 border-t pt-4">
+                                <h3 class="font-semibold mb-2">Add Shipping Address</h3>
+                                <div class="space-y-3">
+                                    <input type="text" wire:model.defer="new_line1" placeholder="Address Line 1 *"
+                                        class="w-full border rounded-lg px-3 py-2">
+                                    <input type="text" wire:model.defer="new_line2" placeholder="Address Line 2"
+                                        class="w-full border rounded-lg px-3 py-2">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <input type="text" wire:model.defer="new_city" placeholder="City *"
+                                            class="border rounded-lg px-3 py-2">
+                                        <input type="text" wire:model.defer="new_state" placeholder="State *"
+                                            class="border rounded-lg px-3 py-2">
+                                        <input type="text" wire:model.defer="new_postal_code" placeholder="PIN Code *"
+                                            class="border rounded-lg px-3 py-2">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <select wire:model.defer="new_country" class="border rounded-lg px-3 py-2">
+                                            <option>India</option>
+                                            <option>USA</option>
+                                            <option>UK</option>
+                                            <option>Canada</option>
+                                        </select>
+                                        <input type="tel" wire:model.defer="new_phone" placeholder="Phone *"
+                                            class="border rounded-lg px-3 py-2">
+                                    </div>
+
+                                    @error('new_line1') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+
+                                    <div class="flex gap-2">
+                                        <button wire:click.prevent="saveNewAddress('shipping')"
+                                            class="px-4 py-2 bg-brand-600 text-white rounded-lg">Save & select</button>
+                                        <button wire:click.prevent="closeAddAddress"
+                                            class="px-4 py-2 border rounded-lg">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
+
                 </div>
 
-                <div class="bg-white border border-gray-100 rounded-lg p-6">
-                    <h2 class="font-poppins text-xl font-semibold mb-4">Shipping Address</h2>
-                    <div class="mb-4">
-                        <label class="flex items-center">
-                            <input type="checkbox" wire:model.live="same_as_billing"
-                                class="rounded border-gray-300 text-brand-600 focus:ring-brand-600">
-                            <span class="ml-2 text-sm">Same as billing address</span>
-                        </label>
-                    </div>
-                    @if(!$same_as_billing)
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 1 *</label>
-                                <input type="text" wire:model="shipping_address_line1"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                    placeholder="House/Flat number, Street name">
-                                @error('shipping_address_line1') <span
-                                class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Address Line 2</label>
-                                <input type="text" wire:model="shipping_address_line2"
-                                    class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                    placeholder="Landmark, Area (Optional)">
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
-                                    <input type="text" wire:model="shipping_city"
-                                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                        placeholder="City">
-                                    @error('shipping_city') <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">State *</label>
-                                    <input type="text" wire:model="shipping_state"
-                                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                        placeholder="State">
-                                    @error('shipping_state') <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Postal Code *</label>
-                                    <input type="text" wire:model="shipping_postal_code"
-                                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                        placeholder="PIN Code">
-                                    @error('shipping_postal_code') <span
-                                    class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
-                                    <select wire:model="shipping_country"
-                                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600">
-                                        <option value="India">India</option>
-                                        <option value="USA">USA</option>
-                                        <option value="UK">UK</option>
-                                        <option value="Canada">Canada</option>
-                                    </select>
-                                    @error('shipping_country') <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
-                                    <input type="tel" wire:model="shipping_phone"
-                                        class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                        placeholder="+91 XXXXX XXXXX">
-                                    @error('shipping_phone') <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                </div>
+
+
 
                 <div class="bg-white border border-gray-100 rounded-lg p-6">
                     <h2 class="font-poppins text-xl font-semibold mb-4">Payment Method</h2>

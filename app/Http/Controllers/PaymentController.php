@@ -61,7 +61,7 @@ class PaymentController extends Controller
                 $orderid->status = 'processing';
                 $orderid->save();
                 CartItem::where('user_id', Auth::id())->delete();
-
+                session()->flash('order_id', $orderid->order_number);
                 return redirect()->route('order.success')->with('success', 'Payment successful!');
             } else {
                 return redirect()->back()->with('error', 'Payment not captured. Try again.');
