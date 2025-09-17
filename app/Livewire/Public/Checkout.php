@@ -231,7 +231,7 @@ class Checkout extends Component
                 break;
         }
     }
-    
+
     public function placeOrder()
     {
         if (!Auth::check()) {
@@ -239,10 +239,10 @@ class Checkout extends Component
             return redirect()->route('login');
         }
 
-        
-        
+
+
         $this->validate();
-        
+
         // dd($this->payment_method);
         if (!$this->same_as_billing) {
             $this->validate([
@@ -254,81 +254,170 @@ class Checkout extends Component
                 'shipping_phone' => 'required|min:10|max:15',
             ]);
         }
-
-        // Billing & Shipping Address
-        $billing_address = Address::create([
-            'user_id' => Auth::id(),
-            'type' => 'billing',
-            'address_line1' => $this->billing_address_line1,
-            'address_line2' => $this->billing_address_line2,
-            'city' => $this->billing_city,
-            'state' => $this->billing_state,
-            'country' => $this->billing_country,
-            'postal_code' => $this->billing_postal_code,
-            'phone' => $this->billing_phone,
-        ]);
-
-        $shipping_address = Address::create([
-            'user_id' => Auth::id(),
-            'type' => 'shipping',
-            'address_line1' => $this->shipping_address_line1 ?: $this->billing_address_line1,
-            'address_line2' => $this->shipping_address_line2 ?: $this->billing_address_line2,
-            'city' => $this->shipping_city ?: $this->billing_city,
-            'state' => $this->shipping_state ?: $this->billing_state,
-            'country' => $this->shipping_country ?: $this->billing_country,
-            'postal_code' => $this->shipping_postal_code ?: $this->billing_postal_code,
-            'phone' => $this->shipping_phone ?: $this->billing_phone,
-        ]);
-
-        $coupondetail = Coupon::where('code', $this->couponCode)->first();
-        $coupon_id = $coupondetail->id ?? null;
-
-        // Status depending on payment method
-        $status = $this->payment_method === 'cod' ? 'success' : 'pending';
-
-        // Create order
-        $order = Order::create([
-            'user_id' => Auth::id(),
-            'coupon_id' => $coupon_id ?? null,
-            'order_number' => 'ORD-' . strtoupper(uniqid()),
-            'subtotal' => $this->subtotal,
-            'shipping_cost' => $this->shippingCost,
-            'tax' => $this->tax,
-            'discount' => $this->couponDiscount,
-            'total_amount' => $this->total,
-            'billing_address_id' => $billing_address->id,
-            'shipping_address_id' => $shipping_address->id,
-            'payment_method' => $this->payment_method,
-            $status = $this->payment_method === 'cod' ? 'completed' : 'pending'
-        ]);
-
-        // Move cart items
-        $cartItems = CartItem::where('user_id', Auth::id())->get();
-        foreach ($cartItems as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
-                'unit_price' => $item->price,
-                'subtotal' => $item->price * $item->quantity,
+        if ($this->payment_method === 'cod') {
+            // Billing & Shipping Address
+            $billing_address = Address::create([
+                'user_id' => Auth::id(),
+                'type' => 'billing',
+                'address_line1' => $this->billing_address_line1,
+                'address_line2' => $this->billing_address_line2,
+                'city' => $this->billing_city,
+                'state' => $this->billing_state,
+                'country' => $this->billing_country,
+                'postal_code' => $this->billing_postal_code,
+                'phone' => $this->billing_phone,
             ]);
 
-            $product = Product::findOrFail($item->product_id);
-            $product->stock -= $item->quantity;
-            $product->save();
-        }
+            $shipping_address = Address::create([
+                'user_id' => Auth::id(),
+                'type' => 'shipping',
+                'address_line1' => $this->shipping_address_line1 ?: $this->billing_address_line1,
+                'address_line2' => $this->shipping_address_line2 ?: $this->billing_address_line2,
+                'city' => $this->shipping_city ?: $this->billing_city,
+                'state' => $this->shipping_state ?: $this->billing_state,
+                'country' => $this->shipping_country ?: $this->billing_country,
+                'postal_code' => $this->shipping_postal_code ?: $this->billing_postal_code,
+                'phone' => $this->shipping_phone ?: $this->billing_phone,
+            ]);
 
-        // Clear cart
-       
-        CartItem::where('user_id', Auth::id())->delete();
-        if ($this->payment_method === 'cod') {
+            $coupondetail = Coupon::where('code', $this->couponCode)->first();
+            $coupon_id = $coupondetail->id ?? null;
+
+            // Status depending on payment method
+            $status = $this->payment_method === 'cod' ? 'success' : 'pending';
+
+            // Create order
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'coupon_id' => $coupon_id ?? null,
+                'order_number' => 'ORD-' . strtoupper(uniqid()),
+                'subtotal' => $this->subtotal,
+                'shipping_cost' => $this->shippingCost,
+                'tax' => $this->tax,
+                'discount' => $this->couponDiscount,
+                'total_amount' => $this->total,
+                'billing_address_id' => $billing_address->id,
+                'shipping_address_id' => $shipping_address->id,
+                'payment_method' => $this->payment_method,
+                $status = $this->payment_method === 'cod' ? 'completed' : 'pending'
+            ]);
+
+            // Move cart items
+            $cartItems = CartItem::where('user_id', Auth::id())->get();
+            foreach ($cartItems as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'unit_price' => $item->price,
+                    'subtotal' => $item->price * $item->quantity,
+                ]);
+
+                $product = Product::findOrFail($item->product_id);
+                $product->stock -= $item->quantity;
+                $product->save();
+            }
+
+            // Clear cart
+
+            CartItem::where('user_id', Auth::id())->delete();
             session()->flash('success', 'Order placed successfully!');
             return $this->redirectRoute('order.success');
-  
-        } else if ($this->payment_method === 'online') {
-        
-            return $this->redirectRoute('payment.online', ['id' => $order->id]);
+
         }
+    }
+    public function placeOnline()
+    {
+        if (!Auth::check()) {
+            session()->flash('error', 'Please login to place an order.');
+            return redirect()->route('login');
+        }
+        $this->validate();
+
+        // dd($this->payment_method);
+        if (!$this->same_as_billing) {
+            $this->validate([
+                'shipping_address_line1' => 'required|min:5',
+                'shipping_city' => 'required|min:2',
+                'shipping_state' => 'required|min:2',
+                'shipping_country' => 'required',
+                'shipping_postal_code' => 'required|min:5|max:10',
+                'shipping_phone' => 'required|min:10|max:15',
+            ]);
+        }
+        if ($this->payment_method === 'online') {
+            // Billing & Shipping Address
+            $billing_address = Address::create([
+                'user_id' => Auth::id(),
+                'type' => 'billing',
+                'address_line1' => $this->billing_address_line1,
+                'address_line2' => $this->billing_address_line2,
+                'city' => $this->billing_city,
+                'state' => $this->billing_state,
+                'country' => $this->billing_country,
+                'postal_code' => $this->billing_postal_code,
+                'phone' => $this->billing_phone,
+            ]);
+
+            $shipping_address = Address::create([
+                'user_id' => Auth::id(),
+                'type' => 'shipping',
+                'address_line1' => $this->shipping_address_line1 ?: $this->billing_address_line1,
+                'address_line2' => $this->shipping_address_line2 ?: $this->billing_address_line2,
+                'city' => $this->shipping_city ?: $this->billing_city,
+                'state' => $this->shipping_state ?: $this->billing_state,
+                'country' => $this->shipping_country ?: $this->billing_country,
+                'postal_code' => $this->shipping_postal_code ?: $this->billing_postal_code,
+                'phone' => $this->shipping_phone ?: $this->billing_phone,
+            ]);
+
+            $coupondetail = Coupon::where('code', $this->couponCode)->first();
+            $coupon_id = $coupondetail->id ?? null;
+
+            // Status depending on payment method
+            $status = 'pending';
+
+            // Create order
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'coupon_id' => $coupon_id ?? null,
+                'order_number' => 'ORD-' . strtoupper(uniqid()),
+                'subtotal' => $this->subtotal,
+                'shipping_cost' => $this->shippingCost,
+                'tax' => $this->tax,
+                'discount' => $this->couponDiscount,
+                'total_amount' => $this->total,
+                'billing_address_id' => $billing_address->id,
+                'shipping_address_id' => $shipping_address->id,
+                'payment_method' => $this->payment_method,
+                $status = $this->payment_method === 'online' ? 'completed' : 'pending'
+            ]);
+
+            // Move cart items
+            $cartItems = CartItem::where('user_id', Auth::id())->get();
+            foreach ($cartItems as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'unit_price' => $item->price,
+                    'subtotal' => $item->price * $item->quantity,
+                ]);
+
+                $product = Product::findOrFail($item->product_id);
+                $product->stock -= $item->quantity;
+                $product->save();
+            }
+
+            // Clear cart
+
+            CartItem::where('user_id', Auth::id())->delete();
+            return redirect()->route('payment.online',$order->id);
+            
+
+        }
+
+
     }
 
     public function render()

@@ -102,8 +102,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', Checkout::class)->name('checkout');
     Route::get('/online-payment/{order}', [PaymentController::class, 'showPaymentPage'])->name('online.payment');
     Route::post('/online-payment/{order}', [PaymentController::class, 'processPayment'])->name('online.payment.process');
-    Route::get('/payment-success/{id}', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
-    Route::get('/payment/online/{id}', [PaymentController::class, 'pay'])->name('payment.online');
+    Route::post('/payment-success/{id}', [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+
+    Route::get('/payment/online/{id}', [PaymentController::class, 'paymentpage'])->name('payment.online');
 });
 // Route::get('/online-payment/{order}', [App\Http\Controllers\PaymentController::class, 'showPaymentPage'])
 //     ->name('online.payment');

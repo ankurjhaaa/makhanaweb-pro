@@ -3,63 +3,67 @@
 // File: app/Http/Controllers/PaymentController.php
 namespace App\Http\Controllers;
 
+use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\Payment;
+use Auth;
 use Illuminate\Http\Request;
+use Log;
 use Razorpay\Api\Api;
 
 class PaymentController extends Controller
 {
-    public function pay($id)
+    public function paymentpage($id)
     {
-        $order = Order::findOrFail($id);
+        $orderdetail = Order::findOrFail($id);
 
-        $api = new Api(
-            config('services.razorpay.key'),
-            config('services.razorpay.secret')
-        );
+        return view('payment.online', compact('orderdetail'));
 
-        try {
-            $razorpayOrder = $api->order->create([
-                'receipt' => $order->order_number,
-                'amount' => $order->total_amount * 100, // Convert to paise
-                'currency' => 'INR',
-            ]);
-
-            return view('payment.online', [
-                'order' => $order,
-                'razorpayOrderId' => $razorpayOrder['id'],
-                'razorpayKey' => config('services.razorpay.key'),
-            ]);
-        } catch (\Exception $e) {
-            \Log::error('Razorpay order creation failed: ' . $e->getMessage());
-            session()->flash('error', 'Failed to initiate payment. Please try again.');
-            return redirect()->route('checkout');
-        }
     }
+
 
     public function paymentSuccess(Request $request, $id)
     {
-        $order = Order::findOrFail($id);
-        $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
-
         try {
-            $attributes = [
-                'razorpay_order_id' => $request->razorpay_order_id,
-                'razorpay_payment_id' => $request->razorpay_payment_id,
-                'razorpay_signature' => $request->razorpay_signature,
-            ];
-            $api->utility->verifyPaymentSignature($attributes);
+            $paymentId = $request->get('razorpay_payment_id');
 
-            $order->status = 'completed';
-            $order->payment_method = 'online';
-            $order->save();
+            if (!$paymentId) {
+                return redirect()->back()->with('error', 'Payment ID not received.');
+            }
 
-            session()->flash('success', 'Payment successful! Order placed.');
-            return redirect()->route('order.success');
+            $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+
+            // Fetch payment from Razorpay
+            $payment = $api->payment->fetch($paymentId);
+
+            // Check if authorized before capturing
+            if ($payment->status === 'authorized') {
+                $payment->capture(['amount' => $payment->amount]); // capture amount in paise
+            }
+
+            // Re-fetch after capture
+            $payment = $api->payment->fetch($paymentId);
+
+            if ($payment->status === 'captured') {
+                Payment::create([
+                    'user_id' => Auth::id(), // ✅ save user ID
+                    'order_id' => $id, // ✅ save user ID
+                    'payment_status' => $payment->status,
+                    'payment_method' => 'online',
+                    'transaction_id' => $payment->id,
+                    'payment_details' => 'successful', // ✅ store full response
+                ]);
+
+                return redirect()->route('order.success')->with('success', 'Payment successful!');
+            } else {
+                return redirect()->back()->with('error', 'Payment not captured. Try again.');
+            }
         } catch (\Exception $e) {
-            \Log::error('Payment verification failed: ' . $e->getMessage());
-            session()->flash('error', 'Payment verification failed.');
-            return redirect()->route('checkout');
+            Log::error('Razorpay Payment Error: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong during payment verification.');
         }
     }
+
+
+
 }
