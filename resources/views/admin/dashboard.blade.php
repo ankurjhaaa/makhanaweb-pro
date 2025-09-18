@@ -17,9 +17,14 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-sm text-gray-500 mb-1">Total Sales</p>
-                        <h3 class="text-2xl font-bold text-gray-800">₹8,245.00</h3>
-                        <p class="flex items-center mt-1 text-xs text-red-500">
-                            <span>-0.5% from last week</span>
+                        <h3 class="text-2xl font-bold text-gray-800">
+                            ₹{{ number_format($totalSales, 2) }}
+                        </h3>
+                        <p
+                            class="flex items-center mt-1 text-xs {{ $salesChange >= 0 ? 'text-green-500' : 'text-red-500' }}">
+                            <span>
+                                {{ $salesChange >= 0 ? '+' : '' }}{{ $salesChange }}% from last week
+                            </span>
                         </p>
                     </div>
                     <div class="bg-green-100 p-3 rounded-full">
@@ -27,6 +32,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!-- Total Orders Card -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all stat-card">
@@ -49,10 +55,10 @@
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all stat-card">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm text-gray-500 mb-1">Net Sales</p>
-                        <h3 class="text-2xl font-bold text-gray-800">₹431.00</h3>
+                        <p class="text-sm text-gray-500 mb-1">Totle Users</p>
+                        <h3 class="text-2xl font-bold text-gray-800">{{$totalUsers}}</h3>
                         <p class="flex items-center mt-1 text-xs text-green-600">
-                            <span>+1.0% from last week</span>
+                            <span>+{{$userGrowth}} from last week</span>
                         </p>
                     </div>
                     <div class="bg-purple-100 p-3 rounded-full">
@@ -204,74 +210,47 @@
                         </select>
                     </div>
                     <a href="{{ route('searchProducts') }}" class="bg-green-600 hover:bg-green-700 text-white 
-              py-1 px-2 sm:py-2 sm:px-4 
-              rounded-md text-xs sm:text-sm md:text-base 
-              flex items-center justify-center gap-1 sm:gap-2">
+                                  py-1 px-2 sm:py-2 sm:px-4 
+                                  rounded-md text-xs sm:text-sm md:text-base 
+                                  flex items-center justify-center gap-1 sm:gap-2">
                         <i class="fas fa-plus text-xs sm:text-sm"></i>
                         <span class="hidden xs:inline">Add products</span>
                     </a>
-
                 </div>
             </div>
 
-            <!-- Product cards -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-                <!-- Product card 1 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all">
-                    <div class="bg-yellow-100 h-24 flex items-center justify-center">
-                        <i class="fas fa-headphones text-2xl text-yellow-600"></i>
-                    </div>
-                    <div class="p-3">
-                        <h4 class="text-sm font-medium truncate">Wireless Headphones</h4>
-                        <p class="text-xs text-gray-500 mb-1">₹499.99</p>
-                        <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-                            <div class="bg-green-500 h-full" style="width: 75%"></div>
-                        </div>
+            <!-- Dynamic Product cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+    @foreach($mostSellingProducts as $item)
+        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
+            
+            <!-- Image -->
+            <div class="bg-gray-50 h-28 flex items-center justify-center p-2">
+                <img src="{{ $item->product->imagelink }}" alt="{{ $item->product->name }}" class="object-contain h-full w-full">
+            </div>
+
+            <!-- Product Info -->
+            <div class="p-3 flex flex-col">
+                <h4 class="text-sm font-semibold text-gray-800 truncate" title="{{ $item->product->name }}">
+                    {{ $item->product->name }}
+                </h4>
+                <p class="text-xs text-gray-500 mt-1 mb-2">₹{{ number_format($item->product->price, 2) }}</p>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                    <div class="bg-green-500 h-2 rounded-full"
+                        style="width: {{ min(100, ($item->total_sold / $mostSellingProducts->max('total_sold')) * 100) }}%">
                     </div>
                 </div>
 
-                <!-- Product card 2 -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all">
-                    <div class="bg-blue-100 h-24 flex items-center justify-center">
-                        <i class="fas fa-glasses text-2xl text-blue-600"></i>
-                    </div>
-                    <div class="p-3">
-                        <h4 class="text-sm font-medium truncate">Sunglasses</h4>
-                        <p class="text-xs text-gray-500 mb-1">₹299.99</p>
-                        <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-                            <div class="bg-green-500 h-full" style="width: 60%"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- More product cards would be here -->
-                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all">
-                    <div class="bg-purple-100 h-24 flex items-center justify-center">
-                        <i class="fas fa-camera text-2xl text-purple-600"></i>
-                    </div>
-                    <div class="p-3">
-                        <h4 class="text-sm font-medium truncate">Camera</h4>
-                        <p class="text-xs text-gray-500 mb-1">₹799.99</p>
-                        <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-                            <div class="bg-green-500 h-full" style="width: 40%"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all">
-                    <div class="bg-red-100 h-24 flex items-center justify-center">
-                        <i class="fas fa-tshirt text-2xl text-red-600"></i>
-                    </div>
-                    <div class="p-3">
-                        <h4 class="text-sm font-medium truncate">Hoodie</h4>
-                        <p class="text-xs text-gray-500 mb-1">₹149.99</p>
-                        <div class="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
-                            <div class="bg-green-500 h-full" style="width: 25%"></div>
-                        </div>
-                    </div>
-                </div>
+                <p class="text-xs text-gray-500 mt-auto">{{ $item->total_sold }} sold</p>
             </div>
         </div>
+    @endforeach
+</div>
+
+        </div>
+
 
         <!-- Tables grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -298,7 +277,7 @@
                                     <td class="py-3 px-3 whitespace-nowrap">
                                         <span
                                             class="px-2 py-1 text-xs rounded-full 
-                                                                                                                {{ $order->status == 'completed' ? 'bg-green-100 text-green-800' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
+                                                                                                                                                {{ $order->status == 'completed' ? 'bg-green-100 text-green-800' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
                                             {{ ucfirst($order->status) }}
                                         </span>
                                     </td>
@@ -358,7 +337,7 @@
                                     <td class="py-3 px-3 whitespace-nowrap">
                                         <span
                                             class="px-2 py-1 text-xs rounded-full
-                                                        {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
+                                                                                        {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
                                             {{ ucfirst($user->role) }}
                                         </span>
                                     </td>

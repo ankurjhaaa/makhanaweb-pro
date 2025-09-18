@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Coupon;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\product_pricing;
 use App\Models\User;
@@ -15,77 +16,73 @@ use ImageKit\ImageKit;
 
 class AdminController extends Controller
 {
-public function dashboard(Request $request)
-{
-    $orders = Order::with('user')->latest()->get();
-    $users  = User::latest()->take(2)->get();
+    public function dashboard(Request $request)
+    {
+        $orders = Order::with('user')->latest()->get();
+        $users = User::latest()->take(2)->get();
+        $totalUsers = User::count();
+        $userGrowth = 1.0;
 
+        $totalOrders = Order::count();
+        $totalSales = Order::sum('total_amount');
+        
 
-    $totalOrders = Order::count();
+        $currentWeekSales = Order::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->sum('total_amount');
+        $lastWeekSales = Order::whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()])->sum('total_amount');
 
- 
-    $currentWeekOrders = Order::whereBetween('created_at', [
-        now()->startOfWeek(), now()->endOfWeek()
-    ])->count();
+        $salesChange = $lastWeekSales > 0 ? (($currentWeekSales - $lastWeekSales) / $lastWeekSales) * 100 : 0;
 
-    $lastWeekOrders = Order::whereBetween('created_at', [
-        now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()
-    ])->count();
+        $currentWeekOrders = Order::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
+        $lastWeekOrders = Order::whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()])->count();
 
-    if ($lastWeekOrders > 0) {
-        $growth = (($currentWeekOrders - $lastWeekOrders) / $lastWeekOrders) * 100;
-    } else {
-        $growth = 0;
-    }
+        $growth = $lastWeekOrders > 0 ? (($currentWeekOrders - $lastWeekOrders) / $lastWeekOrders) * 100 : 0;
 
-    $filter = $request->get('filter', 'month');
-    if ($filter === 'week') {
-        $ordersBy = Order::selectRaw('WEEK(created_at) as period, COUNT(*) as total')
-            ->whereYear('created_at', now()->year)
-            ->groupBy('period')
-            ->orderBy('period')
-            ->pluck('total', 'period');
+        // Fetch most selling products for all filters
+        $mostSellingProducts = OrderItem::selectRaw('product_id, SUM(quantity) as total_sold')->groupBy('product_id')->orderByDesc('total_sold')->with('product:id,name,price,imagelink')->take(6)->get();
 
-        $labels = [];
-        $data = [];
-        for ($i = 1; $i <= 6; $i++) {
-            $labels[] = "Week $i";
-            $data[] = $ordersBy[$i] ?? 0;
+        $filter = $request->get('filter', 'month');
+
+        if ($filter === 'week') {
+            $ordersBy = Order::selectRaw('WEEK(created_at) as period, COUNT(*) as total')->whereYear('created_at', now()->year)->groupBy('period')->orderBy('period')->pluck('total', 'period');
+
+            $labels = [];
+            $data = [];
+            for ($i = 1; $i <= 6; $i++) {
+                $labels[] = "Week $i";
+                $data[] = $ordersBy[$i] ?? 0;
+            }
+        } elseif ($filter === 'year') {
+            $ordersBy = Order::selectRaw('YEAR(created_at) as period, COUNT(*) as total')->groupBy('period')->orderBy('period')->pluck('total', 'period');
+
+            $labels = $ordersBy->keys()->toArray();
+            $data = $ordersBy->values()->toArray();
+        } else {
+            $ordersBy = Order::selectRaw('MONTH(created_at) as period, COUNT(*) as total')->whereYear('created_at', now()->year)->groupBy('period')->orderBy('period')->pluck('total', 'period');
+
+            $labels = [];
+            $data = [];
+            for ($i = 1; $i <= 12; $i++) {
+                $labels[] = date('M', mktime(0, 0, 0, $i, 1));
+                $data[] = $ordersBy[$i] ?? 0;
+            }
         }
-    } elseif ($filter === 'year') {
-        $ordersBy = Order::selectRaw('YEAR(created_at) as period, COUNT(*) as total')
-            ->groupBy('period')
-            ->orderBy('period')
-            ->pluck('total', 'period');
 
-        $labels = $ordersBy->keys()->toArray();
-        $data   = $ordersBy->values()->toArray();
-    } else {
-        $ordersBy = Order::selectRaw('MONTH(created_at) as period, COUNT(*) as total')
-            ->whereYear('created_at', now()->year)
-            ->groupBy('period')
-            ->orderBy('period')
-            ->pluck('total', 'period');
+        return view('admin.dashboard', compact(
+            'orders',
+            'users',
+            'totalOrders',
+            'totalSales',
+            'salesChange',
+            'growth',
+            'labels',
+            'data',
+            'filter',
+            'mostSellingProducts',
+            'totalUsers',
+            'userGrowth'
 
-        $labels = [];
-        $data = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $labels[] = date('M', mktime(0, 0, 0, $i, 1));
-            $data[] = $ordersBy[$i] ?? 0;
-        }
+        ));
     }
-
-    return view('admin.dashboard', compact(
-        'orders',
-        'users',
-        'totalOrders',
-        'growth',
-        'labels',
-        'data',
-        'filter'
-    ));
-}
-
 
     public function adminCategoryPage()
     {
@@ -122,7 +119,6 @@ public function dashboard(Request $request)
 
         return back()->with('seccess', 'category added successfully');
     }
-
 
     public function allProducts()
     {
@@ -284,9 +280,23 @@ public function dashboard(Request $request)
 
     public function allCoupons()
     {
-        $coupons = Coupon::all();
+        $coupons = Coupon::select(
+            'id',
+            'code',
+            'discount_type',
+            'discount_value',
+            'min_order_amount',
+            'max_discount_amount',
+            'valid_from',
+            'valid_until',
+            'usage_limit',
+            'used_count',
+            'status'
+        )->get();
+
         return view('admin.Coupons', compact('coupons'));
     }
+
     public function deleteCoupon($id)
     {
         $coupon = Coupon::findOrFail($id);
