@@ -226,7 +226,7 @@
                                                         Image</label>
                                                     <div class="flex items-center space-x-4">
                                                         <div class="h-16 w-16 rounded-lg overflow-hidden bg-gray-100 border">
-                                                            <img src="{{ $product->image_url }}?tr=w-100,h-100"
+                                                            <img src="{{ $product->imagelink }}?tr=w-100,h-100"
                                                                 alt="{{ $product->name }}" class="h-full w-full object-cover">
                                                         </div>
                                                         <div class="flex-1">

@@ -76,10 +76,12 @@
                             {{ $product->category->name ?? 'Uncategorized' }}
                         </div>
 
-                        <div class="aspect-w-1 aspect-h-1 mb-5">
-                            <img src="{{ $product->imagelink }}?tr=w-200,h-200,fo-face,f-auto,q-10"
-                                alt="{{ $product->name }}" loading="lazy" class="w-full h-48 object-cover rounded-md">
-                        </div>
+                        <a href="{{ route('item',$product->slug) }}">
+                            <div class="aspect-w-1 aspect-h-1 mb-5">
+                                <img src="{{ $product->imagelink }}?tr=w-200,h-200,fo-face,f-auto,q-10"
+                                    alt="{{ $product->name }}" loading="lazy" class="w-full h-48 object-cover rounded-md">
+                            </div>
+                        </a>
 
                         <h3 class="font-poppins font-semibold text-lg">{{ $product->name }}</h3>
                         <p class="text-gray-600 text-sm mt-2">{{ Str::limit($product->description, 80) }}</p>

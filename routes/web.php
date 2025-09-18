@@ -19,6 +19,7 @@ use App\Livewire\Public\Signup;
 use Illuminate\Support\Facades\Route;
 use App\Enums\Role;
 use App\Livewire\User\WishlistComponent;
+use App\Livewire\Public\Item;
 
 
 Route::get('/', Homepage::class)->name("home");
@@ -26,6 +27,7 @@ Route::get('/shop', Shop::class)->name("shop");
 Route::get('/recipes', Recipes::class)->name("recipes");
 Route::get('/contact', Contactus::class)->name("contact");
 Route::get('/cart', Cart::class)->name("cart");
+Route::get('/item/{slug}', Item::class)->name("item");
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', Checkout::class)->name('checkout');
 });
