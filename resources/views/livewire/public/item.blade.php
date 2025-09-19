@@ -75,14 +75,22 @@
 
             <!-- Buttons -->
             <div class="flex flex-wrap gap-4">
-                <a href="{{ route('cart', ['add' => $productDetail->id]) }}"
-                    class="bg-brand-600 text-white px-10 py-3 rounded-xl shadow hover:bg-brand-700 transition font-semibold text-lg">
-                    Add to Cart
-                </a>
-                <a href="{{ route('cart', ['add' => $productDetail->id]) }}"
-                    class="border border-brand-600 text-brand-600 px-10 py-3 rounded-xl shadow hover:bg-brand-50 transition font-semibold text-lg">
-                    Buy Now
-                </a>
+                @if ($productDetail->stock === 0)
+                    <a 
+                        class="bg-gray-400 text-white px-10 py-3 rounded-xl shadow  transition font-semibold text-lg">
+                        Sold Out
+                    </a>
+                @else
+                    <a href="{{ route('cart', ['add' => $productDetail->id]) }}"
+                        class="bg-brand-600 text-white px-10 py-3 rounded-xl shadow hover:bg-brand-700 transition font-semibold text-lg">
+                        Add to Cart
+                    </a>
+                    <a href="{{ route('cart', ['add' => $productDetail->id]) }}"
+                        class="border border-brand-600 text-brand-600 px-10 py-3 rounded-xl shadow hover:bg-brand-50 transition font-semibold text-lg">
+                        Buy Now
+                    </a>
+                @endif
+
             </div>
         </div>
     </div>
