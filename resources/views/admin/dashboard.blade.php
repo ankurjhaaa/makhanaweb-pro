@@ -143,39 +143,42 @@
 
                     <!-- Product Stock Table -->
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-600">
-                            <thead>
-                                <tr class="border-b">
-                                    <th class="py-2 px-2">Product</th>
-                                    <th class="py-2 px-2">Available</th>
-                                    <th class="py-2 px-2">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($products as $product)
-                                    @php
-                                        if ($product->stock == 0) {
-                                            $status = 'Out of Stock';
-                                            $color = 'text-red-500';
-                                        } elseif ($product->stock < 20) {
-                                            $status = 'Low Stock';
-                                            $color = 'text-yellow-500';
-                                        } else {
-                                            $status = 'In Stock';
-                                            $color = 'text-green-600';
-                                        }
-                                    @endphp
+                        <div class="max-h-64 overflow-y-auto border rounded-md">
+                            <table class="w-full text-sm text-left text-gray-600">
+                                <thead class="sticky top-0 bg-gray-100 z-10">
                                     <tr class="border-b">
-                                        <td class="py-2 px-2">{{ $product->name }}</td>
-                                        <td class="py-2 px-2">{{ $product->stock }}</td>
-                                        <td class="py-2 px-2">
-                                            <span class="{{ $color }} font-medium">{{ $status }}</span>
-                                        </td>
+                                        <th class="py-2 px-2">Product</th>
+                                        <th class="py-2 px-2">Available</th>
+                                        <th class="py-2 px-2">Status</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach($products as $product)
+                                        @php
+                                            if ($product->stock == 0) {
+                                                $status = 'Out of Stock';
+                                                $color = 'text-red-500';
+                                            } elseif ($product->stock < 20) {
+                                                $status = 'Low Stock';
+                                                $color = 'text-yellow-500';
+                                            } else {
+                                                $status = 'In Stock';
+                                                $color = 'text-green-600';
+                                            }
+                                        @endphp
+                                        <tr class="border-b">
+                                            <td class="py-2 px-2">{{ $product->name }}</td>
+                                            <td class="py-2 px-2">{{ $product->stock }}</td>
+                                            <td class="py-2 px-2">
+                                                <span class="{{ $color }} font-medium">{{ $status }}</span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+
                 </div>
 
 
@@ -232,9 +235,9 @@
                         </select>
                     </div>
                     <a href="{{ route('searchProducts') }}" class="bg-green-600 hover:bg-green-700 text-white 
-                                              py-1 px-2 sm:py-2 sm:px-4 
-                                              rounded-md text-xs sm:text-sm md:text-base 
-                                              flex items-center justify-center gap-1 sm:gap-2">
+                                                  py-1 px-2 sm:py-2 sm:px-4 
+                                                  rounded-md text-xs sm:text-sm md:text-base 
+                                                  flex items-center justify-center gap-1 sm:gap-2">
                         <i class="fas fa-plus text-xs sm:text-sm"></i>
                         <span class="hidden xs:inline">Add products</span>
                     </a>
@@ -301,7 +304,7 @@
                                     <td class="py-3 px-3 whitespace-nowrap">
                                         <span
                                             class="px-2 py-1 text-xs rounded-full 
-                                                                                                                                                                        {{ $order->status == 'completed' ? 'bg-green-100 text-green-800' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
+                                                                                                                                                                                {{ $order->status == 'completed' ? 'bg-green-100 text-green-800' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
                                             {{ ucfirst($order->status) }}
                                         </span>
                                     </td>
@@ -361,7 +364,7 @@
                                     <td class="py-3 px-3 whitespace-nowrap">
                                         <span
                                             class="px-2 py-1 text-xs rounded-full
-                                                                                                                {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
+                                                                                                                        {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
                                             {{ ucfirst($user->role) }}
                                         </span>
                                     </td>
