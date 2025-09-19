@@ -64,19 +64,27 @@
                         class="bg-white rounded-lg border border-gray-100 p-6 transition-all hover:border-brand-200 relative">
 
                         <!-- Wishlist Button -->
-                        <button wire:click="toggleWishlist({{ $product->id }})" @class([
-                            'absolute top-3 right-3 h-9 w-9 flex items-center justify-center rounded-full border shadow-sm transition-colors',
-                            'text-red-500 bg-red-50 hover:bg-red-100' => $wishlistIds->contains($product->id),
-                            'text-gray-400 bg-white hover:bg-gray-100' => !$wishlistIds->contains($product->id),
-                        ])>
-                            <i class="fas fa-heart"></i>
-                        </button>
+                        @auth
+                            <button wire:click="toggleWishlist({{ $product->id }})" @class([
+                                'absolute top-3 right-3 h-9 w-9 flex items-center justify-center rounded-full border shadow-sm transition-colors',
+                                'text-red-500 bg-red-50 hover:bg-red-100' => $wishlistIds->contains($product->id),
+                                'text-gray-400 bg-white hover:bg-gray-100' => !$wishlistIds->contains($product->id),
+                            ])>
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        @else
+                            <a href="{{ route('login') }}"
+                                class="absolute top-3 right-3 h-9 w-9 flex items-center justify-center rounded-full border shadow-sm transition-colors text-gray-400 bg-white hover:bg-gray-100">
+                                <i class="fas fa-heart"></i>
+                            </a>
+                        @endauth
+
 
                         <div class="text-xs uppercase tracking-wider font-medium text-brand-600 mb-3">
                             {{ $product->category->name ?? 'Uncategorized' }}
                         </div>
 
-                        <a href="{{ route('item',$product->slug) }}">
+                        <a wire:navigate href="{{ route('item', $product->slug) }}">
                             <div class="aspect-w-1 aspect-h-1 mb-5">
                                 <img src="{{ $product->imagelink }}?tr=w-200,h-200,fo-face,f-auto,q-10"
                                     alt="{{ $product->name }}" loading="lazy" class="w-full h-48 object-cover rounded-md">

@@ -12,25 +12,40 @@
             <h1 class="text-4xl font-bold text-gray-900">{{ $productDetail->name }}</h1>
 
             <div class="flex items-center space-x-5 text-lg">
-                <span class="text-yellow-500">★★★★★</span>
-                <span class="text-gray-600 text-sm">(124 reviews)</span>
-                <span class="text-green-600 font-medium">In Stock</span>
+                <!-- <span class="text-yellow-500">★★★★★</span>
+                <span class="text-gray-600 text-sm">(124 reviews)</span> -->
+                @if ($productDetail->stock === 0)
+                    <span class="text-gray-400 font-medium">Out Of stock</span>
+                @else
+                    <span class="text-green-600 font-medium">In Stock</span>
+                @endif
             </div>
 
             <div class="flex items-center space-x-3 text-xl">
                 <span class="font-bold text-brand-600">₹{{ $productDetail->price }}</span>
                 <span class="text-gray-400 line-through">₹{{ $productDetail->mrp }}</span>
-                <span class="bg-green-100 text-green-600 text-sm px-2 py-1 rounded-lg">20% OFF</span>
+                <span
+                    class="bg-green-100 text-green-600 text-sm px-2 py-1 rounded-lg">{{ round((($productDetail->mrp - $productDetail->price) / $productDetail->mrp) * 100) }}%
+                    OFF</span>
+
             </div>
 
+
             <div class="flex gap-4">
-                <button wire:click="toggleWishlist({{ $productDetail->id }})" @class([
-                    'h-11 w-11 flex items-center justify-center rounded-full border shadow-sm transition-colors',
-                    'text-red-500 bg-red-50 hover:bg-red-100' => $wishlistIds->contains($productDetail->id),
-                    'text-gray-400 bg-white hover:bg-gray-100' => !$wishlistIds->contains($productDetail->id),
-                ])>
-                    <i class="fas fa-heart"></i>
-                </button>
+                @auth
+                    <button wire:click="toggleWishlist({{ $productDetail->id }})" @class([
+                        'h-11 w-11 flex items-center justify-center rounded-full border shadow-sm transition-colors',
+                        'text-red-500 bg-red-50 hover:bg-red-100' => $wishlistIds->contains($productDetail->id),
+                        'text-gray-400 bg-white hover:bg-gray-100' => !$wishlistIds->contains($productDetail->id),
+                    ])>
+                        <i class="fas fa-heart"></i>
+                    </button>
+                @else
+                    <a href="{{ route('login') }}" class="h-11 w-11 flex items-center justify-center rounded-full border shadow-sm transition-colors text-gray-400 bg-white hover:bg-gray-100" >
+                        <i class="fas fa-heart"></i>
+                    </a>
+                @endauth
+
 
                 <button onclick="sharePage()"
                     class="h-11 px-5 flex items-center gap-2 rounded-full border border-blue-600 text-blue-600 hover:bg-blue-50 transition font-medium shadow-sm">
@@ -76,8 +91,7 @@
             <!-- Buttons -->
             <div class="flex flex-wrap gap-4">
                 @if ($productDetail->stock === 0)
-                    <a 
-                        class="bg-gray-400 text-white px-10 py-3 rounded-xl shadow  transition font-semibold text-lg">
+                    <a class="bg-gray-400 text-white px-10 py-3 rounded-xl shadow  transition font-semibold text-lg">
                         Sold Out
                     </a>
                 @else
