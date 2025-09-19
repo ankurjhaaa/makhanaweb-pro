@@ -72,9 +72,12 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-sm text-gray-500 mb-1">Total Variants</p>
-                        <h3 class="text-2xl font-bold text-gray-800">456K</h3>
-                        <p class="flex items-center mt-1 text-xs text-red-500">
-                            <span>-25% from last week</span>
+                        <h3 class="text-2xl font-bold text-gray-800">{{ $totalVariants }}</h3>
+                        <p
+                            class="flex items-center mt-1 text-xs {{ $variantGrowth >= 0 ? 'text-green-500' : 'text-red-500' }}">
+                            <span>
+                                {{ $variantGrowth >= 0 ? '+' : '' }}{{ number_format($variantGrowth, 2) }}% from last week
+                            </span>
                         </p>
                     </div>
                     <div class="bg-orange-100 p-3 rounded-full">
@@ -113,52 +116,71 @@
             </div>
 
             <!-- Stock Unit (placeholder as in your code) -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <div class="flex flex-wrap justify-between items-center mb-6">
-                    <h3 class="text-lg font-semibold text-gray-800">Stock Unit</h3>
-                    <div class="mt-2 md:mt-0">
+            <div class="bg-white rounded-lg shadow p-5">
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-base font-semibold text-gray-800">Stock Unit</h3>
+                    <select
+                        class="py-1 px-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        <option>All time</option>
+                        <option>This month</option>
+                        <option>This year</option>
+                    </select>
+                </div>
+
+                <!-- Progress Stats -->
+                <div class="bg-white rounded-lg shadow p-5">
+                    <!-- Header -->
+                    {{-- <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-base font-semibold text-gray-800">Stock Status</h3>
                         <select
-                            class="py-1 px-3 border border-gray-300 rounded-md text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            class="py-1 px-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
                             <option>All time</option>
                             <option>This month</option>
                             <option>This year</option>
                         </select>
+                    </div> --}}
+
+                    <!-- Product Stock Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-600">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="py-2 px-2">Product</th>
+                                    <th class="py-2 px-2">Available</th>
+                                    <th class="py-2 px-2">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($products as $product)
+                                    @php
+                                        if ($product->stock == 0) {
+                                            $status = 'Out of Stock';
+                                            $color = 'text-red-500';
+                                        } elseif ($product->stock < 20) {
+                                            $status = 'Low Stock';
+                                            $color = 'text-yellow-500';
+                                        } else {
+                                            $status = 'In Stock';
+                                            $color = 'text-green-600';
+                                        }
+                                    @endphp
+                                    <tr class="border-b">
+                                        <td class="py-2 px-2">{{ $product->name }}</td>
+                                        <td class="py-2 px-2">{{ $product->stock }}</td>
+                                        <td class="py-2 px-2">
+                                            <span class="{{ $color }} font-medium">{{ $status }}</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <div class="relative h-52 w-52 mx-auto">
-                    <div
-                        class="rounded-full h-full w-full border-8 border-l-green-600 border-r-yellow-400 border-t-red-500 border-b-green-600 rotate-45">
-                    </div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="bg-white h-32 w-32 rounded-full"></div>
-                    </div>
-                </div>
 
-                <div class="mt-6 grid grid-cols-3 gap-2 text-center">
-                    <div>
-                        <div class="flex items-center justify-center gap-1">
-                            <span class="h-3 w-3 rounded-full bg-green-600 inline-block"></span>
-                            <span class="text-xs text-gray-600">Production</span>
-                        </div>
-                        <p class="text-sm font-medium">50%</p>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-center gap-1">
-                            <span class="h-3 w-3 rounded-full bg-yellow-400 inline-block"></span>
-                            <span class="text-xs text-gray-600">Store</span>
-                        </div>
-                        <p class="text-sm font-medium">20%</p>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-center gap-1">
-                            <span class="h-3 w-3 rounded-full bg-red-500 inline-block"></span>
-                            <span class="text-xs text-gray-600">Stock</span>
-                        </div>
-                        <p class="text-sm font-medium">30%</p>
-                    </div>
-                </div>
             </div>
+
         </div>
 
         <!-- Chart.js -->
@@ -210,9 +232,9 @@
                         </select>
                     </div>
                     <a href="{{ route('searchProducts') }}" class="bg-green-600 hover:bg-green-700 text-white 
-                                  py-1 px-2 sm:py-2 sm:px-4 
-                                  rounded-md text-xs sm:text-sm md:text-base 
-                                  flex items-center justify-center gap-1 sm:gap-2">
+                                              py-1 px-2 sm:py-2 sm:px-4 
+                                              rounded-md text-xs sm:text-sm md:text-base 
+                                              flex items-center justify-center gap-1 sm:gap-2">
                         <i class="fas fa-plus text-xs sm:text-sm"></i>
                         <span class="hidden xs:inline">Add products</span>
                     </a>
@@ -221,33 +243,35 @@
 
             <!-- Dynamic Product cards -->
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-    @foreach($mostSellingProducts as $item)
-        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
-            
-            <!-- Image -->
-            <div class="bg-gray-50 h-28 flex items-center justify-center p-2">
-                <img src="{{ $item->product->imagelink }}" alt="{{ $item->product->name }}" class="object-contain h-full w-full">
-            </div>
+                @foreach($mostSellingProducts as $item)
+                    <div
+                        class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
 
-            <!-- Product Info -->
-            <div class="p-3 flex flex-col">
-                <h4 class="text-sm font-semibold text-gray-800 truncate" title="{{ $item->product->name }}">
-                    {{ $item->product->name }}
-                </h4>
-                <p class="text-xs text-gray-500 mt-1 mb-2">₹{{ number_format($item->product->price, 2) }}</p>
+                        <!-- Image -->
+                        <div class="bg-gray-50 h-28 flex items-center justify-center p-2">
+                            <img src="{{ $item->product->imagelink }}" alt="{{ $item->product->name }}"
+                                class="object-contain h-full w-full">
+                        </div>
 
-                <!-- Progress Bar -->
-                <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
-                    <div class="bg-green-500 h-2 rounded-full"
-                        style="width: {{ min(100, ($item->total_sold / $mostSellingProducts->max('total_sold')) * 100) }}%">
+                        <!-- Product Info -->
+                        <div class="p-3 flex flex-col">
+                            <h4 class="text-sm font-semibold text-gray-800 truncate" title="{{ $item->product->name }}">
+                                {{ $item->product->name }}
+                            </h4>
+                            <p class="text-xs text-gray-500 mt-1 mb-2">₹{{ number_format($item->product->price, 2) }}</p>
+
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                <div class="bg-green-500 h-2 rounded-full"
+                                    style="width: {{ min(100, ($item->total_sold / $mostSellingProducts->max('total_sold')) * 100) }}%">
+                                </div>
+                            </div>
+
+                            <p class="text-xs text-gray-500 mt-auto">{{ $item->total_sold }} sold</p>
+                        </div>
                     </div>
-                </div>
-
-                <p class="text-xs text-gray-500 mt-auto">{{ $item->total_sold }} sold</p>
+                @endforeach
             </div>
-        </div>
-    @endforeach
-</div>
 
         </div>
 
@@ -277,7 +301,7 @@
                                     <td class="py-3 px-3 whitespace-nowrap">
                                         <span
                                             class="px-2 py-1 text-xs rounded-full 
-                                                                                                                                                {{ $order->status == 'completed' ? 'bg-green-100 text-green-800' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
+                                                                                                                                                                        {{ $order->status == 'completed' ? 'bg-green-100 text-green-800' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800') }}">
                                             {{ ucfirst($order->status) }}
                                         </span>
                                     </td>
@@ -337,7 +361,7 @@
                                     <td class="py-3 px-3 whitespace-nowrap">
                                         <span
                                             class="px-2 py-1 text-xs rounded-full
-                                                                                        {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
+                                                                                                                {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
                                             {{ ucfirst($user->role) }}
                                         </span>
                                     </td>

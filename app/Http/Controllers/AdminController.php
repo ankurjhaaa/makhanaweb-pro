@@ -25,7 +25,18 @@ class AdminController extends Controller
 
         $totalOrders = Order::count();
         $totalSales = Order::sum('total_amount');
-        
+        $products = Product::select('stock', 'name')->get();
+        $totalVariants = Product::count();
+
+        $thisWeekVariants = Product::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count();
+        $lastWeekVariants = Product::whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()])->count();
+
+        if ($lastWeekVariants > 0) {
+            $variantGrowth = (($thisWeekVariants - $lastWeekVariants) / $lastWeekVariants) * 100;
+        } else {
+            $variantGrowth = $thisWeekVariants > 0 ? 100 : 0;
+        }
+
 
         $currentWeekSales = Order::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->sum('total_amount');
         $lastWeekSales = Order::whereBetween('created_at', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()])->sum('total_amount');
@@ -79,7 +90,12 @@ class AdminController extends Controller
             'filter',
             'mostSellingProducts',
             'totalUsers',
-            'userGrowth'
+            'userGrowth',
+            'products',
+            'totalVariants',
+            // 'currentWeekVariants',
+            // 'lastWeekVariants',
+            'variantGrowth'
 
         ));
     }

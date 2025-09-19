@@ -99,7 +99,7 @@
                                     Sold Out
                                 </a>
                             @else
-                                <a href="{{ route('cart', ['add' => $product->id]) }}"
+                                <a wire:navigate href="{{ route('cart', ['add' => $product->id]) }}"
                                     class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">
                                     Add to Cart
                                 </a>

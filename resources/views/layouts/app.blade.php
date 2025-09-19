@@ -140,7 +140,7 @@
                             Up</a>
                     </div>
                 @endauth
-                <a href="{{ route('shop') }}"
+                <a wire:navigate href="{{ route('shop') }}"
                     class="bg-brand-600 text-white px-5 py-2 rounded-full hover:bg-brand-700 transition-all">Shop
                     Now</a>
             </div>
@@ -158,12 +158,12 @@
                     @livewire('public.cart-count')
                     @auth
                         <div class="flex flex-col">
-                            <a href="/profile" class="text-gray-700 py-1">Profile</a>
-                            <a href="/orders" class="text-gray-700 py-1">My Orders</a>
-                            <a href="/addresses" class="text-gray-700 py-1">Addresses</a>
+                            <a wire:navigate href="/profile" class="text-gray-700 py-1">Profile</a>
+                            <a wire:navigate href="/orders" class="text-gray-700 py-1">My Orders</a>
+                            <a wire:navigate href="/addresses" class="text-gray-700 py-1">Addresses</a>
                             <form action="{{ route('logout') }}" method="POST" class="mt-2">
                                 @csrf
-                                <button type="submit"
+                                <button wire:navigate type="submit"
                                     class="w-full text-left px-4 py-2 border border-gray-200 rounded-full text-sm">Logout</button>
                             </form>
                         </div>
