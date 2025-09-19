@@ -1,107 +1,183 @@
-<div class="bg-white min-h-screen px-4 sm:px-8 lg:px-16 py-8">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+<div class="bg-white min-h-screen px-4 sm:px-8 lg:px-16 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <!-- Product Image -->
         <div class="flex justify-center items-start">
-            <img src="{{ $productDetail->imagelink }}" alt="Premium Product"
-                class="rounded-2xl shadow-md w-full max-w-md object-cover hover:scale-105 transition duration-300">
-
+            <img src="{{ $productDetail->imagelink }}" alt="{{ $productDetail->name }}"
+                class="rounded-2xl shadow-lg w-full max-w-lg h-[480px] object-cover hover:scale-105 transition duration-300">
         </div>
 
         <!-- Product Details -->
-        <div class="space-y-6">
+        <div class="space-y-8">
             <!-- Title -->
-            <h1 class="text-3xl font-bold text-gray-800">{{ $productDetail->name }}</h1>
+            <h1 class="text-4xl font-bold text-gray-900">{{ $productDetail->name }}</h1>
 
-            <!-- Ratings + Stock -->
-            <div class="flex items-center space-x-4">
-                <span class="text-yellow-500 text-lg">★★★★★</span>
+            <div class="flex items-center space-x-5 text-lg">
+                <span class="text-yellow-500">★★★★★</span>
                 <span class="text-gray-600 text-sm">(124 reviews)</span>
                 <span class="text-green-600 font-medium">In Stock</span>
             </div>
 
-            <!-- Price -->
-            <div class="flex items-center space-x-3">
-                <span class="text-2xl font-bold text-brand-600">₹{{ $productDetail->price }}</span>
+            <div class="flex items-center space-x-3 text-xl">
+                <span class="font-bold text-brand-600">₹{{ $productDetail->price }}</span>
                 <span class="text-gray-400 line-through">₹{{ $productDetail->mrp }}</span>
                 <span class="bg-green-100 text-green-600 text-sm px-2 py-1 rounded-lg">20% OFF</span>
             </div>
 
+            <div class="flex gap-4">
+                <button wire:click="toggleWishlist({{ $productDetail->id }})" @class([
+                    'h-11 w-11 flex items-center justify-center rounded-full border shadow-sm transition-colors',
+                    'text-red-500 bg-red-50 hover:bg-red-100' => $wishlistIds->contains($productDetail->id),
+                    'text-gray-400 bg-white hover:bg-gray-100' => !$wishlistIds->contains($productDetail->id),
+                ])>
+                    <i class="fas fa-heart"></i>
+                </button>
+
+                <button onclick="sharePage()"
+                    class="h-11 px-5 flex items-center gap-2 rounded-full border border-blue-600 text-blue-600 hover:bg-blue-50 transition font-medium shadow-sm">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
+
+            <script>
+                function sharePage() {
+                    const shareData = {
+                        title: "{{ $productDetail->name }}",
+                        text: "{{ Str::limit($productDetail->description, 80) }}",
+                        url: window.location.href
+                    };
+
+                    if (navigator.share) {
+                        navigator.share(shareData).catch(console.error);
+                    } else {
+                        // fallback
+                        navigator.clipboard.writeText(window.location.href).then(() => {
+                            alert("Link copied to clipboard!");
+                        });
+                    }
+                }
+            </script>
+
+
+
             <!-- Coupon Section -->
-            <div class="bg-gray-50 border rounded-lg p-4 space-y-2">
-                <h3 class="font-semibold text-gray-700">Available Offers</h3>
-                <ul class="list-disc list-inside text-sm text-gray-600">
+            <div class="bg-gray-50 border rounded-xl p-6 space-y-3">
+                <h3 class="font-semibold text-gray-700 text-lg">Available Offers</h3>
+                <ul class="list-disc list-inside text-gray-600 space-y-2 text-sm">
                     <li>Get extra <span class="font-semibold text-brand-600">₹200 off</span> on orders above ₹2,000 (Use
                         code: <span class="font-bold">FIT200</span>)</li>
                     <li>Flat <span class="font-semibold text-brand-600">₹100 cashback</span> with UPI payment</li>
                 </ul>
             </div>
 
-            <!-- Short Description -->
-            <p class="text-gray-600 text-sm leading-relaxed">
+            <p class="text-gray-600 text-base leading-relaxed">
                 {{ $productDetail->description }}
             </p>
 
-            <!-- Quantity Selector -->
-            <!-- <div class="flex items-center space-x-4">
-                <label class="text-sm font-medium text-gray-700">Quantity:</label>
-                <input type="number" wire:model="quantity" min="1"
-                    class="w-16 border rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-brand-600 focus:outline-none">
-            </div> -->
-
             <!-- Buttons -->
-            <div class="flex space-x-4">
+            <div class="flex flex-wrap gap-4">
                 <a href="{{ route('cart', ['add' => $productDetail->id]) }}"
-                    class="bg-brand-600 text-white px-6 py-3 rounded-xl shadow hover:bg-brand-700 transition font-semibold">
+                    class="bg-brand-600 text-white px-10 py-3 rounded-xl shadow hover:bg-brand-700 transition font-semibold text-lg">
                     Add to Cart
                 </a>
                 <a href="{{ route('cart', ['add' => $productDetail->id]) }}"
-                    class="border border-brand-600 text-brand-600 px-6 py-3 rounded-xl shadow hover:bg-brand-50 transition font-semibold">
+                    class="border border-brand-600 text-brand-600 px-10 py-3 rounded-xl shadow hover:bg-brand-50 transition font-semibold text-lg">
                     Buy Now
                 </a>
             </div>
         </div>
     </div>
 
-    <!-- Tabs Section -->
-    <div class="mt-12">
-        <div class="border-b flex space-x-6 text-gray-600 font-medium">
+    <div class="mt-16">
+        <div class="border-b flex space-x-8 text-gray-600 font-medium">
             <button wire:click="$set('activeTab', 'description')"
-                class="py-3 px-2 text-sm sm:text-base transition {{ $activeTab === 'description' ? 'border-b-2 border-brand-600 text-brand-600' : 'hover:text-brand-600' }}">
+                class="py-3 px-2 text-base transition {{ $activeTab === 'description' ? 'border-b-2 border-brand-600 text-brand-600' : 'hover:text-brand-600' }}">
                 Description
             </button>
             <button wire:click="$set('activeTab', 'reviews')"
-                class="py-3 px-2 text-sm sm:text-base transition {{ $activeTab === 'reviews' ? 'border-b-2 border-brand-600 text-brand-600' : 'hover:text-brand-600' }}">
+                class="py-3 px-2 text-base transition {{ $activeTab === 'reviews' ? 'border-b-2 border-brand-600 text-brand-600' : 'hover:text-brand-600' }}">
                 Reviews
             </button>
             <button wire:click="$set('activeTab', 'shipping')"
-                class="py-3 px-2 text-sm sm:text-base transition {{ $activeTab === 'shipping' ? 'border-b-2 border-brand-600 text-brand-600' : 'hover:text-brand-600' }}">
+                class="py-3 px-2 text-base transition {{ $activeTab === 'shipping' ? 'border-b-2 border-brand-600 text-brand-600' : 'hover:text-brand-600' }}">
                 Shipping Info
             </button>
         </div>
 
-        <div class="mt-6 text-gray-600 text-sm leading-relaxed">
+        <div class="mt-8 text-gray-700 text-base leading-relaxed">
             @if($activeTab === 'description')
-                <p>
-                    {{ $productDetail->description }}.
-                </p>
+                <p>{{ $productDetail->description }}.</p>
             @elseif($activeTab === 'reviews')
-                <div class="space-y-4">
-                    <div class="border-b pb-3">
+                <div class="space-y-6">
+                    <div class="border-b pb-4">
                         <p class="font-semibold text-gray-800">Ankur Jha <span class="text-yellow-500">★★★★★</span></p>
-                        <p class="text-gray-600 text-sm">Amazing quality! Helped me recover faster after workouts.</p>
+                        <p class="text-gray-600">Amazing quality! Helped me recover faster after workouts.</p>
                     </div>
-                    <div class="border-b pb-3">
+                    <div class="border-b pb-4">
                         <p class="font-semibold text-gray-800">Rahul Kumar <span class="text-yellow-500">★★★★☆</span></p>
-                        <p class="text-gray-600 text-sm">Great taste and easy to mix, but a little pricey.</p>
+                        <p class="text-gray-600">Great taste and easy to mix, but a little pricey.</p>
                     </div>
                 </div>
             @elseif($activeTab === 'shipping')
-                <ul class="list-disc list-inside text-sm">
+                <ul class="list-disc list-inside space-y-2">
                     <li>Free shipping on orders above ₹999</li>
                     <li>Delivery time: 3–5 business days</li>
                     <li>Easy 7-day return policy</li>
                 </ul>
             @endif
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="mt-20">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">You may also like</h2>
+
+        <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach($relatedProducts as $item)
+                <div class="bg-white rounded-lg border border-gray-100 p-6 transition-all hover:border-brand-200 relative">
+
+                    <!-- Wishlist Button -->
+                    <button wire:click="toggleWishlist({{ $item->id }})" @class([
+                        'absolute top-3 right-3 h-9 w-9 flex items-center justify-center rounded-full border shadow-sm transition-colors',
+                        'text-red-500 bg-red-50 hover:bg-red-100' => $wishlistIds->contains($item->id),
+                        'text-gray-400 bg-white hover:bg-gray-100' => !$wishlistIds->contains($item->id),
+                    ])>
+                        <i class="fas fa-heart"></i>
+                    </button>
+
+                    <div class="text-xs uppercase tracking-wider font-medium text-brand-600 mb-3">
+                        {{ $item->category->name ?? 'Uncategorized' }}
+                    </div>
+
+                    <a href="{{ route('item', $item->slug) }}">
+                        <div class="aspect-w-1 aspect-h-1 mb-5">
+                            <img src="{{ $item->imagelink }}?tr=w-200,h-200,fo-face,f-auto,q-10" alt="{{ $item->name }}"
+                                loading="lazy" class="w-full h-48 object-cover rounded-md">
+                        </div>
+                    </a>
+
+                    <h3 class="font-poppins font-semibold text-lg">{{ $item->name }}</h3>
+                    <p class="text-gray-600 text-sm mt-2">{{ Str::limit($item->description, 80) }}</p>
+
+                    <div class="mt-4 flex items-center justify-between">
+                        <div>
+                            <span class="text-brand-600 font-bold text-lg">₹{{ $item->price }}</span>
+                            @if($item->old_price)
+                                <span class="text-gray-400 text-sm line-through ml-2">₹{{ $item->old_price }}</span>
+                            @endif
+                        </div>
+                        @if ($item->stock === 0)
+                            <a class="bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">
+                                Sold Out
+                            </a>
+                        @else
+                            <a href="{{ route('cart', ['add' => $item->id]) }}"
+                                class="bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-all text-sm">
+                                Add to Cart
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 </div>
