@@ -3,6 +3,7 @@
 namespace App\Livewire\Public;
 
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\Wishlist;
 use Auth;
 use Livewire\Attributes\Layout;
@@ -15,21 +16,46 @@ class Item extends Component
     public $productDetail;
     public $relatedProducts = [];
     public $wishlistIds = [];
+      public $reviews = [];  
+      public $rating;
+
+      public $comment;
 
     
+
     public function mount($slug)
     {
         $this->loadWishlist();
-        $this->productDetail = Product::where('slug', $slug)
-            ->with('category')
-            ->firstOrFail();
+        $this->productDetail = Product::where('slug', $slug)->with('category')->firstOrFail();
 
-        // Related products from same category
-        $this->relatedProducts = Product::where('category_id', $this->productDetail->category_id)
-            ->where('id', '!=', $this->productDetail->id)
-            ->take(4)
-            ->get();
+        $this->relatedProducts = Product::where('category_id', $this->productDetail->category_id)->where('id', '!=', $this->productDetail->id)->take(4)->get();
+
+        $this->loadReviews();
     }
+
+    public function loadReviews()
+    {
+        $this->reviews = $this->productDetail->reviews()->with('user')->latest()->get();
+    }
+
+    public function addReview()
+    {
+        $this->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:500',
+        ]);
+
+        Review::create([
+            'product_id' => $this->productDetail->id,
+            'user_id' => Auth::id(),
+            'rating' => $this->rating,
+            'comment' => $this->comment,
+        ]);
+
+        $this->reset(['rating', 'comment']);
+        $this->loadReviews();
+    }
+
     public function loadWishlist()
     {
         $this->wishlistIds = Wishlist::where('user_id', Auth::id())->pluck('product_id');
@@ -59,6 +85,7 @@ class Item extends Component
         return view('livewire.public.item', [
             'productDetail' => $this->productDetail,
             'relatedProducts' => $this->relatedProducts,
+             'reviews'          => $this->reviews,
         ]);
     }
 }

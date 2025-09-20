@@ -41,7 +41,8 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 @else
-                    <a href="{{ route('login') }}" class="h-11 w-11 flex items-center justify-center rounded-full border shadow-sm transition-colors text-gray-400 bg-white hover:bg-gray-100" >
+                    <a href="{{ route('login') }}"
+                        class="h-11 w-11 flex items-center justify-center rounded-full border shadow-sm transition-colors text-gray-400 bg-white hover:bg-gray-100">
                         <i class="fas fa-heart"></i>
                     </a>
                 @endauth
@@ -128,24 +129,67 @@
         <div class="mt-8 text-gray-700 text-base leading-relaxed">
             @if($activeTab === 'description')
                 <p>{{ $productDetail->description }}.</p>
-            @elseif($activeTab === 'reviews')
-                <div class="space-y-6">
-                    <div class="border-b pb-4">
-                        <p class="font-semibold text-gray-800">Ankur Jha <span class="text-yellow-500">★★★★★</span></p>
-                        <p class="text-gray-600">Amazing quality! Helped me recover faster after workouts.</p>
-                    </div>
-                    <div class="border-b pb-4">
-                        <p class="font-semibold text-gray-800">Rahul Kumar <span class="text-yellow-500">★★★★☆</span></p>
-                        <p class="text-gray-600">Great taste and easy to mix, but a little pricey.</p>
-                    </div>
+@elseif($activeTab === 'reviews')
+    <div class="space-y-6">
+        @forelse($reviews as $review)
+            <div class="border-b pb-4">
+                <p class="font-semibold text-gray-800">
+                    {{ $review->user->name }}
+                    <span class="text-yellow-500">
+                        {{ str_repeat('★', $review->rating) }}
+                        {{ str_repeat('☆', 5 - $review->rating) }}
+                    </span>
+                </p>
+                <p class="text-gray-600">{{ $review->comment }}</p>
+                <p class="text-sm text-gray-400">{{ $review->created_at->diffForHumans() }}</p>
+            </div>
+        @empty
+            <p class="text-gray-500">No reviews yet. Be the first to review this product!</p>
+        @endforelse
+    </div>
+
+    @auth
+        <form wire:submit.prevent="addReview" class="mt-6 space-y-4">
+            <!-- ⭐ Star rating -->
+            <div>
+                <label class="block text-sm mb-1">Rating</label>
+                <div class="flex items-center space-x-1">
+                    @for($i = 1; $i <= 5; $i++)
+                        <button type="button"
+                                wire:click="$set('rating', {{ $i }})"
+                                class="text-2xl focus:outline-none transition"
+                                title="{{ $i }} Star{{ $i > 1 ? 's' : '' }}">
+                            @if($rating >= $i)
+                                <span class="text-yellow-500">★</span>
+                            @else
+                                <span class="text-gray-300">★</span>
+                            @endif
+                        </button>
+                    @endfor
                 </div>
-            @elseif($activeTab === 'shipping')
-                <ul class="list-disc list-inside space-y-2">
-                    <li>Free shipping on orders above ₹999</li>
-                    <li>Delivery time: 3–5 business days</li>
-                    <li>Easy 7-day return policy</li>
-                </ul>
-            @endif
+                @error('rating') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+            </div>
+
+            <!-- 💬 Comment -->
+            <div>
+                <label class="block text-sm mb-1">Comment</label>
+                <textarea wire:model="comment"
+                          class="border rounded w-full px-3 py-2 focus:ring focus:ring-brand-300 focus:border-brand-500"></textarea>
+                @error('comment') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+            </div>
+
+            <!-- Submit button -->
+            <button class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded transition">
+                Submit
+            </button>
+        </form>
+    @else
+        <p class="text-gray-500 mt-4">
+            Please <a href="{{ route('login') }}" class="text-brand-600">login</a> to leave a review.
+        </p>
+    @endauth
+@endif
+
         </div>
     </div>
 
