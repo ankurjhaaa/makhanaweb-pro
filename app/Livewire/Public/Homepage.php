@@ -47,7 +47,6 @@ class Homepage extends Component
 
 
 
-        $product = Product::with('category')->first();
 
 
         $products = Product::all();

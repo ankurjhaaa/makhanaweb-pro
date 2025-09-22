@@ -16,10 +16,11 @@ class Product extends Model
     }
 
     public function reviews()
-{
-    return $this->hasMany(Review::class);
-}
-    
+    {
+        return $this->hasMany(Review::class, 'product_id');
+    }
+
+
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
@@ -57,7 +58,7 @@ class Product extends Model
             return explode('?', $fileDetails->result->url)[0];
         }
 
-        
+
 
         return asset('default-image.jpg'); // fallback
     }

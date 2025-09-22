@@ -163,9 +163,9 @@ class Checkout extends Component
             if ($this->addresses->isEmpty()) {
                 $this->showAddAddress = true;
             }
-            
+
         }
-        
+
 
     }
 
@@ -211,10 +211,23 @@ class Checkout extends Component
         $this->new_phone = null;
     }
 
-    public function saveNewAddress($which)
+    public function saveNewAddress()
     {
-        // Validate
-        $this->validate();
+        $this->validate([
+            'new_line1' => 'required|string|max:255',
+            'new_city' => 'required|string|max:100',
+            'new_state' => 'required|string|max:100',
+            'new_postal_code' => 'required|string|max:20',
+            'new_country' => 'required|string|max:100',
+            'new_phone' => 'required|string|max:15',
+        ], [
+            'new_line1.required' => 'Address Line 1 is required.',
+            'new_city.required' => 'City is required.',
+            'new_state.required' => 'State is required.',
+            'new_postal_code.required' => 'PIN Code is required.',
+            'new_country.required' => 'Country is required.',
+            'new_phone.required' => 'Phone number is required.',
+        ]);
 
         $address = Address::create([
             'user_id' => Auth::id(),
@@ -228,30 +241,14 @@ class Checkout extends Component
             'type' => 'billing',
         ]);
 
-        // reload addresses and select the newly created one appropriately
         $this->loadAddresses();
-
-        if ($which === 'billing') {
-            $this->billing_address_id = $address->id;
-
-        } else {
-            $this->shipping_address_id = $address->id;
-        }
-
-        // close add form
-        $this->showAddAddressFor = null;
+        $this->closeAddAddress();
 
         session()->flash('message', 'Address saved.');
     }
 
-    public function removeAddress($id)
-    {
-        $addr = Address::where('id', $id)->where('user_id', Auth::id())->first();
-        if ($addr) {
-            $addr->delete();
-            $this->loadAddresses();
-        }
-    }
+
+
     private function loadCartData()
     {
         $this->cartItems = CartItem::where('user_id', Auth::id())

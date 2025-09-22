@@ -57,28 +57,31 @@
                 <div
                     class="bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 group">
                     <!-- Product Image -->
-                    <div class="relative overflow-hidden bg-gray-100 aspect-square">
-                        <!-- Product Tag -->
-                        @if($product->tag)
-                            <div class="absolute top-3 left-3 z-10">
-                                <span class="px-2 py-1 text-xs font-medium text-white rounded-full {{ $product->tag_color }}">
-                                    {{ $product->tag }}
-                                </span>
-                            </div>
-                        @endif
+                    <a href="{{ route('item', $product->slug) }}">
+                        <div class="relative overflow-hidden bg-gray-100 aspect-square">
+                            <!-- Product Tag -->
+                            @if($product->tag)
+                                <div class="absolute top-3 left-3 z-10">
+                                    <span
+                                        class="px-2 py-1 text-xs font-medium text-white rounded-full {{ $product->tag_color }}">
+                                        {{ $product->tag }}
+                                    </span>
+                                </div>
+                            @endif
 
-                        <!-- Stock Status -->
-                        @if(!$product->stock)
-                            <div class="absolute top-3 right-3 z-10">
-                                <span class="px-2 py-1 text-xs font-medium text-gray-600 bg-gray-200 rounded-full">
-                                    Out of Stock
-                                </span>
-                            </div>
-                        @endif
+                            <!-- Stock Status -->
+                            @if(!$product->stock)
+                                <div class="absolute top-3 right-3 z-10">
+                                    <span class="px-2 py-1 text-xs font-medium text-gray-600 bg-gray-200 rounded-full">
+                                        Out of Stock
+                                    </span>
+                                </div>
+                            @endif
 
-                        <img src="{{ $product->imagelink }}" alt="{{ $product->name }}"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                    </div>
+                            <img src="{{ $product->imagelink }}" alt="{{ $product->name }}"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        </div>
+                    </a>
 
                     <!-- Product Info -->
                     <div class="p-4">
@@ -101,7 +104,7 @@
                         <div class="flex items-center gap-2 mb-3">
                             <div class="flex items-center">
                                 @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= floor($product->rating ?? 0))
+                                    @if($i <= floor($product->reviews()->avg('rating') ?? 0))
                                         <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
                                             <path
                                                 d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
@@ -114,8 +117,8 @@
                                     @endif
                                 @endfor
                             </div>
-                            <span class="text-sm text-gray-600">{{ $product->rating ?? 0 }}</span>
-                            <span class="text-xs text-gray-400">({{ $product->reviews ?? 0 }} reviews)</span>
+                            <span class="text-xs text-gray-400">({{ $product->reviews()->count('id') ?? 0 }}
+                                reviews)</span>
                         </div>
 
                         <!-- Price -->
@@ -193,56 +196,5 @@
         </div>
     </div>
 
-    <!-- Footer Info -->
-    <div class="bg-white border-t border-gray-100 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- About -->
-                <div>
-                    <h3 class="font-poppins font-semibold text-gray-900 mb-4">Your's Snacks</h3>
-                    <p class="text-gray-600 text-sm">Bringing pure, natural, and nutritious snacks to every home.
-                        Quality products from farms, prepared using traditional methods.</p>
-                </div>
 
-                <!-- Quick Links -->
-                <div>
-                    <h3 class="font-semibold text-gray-900 mb-4">Quick Links</h3>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><a href="#" class="hover:text-brand-600 transition-all">About Us</a></li>
-                        <li><a href="#" class="hover:text-brand-600 transition-all">Shop</a></li>
-                        <li><a href="#" class="hover:text-brand-600 transition-all">Recipes</a></li>
-                        <li><a href="#" class="hover:text-brand-600 transition-all">Contact</a></li>
-                    </ul>
-                </div>
-
-                <!-- Customer Service -->
-                <div>
-                    <h3 class="font-semibold text-gray-900 mb-4">Customer Service</h3>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><a href="#" class="hover:text-brand-600 transition-all">FAQ</a></li>
-                        <li><a href="#" class="hover:text-brand-600 transition-all">Shipping Info</a></li>
-                        <li><a href="#" class="hover:text-brand-600 transition-all">Returns</a></li>
-                        <li><a href="#" class="hover:text-brand-600 transition-all">Track Order</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact -->
-                <div>
-                    <h3 class="font-semibold text-gray-900 mb-4">Stay Connected</h3>
-                    <div class="space-y-2 text-sm text-gray-600">
-                        <p>📞 +91 98765-43210</p>
-                        <p>✉️ contact@yourssnacks.com</p>
-                        <p>📍 Mumbai, Maharashtra, 400</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-100 mt-8 pt-8 text-center">
-                <p class="text-sm text-gray-500">© 2024 Your's Snacks. All rights reserved.
-                    <a href="#" class="hover:text-brand-600">Privacy Policy</a> •
-                    <a href="#" class="hover:text-brand-600">Terms of Service</a>
-                </p>
-            </div>
-        </div>
-    </div>
 </div>

@@ -35,7 +35,7 @@ class Item extends Component
 
     public function loadReviews()
     {
-        $this->reviews = $this->productDetail->reviews()->with('user')->latest()->get();
+        $this->reviews = $this->productDetail->reviews()->with('user')->latest() ->take(10)->get();
     }
 
     public function addReview()

@@ -63,17 +63,16 @@
                                         <input type="radio" wire:model="billing_address_id" value="{{ $addr->id }}"
                                             class="mt-1">
                                         <div>
-                                            <div class="font-medium">{{ $addr->line1 }} @if($addr->line2) — {{ $addr->line2 }}
-                                            @endif</div>
+                                            <div class="font-medium">{{ $addr->address_line1 }} @if($addr->address_line2) —
+                                                {{ $addr->address_line2 }}
+                                            @endif
+                                            </div>
                                             <div class="text-sm text-gray-600">{{ $addr->city }}, {{ $addr->state }} —
                                                 {{ $addr->postal_code }}
                                             </div>
                                             <div class="text-sm text-gray-600">{{ $addr->country }} • {{ $addr->phone }}</div>
                                         </div>
-                                        <!-- <div class="ml-auto space-x-2">
-                                            <button wire:click.prevent="removeAddress({{ $addr->id }})"
-                                                class="text-sm text-red-500">Delete</button>
-                                        </div> -->
+
                                     </label>
                                 @endforeach
                             </div>
@@ -124,7 +123,7 @@
                                     @error('new_phone') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
 
                                     <div class="flex gap-2">
-                                        <button wire:click.prevent="saveNewAddress('billing')"
+                                        <button wire:click.prevent="saveNewAddress"
                                             class="px-4 py-2 bg-brand-600 text-white rounded-lg">Save & select</button>
                                         <button wire:click.prevent="closeAddAddress"
                                             class="px-4 py-2 border rounded-lg">Cancel</button>
@@ -147,7 +146,8 @@
                                         <input type="radio" wire:model="shipping_address_id" value="{{ $addr->id }}"
                                             class="mt-1">
                                         <div>
-                                            <div class="font-medium">{{ $addr->line1 }} @if($addr->line2) — {{ $addr->line2 }}
+                                            <div class="font-medium">{{ $addr->address_line1 }} @if($addr->address_line2) —
+                                                {{ $addr->address_line2 }}
                                             @endif
                                             </div>
                                             <div class="text-sm text-gray-600">{{ $addr->city }}, {{ $addr->state }} —
@@ -156,9 +156,9 @@
                                             <div class="text-sm text-gray-600">{{ $addr->country }} • {{ $addr->phone }}</div>
                                         </div>
                                         <!-- <div class="ml-auto space-x-2">
-                                            <button wire:click.prevent="removeAddress({{ $addr->id }})"
-                                                class="text-sm text-red-500">Delete</button>
-                                        </div> -->
+                                                                                            <button wire:click.prevent="removeAddress({{ $addr->id }})"
+                                                                                                class="text-sm text-red-500">Delete</button>
+                                                                                        </div> -->
                                     </label>
                                 @endforeach
                             </div>

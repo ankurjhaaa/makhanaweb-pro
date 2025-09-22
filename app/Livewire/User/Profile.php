@@ -43,21 +43,15 @@ class Profile extends Component
         $user->save();
 
         session()->flash('success', 'Profile updated successfully!');
-    }
+    } 
 
     public function changePassword()
     {
         $this->validate([
-            'current_password' => 'required',
             'new_password' => 'required|min:6|confirmed',
         ]);
 
         $user = Auth::user();
-
-        if (!Hash::check($this->current_password, $user->password)) {
-            $this->addError('current_password', 'Current password is incorrect.');
-            return;
-        }
 
         $user->password = Hash::make($this->new_password);
         $user->save();

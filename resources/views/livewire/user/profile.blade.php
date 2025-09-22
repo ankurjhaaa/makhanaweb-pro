@@ -57,7 +57,7 @@
                     <button 
                         type="submit"
                         class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-gray-300 text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
-                    >
+                    > 
                         Update Profile
                     </button>
                 </div>
@@ -71,15 +71,7 @@
 
         <form wire:submit.prevent="changePassword" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
-                    <input 
-                        type="password"
-                        wire:model.defer="current_password"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-brand-500 focus:border-brand-500"
-                    >
-                    @error('current_password') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
+                
 
                 <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -107,7 +99,7 @@
                 <div class="flex justify-end">
                     <button 
                         type="submit"
-                        class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
+                        class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-gray-700 text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
                     >
                         Change Password
                     </button>

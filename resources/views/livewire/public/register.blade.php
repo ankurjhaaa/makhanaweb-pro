@@ -25,9 +25,7 @@
                             id="first_name"
                             type="text" 
                             wire:model="first_name"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors @error('first_name') border-red-500 @enderror"
-                            placeholder="Enter your first name"
-                        >
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors @error('first_name') border-red-500 @enderror" placeholder="Enter your first name">
                         @error('first_name')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
