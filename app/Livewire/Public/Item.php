@@ -16,12 +16,12 @@ class Item extends Component
     public $productDetail;
     public $relatedProducts = [];
     public $wishlistIds = [];
-      public $reviews = [];  
-      public $rating;
+    public $reviews = [];
+    public $rating;
 
-      public $comment;
+    public $comment;
 
-    
+
 
     public function mount($slug)
     {
@@ -35,7 +35,7 @@ class Item extends Component
 
     public function loadReviews()
     {
-        $this->reviews = $this->productDetail->reviews()->with('user')->latest() ->take(10)->get();
+        $this->reviews = $this->productDetail->reviews()->with('user')->latest()->take(10)->get();
     }
 
     public function addReview()
@@ -85,7 +85,7 @@ class Item extends Component
         return view('livewire.public.item', [
             'productDetail' => $this->productDetail,
             'relatedProducts' => $this->relatedProducts,
-             'reviews'          => $this->reviews,
+            'reviews' => $this->reviews,
         ]);
     }
 }

@@ -203,7 +203,7 @@
                             </div>
 
                             <div class="flex items-center space-x-3">
-                                <a href="#" class="text-sm font-medium text-brand-600 hover:text-brand-500">
+                                <a href="{{ route('user.orderdetail',$order->order_number) }}" class="text-sm font-medium text-brand-600 hover:text-brand-500">
                                     View Details
                                 </a>
 
@@ -216,7 +216,7 @@
                                         Cancel Order
                                     </button>
                                 @elseif($order->status === 'delivered')
-                                    <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-xs font-medium bg-brand-600 text-white hover:bg-brand-700">
+                                    <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-xs font-medium bg-green-600 text-white hover:bg-brand-700">
                                         <i class="fas fa-star mr-1"></i> 
                                         Write Review
                                     </a>
