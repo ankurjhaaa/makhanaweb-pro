@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\product_pricing;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -476,5 +477,42 @@ class AdminController extends Controller
         return back()->with('success', 'combos delete successfuly');
     }
 
+     public function reviews()
+    {
+        $reviews = Review::with(['user', 'product'])->latest()->paginate(10);
+        return view('admin.reviews.reting', compact('reviews'));
+    }
+
+    // Edit form
+    public function editReview($id)
+    {
+        $review = Review::findOrFail($id);
+        return view('admin.reviews.edit', compact('review'));
+    }
+
+    // Update review
+    public function updateReview(Request $request, $id)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string',
+        ]);
+
+        $review = Review::findOrFail($id);
+        $review->rating = $request->rating;
+        $review->comment = $request->comment;
+        $review->save();
+
+        return redirect()->route('reviews')->with('success', 'Review updated successfully!');
+    }
+
+    // Delete review
+    public function deleteReview($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->delete();
+
+        return redirect()->route('reviews')->with('success', 'Review deleted successfully!');
+    }
 
 }

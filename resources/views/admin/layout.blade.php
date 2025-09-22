@@ -6,20 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') | {{ env('APP_NAME') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-       <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
+
         .sidebar-menu {
             font-family: 'Poppins', sans-serif;
         }
+
         .stat-card {
             transition: transform 0.2s ease;
         }
+
         .stat-card:hover {
             transform: translateY(-5px);
         }
@@ -84,7 +89,8 @@
                 <li>
                     <a href="{{ route('admindashboard') }}" onclick="showLoader()"
                         class="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-3 {{ request()->routeIs('admindashboard') ? 'bg-blue-600 text-white' : '' }} rounded-md transition duration-150 ease-in-out">
-                        <i class="fas fa-chart-line mr-3 {{ request()->routeIs('admindashboard') ? 'text-white' : 'text-gray-400' }}"></i>
+                        <i
+                            class="fas fa-chart-line mr-3 {{ request()->routeIs('admindashboard') ? 'text-white' : 'text-gray-400' }}"></i>
                         Dashboard
                     </a>
                 </li>
@@ -92,7 +98,8 @@
                 <li>
                     <a href="{{ route('adminCategoryPage') }}" onclick="showLoader()"
                         class="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-3 {{ request()->routeIs('adminCategoryPage') ? 'bg-blue-600 text-white' : '' }} rounded-md transition duration-150 ease-in-out">
-                        <i class="fas fa-folder mr-3 {{ request()->routeIs('adminCategoryPage') ? 'text-white' : 'text-gray-400' }}"></i>
+                        <i
+                            class="fas fa-folder mr-3 {{ request()->routeIs('adminCategoryPage') ? 'text-white' : 'text-gray-400' }}"></i>
                         Categories
                     </a>
                 </li>
@@ -100,42 +107,57 @@
                 <li>
                     <a href="{{ route('searchProducts') }}" onclick="showLoader()"
                         class="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-3 {{ request()->routeIs('searchProducts') ? 'bg-blue-600 text-white' : '' }} rounded-md transition duration-150 ease-in-out">
-                        <i class="fas fa-box mr-3 {{ request()->routeIs('searchProducts') ? 'text-white' : 'text-gray-400' }}"></i>
+                        <i
+                            class="fas fa-box mr-3 {{ request()->routeIs('searchProducts') ? 'text-white' : 'text-gray-400' }}"></i>
                         Products
                     </a>
                 </li>
-                
+
                 <p class="text-xs uppercase text-gray-500 font-semibold py-4 pl-4 mt-2">Sales</p>
-                
+
                 <li>
                     <a href="{{ route('allOrders') }}" onclick="showLoader()"
                         class="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-3 {{ request()->routeIs('allOrders') ? 'bg-blue-600 text-white' : '' }} rounded-md transition duration-150 ease-in-out">
-                        <i class="fas fa-shopping-cart mr-3 {{ request()->routeIs('allOrders') ? 'text-white' : 'text-gray-400' }}"></i>
+                        <i
+                            class="fas fa-shopping-cart mr-3 {{ request()->routeIs('allOrders') ? 'text-white' : 'text-gray-400' }}"></i>
                         Orders
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('allCouponsPage') }}" onclick="showLoader()"
                         class="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-3 {{ request()->routeIs('allCouponsPage') ? 'bg-blue-600 text-white' : '' }} rounded-md transition duration-150 ease-in-out">
-                        <i class="fas fa-ticket-alt mr-3 {{ request()->routeIs('allCouponsPage') ? 'text-white' : 'text-gray-400' }}"></i>
+                        <i
+                            class="fas fa-ticket-alt mr-3 {{ request()->routeIs('allCouponsPage') ? 'text-white' : 'text-gray-400' }}"></i>
                         Coupons
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('productComboPage') }}" onclick="showLoader()"
                         class="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-3 {{ request()->routeIs('productComboPage') ? 'bg-blue-600 text-white' : '' }} rounded-md transition duration-150 ease-in-out">
-                        <i class="fas fa-gift mr-3 {{ request()->routeIs('productComboPage') ? 'text-white' : 'text-gray-400' }}"></i>
+                        <i
+                            class="fas fa-gift mr-3 {{ request()->routeIs('productComboPage') ? 'text-white' : 'text-gray-400' }}"></i>
                         Combo Packs
                     </a>
                 </li>
-                
+
                 <p class="text-xs uppercase text-gray-500 font-semibold py-4 pl-4 mt-2">Users</p>
-                
+
                 <li>
                     <a href="{{ route('allUsers') }}" onclick="showLoader()"
                         class="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-3 {{ request()->routeIs('allUsers') ? 'bg-blue-600 text-white' : '' }} rounded-md transition duration-150 ease-in-out">
-                        <i class="fas fa-users mr-3 {{ request()->routeIs('allUsers') ? 'text-white' : 'text-gray-400' }}"></i>
+                        <i
+                            class="fas fa-users mr-3 {{ request()->routeIs('allUsers') ? 'text-white' : 'text-gray-400' }}"></i>
                         All Users
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('reviews') }}" onclick="showLoader()"
+                        class="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-3 
+    {{ request()->routeIs('admin.reviews') ? 'bg-blue-600 text-white' : '' }} rounded-md transition duration-150 ease-in-out">
+
+                        <i
+                            class="fas fa-star mr-3 {{ request()->routeIs('admin.reviews') ? 'text-white' : 'text-gray-400' }}"></i>
+                        Reviews
                     </a>
                 </li>
                 <li>
@@ -158,9 +180,11 @@
 
                 <div class="flex items-center">
                     <!-- Mobile menu button-->
-                    <button onclick="toggleSidebar()" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
+                    <button onclick="toggleSidebar()"
+                        class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
 
@@ -178,10 +202,14 @@
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                                    <path fill-rule="evenodd"
+                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                        clip-rule="evenodd"></path>
                                 </svg>
                             </div>
-                            <input id="search" class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md leading-5 bg-gray-100 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Search..." type="search">
+                            <input id="search"
+                                class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md leading-5 bg-gray-100 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                placeholder="Search..." type="search">
                         </div>
                     </div>
                 </div>
@@ -191,7 +219,9 @@
                     <button class="p-1 rounded-full text-gray-600 hover:text-blue-600 focus:outline-none">
                         <span class="sr-only">View notifications</span>
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                            </path>
                         </svg>
                     </button>
 
@@ -200,7 +230,9 @@
                         <div>
                             <button class="flex items-center text-sm rounded-full focus:outline-none">
                                 <span class="sr-only">Open user menu</span>
-                                <div class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">A</div>
+                                <div
+                                    class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-medium">
+                                    A</div>
                             </button>
                         </div>
                     </div>
@@ -214,10 +246,10 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
-            
+
             sidebar.classList.toggle('-translate-x-full');
             overlay.classList.toggle('hidden');
-            
+
             // Prevent body scrolling when sidebar is open on mobile
             if (!sidebar.classList.contains('-translate-x-full')) {
                 document.body.style.overflow = 'hidden';
@@ -225,12 +257,12 @@
                 document.body.style.overflow = 'auto';
             }
         }
-        
+
         // Handle responsive behavior
         function handleResponsiveLayout() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
-            
+
             if (window.innerWidth >= 768) { // md breakpoint
                 sidebar.classList.remove('-translate-x-full');
                 overlay.classList.add('hidden');
@@ -242,27 +274,27 @@
                 }
             }
         }
-        
+
         // Close sidebar on window resize
         window.addEventListener('resize', handleResponsiveLayout);
-        
+
         // Initialize responsive layout on load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             handleResponsiveLayout();
-            
+
             // Detect swipe gestures for mobile sidebar
             let touchStartX = 0;
             let touchEndX = 0;
-            
+
             document.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
             }, false);
-            
+
             document.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
                 handleSwipe();
             }, false);
-            
+
             function handleSwipe() {
                 const sidebar = document.getElementById('sidebar');
                 // Swipe right to open sidebar (from left edge)
@@ -271,7 +303,7 @@
                         toggleSidebar();
                     }
                 }
-                
+
                 // Swipe left to close sidebar
                 if (touchStartX - touchEndX > 100) {
                     if (!sidebar.classList.contains('-translate-x-full')) {
@@ -295,10 +327,13 @@
                     clip-rule="evenodd"></path>
             </svg>
             <span class="text-sm font-medium">{{ session('success') }}</span>
-            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-green-100 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 items-center justify-center" onclick="document.getElementById('toast-success').style.display='none';">
+            <button type="button"
+                class="ml-auto -mx-1.5 -my-1.5 bg-green-100 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 items-center justify-center"
+                onclick="document.getElementById('toast-success').style.display='none';">
                 <span class="sr-only">Close</span>
                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                 </svg>
             </button>
         </div>
@@ -314,10 +349,13 @@
                 </path>
             </svg>
             <span class="text-sm font-medium">{{ session('error') }}</span>
-            <button type="button" class="ml-auto -mx-1.5 -my-1.5 bg-red-100 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 items-center justify-center" onclick="document.getElementById('toast-error').style.display='none';">
+            <button type="button"
+                class="ml-auto -mx-1.5 -my-1.5 bg-red-100 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 items-center justify-center"
+                onclick="document.getElementById('toast-error').style.display='none';">
                 <span class="sr-only">Close</span>
                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                 </svg>
             </button>
         </div>

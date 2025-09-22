@@ -99,7 +99,10 @@ Route::middleware(['auth', 'role:admin'])->controller(AdminController::class)->g
     Route::get('/admin/orders/{id}/delivery-slip', [AdminController::class, 'deliverySlip'])->name('orders.deliverySlip');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admindashboard');
 
-
+    Route::get('reviews', [AdminController::class, 'reviews'])->name('reviews');
+    Route::get('reviews/{id}/edit', [AdminController::class, 'editReview'])->name('reviews.edit');
+    Route::put('reviews/{id}', [AdminController::class, 'updateReview'])->name('reviews.update');
+    Route::delete('reviews/{id}', [AdminController::class, 'deleteReview'])->name('reviews.delete');
 });
 
 Route::middleware('auth')->group(function () {
