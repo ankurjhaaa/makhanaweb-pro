@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\Wishlist;
@@ -17,25 +18,45 @@ class Item extends Component
     public $relatedProducts = [];
     public $wishlistIds = [];
     public $reviews = [];
+
     public $rating;
-
     public $comment;
-
-
+    public $canReview = false;
+    public $showReviewModal = false;
 
     public function mount($slug)
     {
         $this->loadWishlist();
-        $this->productDetail = Product::where('slug', $slug)->with('category')->firstOrFail();
 
-        $this->relatedProducts = Product::where('category_id', $this->productDetail->category_id)->where('id', '!=', $this->productDetail->id)->take(4)->get();
+        $this->productDetail = Product::where('slug', $slug)
+            ->with('category')
+            ->firstOrFail();
+
+        $this->relatedProducts = Product::where('category_id', $this->productDetail->category_id)
+            ->where('id', '!=', $this->productDetail->id)
+            ->take(4)
+            ->get();
 
         $this->loadReviews();
+
+        if (Auth::check()) {
+            $this->canReview = Order::where('user_id', Auth::id())
+                ->where('status', 'delivered')
+                ->whereHas('orderItems', function ($q) {
+                    $q->where('product_id', $this->productDetail->id);
+                })
+                ->exists();
+        }
     }
 
     public function loadReviews()
     {
-        $this->reviews = $this->productDetail->reviews()->with('user')->latest()->take(10)->get();
+        $this->reviews = $this->productDetail
+            ->reviews()
+            ->with('user')
+            ->latest()
+            ->take(10)
+            ->get();
     }
 
     public function addReview()
@@ -45,15 +66,29 @@ class Item extends Component
             'comment' => 'required|string|max:500',
         ]);
 
+        $hasDeliveredOrder = Order::where('user_id', Auth::id())
+            ->where('status', 'delivered')
+            ->whereHas('orderItems', function ($q) {
+                $q->where('product_id', $this->productDetail->id);
+            })
+            ->exists();
+
+        if (! $hasDeliveredOrder) {
+            session()->flash('error', 'You can only review after delivery.');
+            return;
+        }
+
         Review::create([
             'product_id' => $this->productDetail->id,
-            'user_id' => Auth::id(),
-            'rating' => $this->rating,
-            'comment' => $this->comment,
+            'user_id'    => Auth::id(),
+            'rating'     => $this->rating,
+            'comment'    => $this->comment,
         ]);
 
-        $this->reset(['rating', 'comment']);
+        $this->reset(['rating', 'comment', 'showReviewModal']);
         $this->loadReviews();
+
+        session()->flash('success', 'Review submitted successfully!');
     }
 
     public function loadWishlist()
@@ -63,29 +98,30 @@ class Item extends Component
 
     public function toggleWishlist($productId)
     {
-        $wishlist = Wishlist::where('user_id', Auth::id())->where('product_id', $productId)->first();
+        $wishlist = Wishlist::where('user_id', Auth::id())
+            ->where('product_id', $productId)
+            ->first();
 
         if ($wishlist) {
-            // Remove from wishlist
             $wishlist->delete();
         } else {
-            // Add to wishlist
             Wishlist::create([
-                'user_id' => Auth::id(),
-                'product_id' => $productId,
+                'user_id'   => Auth::id(),
+                'product_id'=> $productId,
             ]);
         }
 
-        $this->loadWishlist(); // Refresh ids for UI update
+        $this->loadWishlist();
     }
-
 
     public function render()
     {
         return view('livewire.public.item', [
-            'productDetail' => $this->productDetail,
-            'relatedProducts' => $this->relatedProducts,
-            'reviews' => $this->reviews,
+            'productDetail'    => $this->productDetail,
+            'relatedProducts'  => $this->relatedProducts,
+            'reviews'          => $this->reviews,
+            'canReview'        => $this->canReview,
+            'showReviewModal'  => $this->showReviewModal,
         ]);
     }
 }

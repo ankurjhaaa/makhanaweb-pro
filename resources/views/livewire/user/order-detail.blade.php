@@ -66,14 +66,48 @@
                     </p>
                 </div>
 
-                <div class="text-right">
-                    <p class="text-sm font-medium text-gray-900">₹2,000.00</p>
-
-                    <!-- Review Button -->
-                    <button class="mt-2 text-xs text-brand-600 hover:text-brand-500 flex items-center">
-                        <i class="fas fa-star mr-1"></i> Write Review
+                @if(auth()->check() && $hasDeliveredOrder)
+                    <button wire:click="$set('showReviewModal', true)"
+                        class="mt-2 text-xs text-brand-600 hover:text-brand-500 flex items-center">
+                        @foreach($order->orderItems as $item)
+                            <button wire:click="openReviewModal({{ $item->id }})">Add Review</button>
+                        @endforeach
                     </button>
-                </div>
+                @endif
+
+                <!-- Review Modal -->
+                @if($showReviewModal)
+                    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+                            <h2 class="text-lg font-semibold mb-4">Write a Review</h2>
+
+                            <!-- Rating -->
+                            <label class="block mb-2 text-sm font-medium">Rating</label>
+                            <select wire:model="rating" class="w-full border rounded p-2 mb-4">
+                                <option value="">Select rating</option>
+                                <option value="1">⭐</option>
+                                <option value="2">⭐⭐</option>
+                                <option value="3">⭐⭐⭐</option>
+                                <option value="4">⭐⭐⭐⭐</option>
+                                <option value="5">⭐⭐⭐⭐⭐</option>
+                            </select>
+
+                            <!-- Comment -->
+                            <label class="block mb-2 text-sm font-medium">Comment</label>
+                            <textarea wire:model="comment" class="w-full border rounded p-2 mb-4"></textarea>
+
+                            <div class="flex justify-end space-x-2">
+                                <button wire:click="$set('showReviewModal', false)" class="px-3 py-1 bg-gray-300 rounded">
+                                    Cancel
+                                </button>
+                                @foreach($order->orderItems ?? [] as $item)
+                                    <button wire:click="addReview">Submit Review</button>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
 
             <div class="p-6 flex items-center border-b border-gray-100">
@@ -114,8 +148,10 @@
     </div>
 
     <!-- Review Modal (Static Dummy) -->
-    <div class="bg-white border rounded-lg shadow-lg p-6 max-w-md mx-auto">
-        <h3 class="text-lg font-semibold mb-4">Write a Review</h3>
+    {{-- <div class="bg-white border rounded-lg shadow-lg p-6 max-w-md mx-auto">
+        @foreach($order->orderItems as $item)
+        <button wire:click="openReviewModal({{ $item->id }})">Add Review</button>
+        @endforeach
         <div class="space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">Rating</label>
@@ -134,8 +170,10 @@
             </div>
         </div>
         <div class="mt-4 flex justify-end">
-            <button class="px-4 py-2 bg-brand-600 text-white rounded-md hover:bg-brand-700">Submit</button>
+            @foreach($order->orderItems ?? [] as $item)
+            <button wire:click="addReview">Submit Review</button>
+            @endforeach
             <button class="ml-2 px-4 py-2 border rounded-md">Cancel</button>
         </div>
-    </div>
+    </div> --}}
 </div>
