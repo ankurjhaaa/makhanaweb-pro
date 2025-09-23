@@ -10,20 +10,16 @@ use Livewire\Component;
 class Special extends Component
 {
     public $name = "";
-    public $specialcat = "";
-    public $specialcatid = "";
-    public $snacksproducts = [];
-    public $spiceproducts = [];
-    public $makhanaproducts = [];
+    public $id = "";
+    
     public $products = [];
-    public function mount($name){
+    public function mount($name, $id)
+    {
         $this->name = $name;
-        $snacksproducts = Product::where('category_id',1)->get();
-        $spiceproducts = Product::where('category_id',1)->get();
-        $makhanaproducts = Product::where('category_id',1)->get();
-        $this->snacksproducts = $snacksproducts;
-        $this->spiceproducts = $spiceproducts;
-        $this->makhanaproducts = $makhanaproducts;
+        $this->id = $id;
+        $products = Product::where('category_id', $id)->get();
+        $this->products = $products;
+
     }
     public function render()
     {

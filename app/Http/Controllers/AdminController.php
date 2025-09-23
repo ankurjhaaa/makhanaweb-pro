@@ -127,15 +127,46 @@ class AdminController extends Controller
             'name' => 'required',
             'description' => 'required',
         ]);
+        $imageKit = new ImageKit(
+            config('services.imagekit.public_key'),
+            config('services.imagekit.private_key'),
+            config('services.imagekit.url_endpoint')
+        );
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileContent = file_get_contents($file->getRealPath());
+
+            $uploadFile = $imageKit->upload([
+                'file' => base64_encode($fileContent),
+                'fileName' => time() . '_' . $file->getClientOriginalName(),
+            ]);
+
+            if (isset($uploadFile->result) && isset($uploadFile->result->url)) {
+                $imageFileId = $uploadFile->result->fileId;
+                $imagelink = $uploadFile->result->url;
+            }
+        }
         $addCategory = Category::create([
             'name' => $request->name,
             'description' => $request->description,
             'parent_id' => $request->parent_id,
             'slug' => null,
+            'imageid' => $imageFileId,
+            'imagelink' => $imagelink,
         ]);
 
         return back()->with('seccess', 'category added successfully');
     }
+    public function toggleShow($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->is_show = !$category->is_show; // ulta-pulta kar do
+        $category->save();
+
+        return back()->with('success', 'Category display status updated!');
+    }
+
 
     public function allProducts()
     {
@@ -477,7 +508,7 @@ class AdminController extends Controller
         return back()->with('success', 'combos delete successfuly');
     }
 
-     public function reviews()
+    public function reviews()
     {
         $reviews = Review::with(['user', 'product'])->latest()->paginate(10);
         return view('admin.reviews.reting', compact('reviews'));

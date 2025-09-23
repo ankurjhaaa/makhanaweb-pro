@@ -31,7 +31,7 @@ Route::get('/contact', Contactus::class)->name("contact");
 Route::get('/cart', Cart::class)->name("cart");
 Route::get('/item/{slug}', Item::class)->name("item");
 Route::get('/category/{slug}', Category::class)->name('category');
-Route::get('/special/{name}', Special::class)->name("special");
+Route::get('/special/{id}/{name}', Special::class)->name("special");
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', Checkout::class)->name('checkout');
 });
@@ -51,6 +51,7 @@ Route::post('/logout', [SocialAuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:admin'])->controller(AdminController::class)->group(function () {
 
     Route::get('admin/category', 'adminCategoryPage')->name('adminCategoryPage');
+    Route::patch('/admin/categories/{id}/toggle-show', 'toggleShow')->name('toggleAdminCategoryShow');
 
     Route::post('admin/addCategory', 'adminCategory')->name('addAdminCategory');
     Route::delete('admin/deleteCategory/{id}', 'deleteCategory')->name('deleteAdminCategory');

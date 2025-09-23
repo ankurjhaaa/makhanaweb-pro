@@ -14,10 +14,13 @@ use App\Models\Wishlist;
 class Homepage extends Component
 {
     public $wishlistIds = [];
+    public $showCat=[];
 
     public function mount()
     {
         $this->loadWishlist();
+        $this->showCat = Category::where('is_show',true)->get();
+        
     }
 
     public function loadWishlist()

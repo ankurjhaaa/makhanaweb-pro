@@ -140,7 +140,7 @@
         <section class="py-20 px-6 bg-gray-50">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Our Makhana</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
-                @foreach ($makhanaproducts as $product)
+                @foreach ($products as $product)
                     <div
                         class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all relative border border-gray-200">
 
@@ -279,15 +279,13 @@
             </div>
         </section>
 
-        <!-- Snacks Showcase -->
         <section class="py-20 px-6 bg-gray-50">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Our Special Snacks</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
-                @foreach ($snacksproducts as $product)
+                @foreach ($products as $product)
                     <div
                         class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all relative border border-gray-200">
 
-                        <!-- Offer Badge -->
                         @if ($product->mrp && $product->mrp > $product->price)
                             @php
                                 $discount = round((($product->mrp - $product->price) / $product->mrp) * 100);
@@ -409,7 +407,6 @@
             </div>
         </section>
 
-        <!-- Benefits -->
         <section class="py-20 px-6 max-w-6xl mx-auto">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Why Choose Our Spices?</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -428,15 +425,13 @@
             </div>
         </section>
 
-        <!-- Spice Categories -->
         <section class="py-20 px-6 bg-gray-50">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Our Spice Collection</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
-                @foreach ($spiceproducts as $product)
+                @foreach ($products as $product)
                     <div
                         class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all relative border border-gray-200">
 
-                        <!-- Offer Badge -->
                         @if ($product->mrp && $product->mrp > $product->price)
                             @php
                                 $discount = round((($product->mrp - $product->price) / $product->mrp) * 100);
@@ -448,7 +443,6 @@
 
 
 
-                        <!-- Product Image -->
                         <a wire:navigate href="{{ route('item', $product->slug) }}">
                             <div class="flex items-center justify-center bg-white p-6">
                                 <img src="{{ $product->imagelink }}?tr=w-400,h-400,f-auto,q-80" alt="{{ $product->name }}"
@@ -456,9 +450,7 @@
                             </div>
                         </a>
 
-                        <!-- Product Info -->
                         <div class="px-4 pb-4">
-                            <!-- Rating -->
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
                                     {{ number_format($product->reviews()->avg('rating') ?? 0, 1) }} ★
@@ -468,7 +460,6 @@
                                 </span>
                             </div>
 
-                            <!-- Product Name -->
                             <h3 class="text-base font-semibold text-gray-900 truncate">
                                 {{ $product->name }}
                             </h3>
@@ -476,7 +467,6 @@
                                 {{ $product->category->name ?? 'Food Item' }}
                             </p>
 
-                            <!-- Price Section (same as before) -->
                             <div class="flex flex-col gap-1 text-sm">
                                 <div class="flex items-center gap-2">
                                     <span class="text-lg font-bold text-gray-900">₹{{ $product->price }}</span>
@@ -498,7 +488,6 @@
             </div>
         </section>
 
-        <!-- Recipe Inspiration -->
         <section class="py-20 px-6 max-w-6xl mx-auto">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Cook With Spices</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -518,7 +507,6 @@
 
         </section>
 
-        <!-- FAQ -->
         <section class="py-20 px-6 max-w-4xl mx-auto">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Frequently Asked Questions</h2>
             <div class="space-y-6">
@@ -537,7 +525,6 @@
             </div>
         </section>
 
-        <!-- CTA -->
         <section class="py-20  text-gray-700 text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-6">Bring Home the Magic of Indian Spices</h2>
             <p class="max-w-2xl mx-auto mb-8">From turmeric to saffron – unlock the flavors of India in your kitchen.</p>

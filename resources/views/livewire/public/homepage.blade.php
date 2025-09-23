@@ -56,28 +56,16 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl w-full">
 
             <!-- Category Card -->
-            <a href="{{ route('special', 'healthy-snacks') }}">
-                <div class="flex flex-col items-center rounded-xl border-2  p-6 hover:shadow-md transition">
-                    <img src="/images/product4.png" alt="Whole Spices"
-                        class="w-32 h-32 object-contain rounded-full bg-white p-3 mb-4">
-                    <h2 class="text-lg font-semibold text-gray-600">Home Snack`s</h2>
-                </div>
-            </a>
-            <a wire:navigate href="{{ route('special', 'makhana') }}">
-                <div class="flex flex-col items-center rounded-xl border-2 p-6 hover:shadow-md transition">
-                    <img src="/images/product5.png" alt="Seasonings"
-                        class="w-32 h-32 object-contain rounded-full bg-white p-3 mb-4">
-                    <h2 class="text-lg font-semibold text-gray-600">Makhana</h2>
-                </div>
-            </a>
+            @foreach ($showCat as $cat)
+                <a href="{{ route('special', [$cat->id, $cat->slug]) }}">
+                    <div class="flex flex-col items-center rounded-xl border-2  p-6 hover:shadow-md transition">
+                        <img src="{{ $cat->imagelink }}" alt="Whole Spices"
+                            class="w-32 h-32 object-contain rounded-full bg-white p-3 mb-4">
+                        <h2 class="text-lg font-semibold text-gray-600">{{ $cat->name }}</h2>
+                    </div>
+                </a>
+            @endforeach
 
-            <a wire:navigate href="{{ route('special', 'spices') }}">
-                <div class="flex flex-col items-center rounded-xl border-2 p-6 hover:shadow-md transition">
-                    <img src="/images/product6.png" alt="Powdered Spices"
-                        class="w-32 h-32 object-contain rounded-full bg-white p-3 mb-4">
-                    <h2 class="text-lg font-semibold text-gray-600">Indian Spices</h2>
-                </div>
-            </a>
         </div>
     </section>
     <!-- Featured Products -->
