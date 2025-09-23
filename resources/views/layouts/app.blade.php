@@ -193,7 +193,7 @@
         <script src="{{ asset('js/cart.js') }}"></script>
     @endif
     <!-- Footer -->
-    <footer class="bg-gray-50 border-t border-gray-100 py-12">
+    <footer class="bg-gray-50 border-t border-gray-100 py-12 mt-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div>

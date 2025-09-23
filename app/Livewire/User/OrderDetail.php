@@ -20,49 +20,50 @@ class OrderDetail extends Component
     public $currentItemId;
 
 
-public function mount($order_number)
-{
-    $this->order = Order::with('orderItems.product') // eager load
-        ->where('order_number', $order_number)
-        ->where('user_id', auth()->id())
-        ->firstOrFail();
+    public function mount($order_number)
+    {
+        $this->order = Order::with('orderItems.product')
+            ->with(['shippingAddress', 'billingAddress']) // eager load
+            ->where('order_number', $order_number)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
 
-    $this->hasDeliveredOrder = $this->order->status === 'delivered';
-}
-public function openReviewModal($orderItemId)
-{
-    $this->currentItemId = $orderItemId;
-    $this->showReviewModal = true;
-}
+        $this->hasDeliveredOrder = $this->order->status === 'delivered';
+    }
+    public function openReviewModal($orderItemId)
+    {
+        $this->currentItemId = $orderItemId;
+        $this->showReviewModal = true;
+    }
 
-public function addReview()
-{
-    $this->validate([
-        'rating' => 'required|integer|min:1|max:5',
-        'comment' => 'required|string|max:500',
-    ]);
+    public function addReview()
+    {
+        $this->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:500',
+        ]);
 
-    $orderItem = OrderItem::findOrFail($this->currentItemId);
+        $orderItem = OrderItem::findOrFail($this->currentItemId);
 
-    Review::create([
-        'product_id' => $orderItem->product_id,
-        'user_id' => auth()->id(),
-        'rating' => $this->rating,
-        'comment' => $this->comment,
-    ]);
+        Review::create([
+            'product_id' => $orderItem->product_id,
+            'user_id' => auth()->id(),
+            'rating' => $this->rating,
+            'comment' => $this->comment,
+        ]);
 
-    $this->closeReviewModal();
-    session()->flash('success', 'Your review has been submitted successfully!');
-}
+        $this->closeReviewModal();
+        session()->flash('success', 'Your review has been submitted successfully!');
+    }
 
-public function closeReviewModal()
-{
-    $this->showReviewModal = false;
-    $this->reset(['rating', 'comment', 'currentItemId']);
-}
+    public function closeReviewModal()
+    {
+        $this->showReviewModal = false;
+        $this->reset(['rating', 'comment', 'currentItemId']);
+    }
 
 
- public function render()
+    public function render()
     {
         return view('livewire.user.order-detail', [
             'order' => $this->order,

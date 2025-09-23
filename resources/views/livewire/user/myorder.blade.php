@@ -215,11 +215,7 @@
                                         class="text-sm font-medium text-red-600 hover:text-red-500">
                                         Cancel Order
                                     </button>
-                                @elseif($order->status === 'delivered')
-                                    <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent rounded-md text-xs font-medium bg-green-600 text-white hover:bg-brand-700">
-                                        <i class="fas fa-star mr-1"></i> 
-                                        Write Review
-                                    </a>
+                                
                                 @endif
                             </div>
                         </div>

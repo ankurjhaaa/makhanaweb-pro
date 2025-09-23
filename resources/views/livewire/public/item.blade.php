@@ -1,4 +1,28 @@
-<div class="bg-white min-h-screen px-4 sm:px-8 lg:px-16 py-10">
+<div class="bg-white min-h-screen px-4 sm:px-8 lg:px-16 py-1">
+    <!-- Cart Header -->
+    <header class="bg-white py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <ol class="flex items-center text-sm text-gray-500">
+                @foreach($breadcrumbs as $breadcrumb)
+                    <li>
+                        <a href="{{ $breadcrumb['url'] }}" class="hover:text-brand-600 transition-all">
+                            {{ $breadcrumb['label'] }}
+                        </a>
+                    </li>
+                    @if(!$loop->last)
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mx-2 text-gray-400" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </li>
+                    @endif
+
+
+                @endforeach
+            </ol>
+        </div>
+    </header>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <!-- Product Image -->
         <div class="flex justify-center items-start">
@@ -172,44 +196,7 @@
                     @endforelse
                 </div>
 
-                @auth
-                    <form wire:submit.prevent="addReview" class="mt-6 space-y-4">
-                        <!-- ⭐ Star rating -->
-                        <div>
-                            <label class="block text-sm mb-1">Rating</label>
-                            <div class="flex items-center space-x-1">
-                                @for($i = 1; $i <= 5; $i++)
-                                    <button type="button" wire:click="$set('rating', {{ $i }})"
-                                        class="text-2xl focus:outline-none transition" title="{{ $i }} Star{{ $i > 1 ? 's' : '' }}">
-                                        @if($rating >= $i)
-                                            <span class="text-yellow-500">★</span>
-                                        @else
-                                            <span class="text-gray-300">★</span>
-                                        @endif
-                                    </button>
-                                @endfor
-                            </div>
-                            @error('rating') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-                        </div>
 
-                        <!-- 💬 Comment -->
-                        <div>
-                            <label class="block text-sm mb-1">Comment</label>
-                            <textarea wire:model="comment"
-                                class="border rounded w-full px-3 py-2 focus:ring focus:ring-brand-300 focus:border-brand-500"></textarea>
-                            @error('comment') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
-                        </div>
-
-                        <!-- Submit button -->
-                        <button class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded transition">
-                            Submit
-                        </button>
-                    </form>
-                @else
-                    <p class="text-gray-500 mt-4">
-                        Please <a href="{{ route('login') }}" class="text-brand-600">login</a> to leave a review.
-                    </p>
-                @endauth
             @elseif($activeTab === 'shipping')
                 <div class="space-y-6 text-gray-700 text-sm leading-relaxed">
 

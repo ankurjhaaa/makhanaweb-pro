@@ -22,7 +22,7 @@
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <!-- Search Bar -->
                 <div class="flex-1 w-full max-w-2xl relative">
-                    <input type="text" wire:model.lazy="search" placeholder="Search products..."
+                    <input type="text" wire:model.live="search" placeholder="Search products..."
                         class="w-full pl-12 pr-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center">
                         <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

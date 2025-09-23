@@ -18,15 +18,25 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
+    public function getAllChildrenIds()
+    {
+        $ids = [$this->id];
+
+        foreach ($this->children as $child) {
+            $ids = array_merge($ids, $child->getAllChildrenIds());
+        }
+
+        return $ids;
+    }
 
     public function products()
     {
         return $this->hasMany(Product::class);
     }
     public function category()
-{
-    return $this->belongsTo(Category::class, 'category_id');
-}
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 
     public function setSlugAttribute($value)
     {
@@ -44,7 +54,7 @@ class Category extends Model
         $this->attributes['slug'] = $slug;
     }
 
-    
+
 
 
 }

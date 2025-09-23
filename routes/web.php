@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PaymentController;
 use App\Livewire\Public\Cart;
+use App\Livewire\Public\Category;
 use App\Livewire\Public\Checkout;
 use App\Livewire\Public\Homepage;
 
@@ -29,6 +30,7 @@ Route::get('/recipes', Recipes::class)->name("recipes");
 Route::get('/contact', Contactus::class)->name("contact");
 Route::get('/cart', Cart::class)->name("cart");
 Route::get('/item/{slug}', Item::class)->name("item");
+Route::get('/category/{slug}', Category::class)->name('category');
 Route::get('/special/{name}', Special::class)->name("special");
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', Checkout::class)->name('checkout');

@@ -23,6 +23,7 @@ class Item extends Component
     public $comment;
     public $canReview = false;
     public $showReviewModal = false;
+    public $breadcrumbs = [];
 
     public function mount($slug)
     {
@@ -39,6 +40,9 @@ class Item extends Component
 
         $this->loadReviews();
 
+        // build breadcrumbs
+        $this->buildBreadcrumbs($this->productDetail->category);
+
         if (Auth::check()) {
             $this->canReview = Order::where('user_id', Auth::id())
                 ->where('status', 'delivered')
@@ -48,6 +52,28 @@ class Item extends Component
                 ->exists();
         }
     }
+
+    protected function buildBreadcrumbs($category)
+    {
+        $breadcrumbs = [];
+        while ($category) {
+            $breadcrumbs[] = [
+                'label' => $category->name,
+                'url' => route('category', $category->slug),
+            ];
+            $category = $category->parent;
+        }
+
+        // Reverse order (grandparent → parent → current)
+        $this->breadcrumbs = array_reverse($breadcrumbs);
+
+        // Add Home at start
+        array_unshift($this->breadcrumbs, [
+            'label' => 'Home',
+            'url' => route('home'),
+        ]);
+    }
+
 
     public function loadReviews()
     {
@@ -73,16 +99,16 @@ class Item extends Component
             })
             ->exists();
 
-        if (! $hasDeliveredOrder) {
+        if (!$hasDeliveredOrder) {
             session()->flash('error', 'You can only review after delivery.');
             return;
         }
 
         Review::create([
             'product_id' => $this->productDetail->id,
-            'user_id'    => Auth::id(),
-            'rating'     => $this->rating,
-            'comment'    => $this->comment,
+            'user_id' => Auth::id(),
+            'rating' => $this->rating,
+            'comment' => $this->comment,
         ]);
 
         $this->reset(['rating', 'comment', 'showReviewModal']);
@@ -106,8 +132,8 @@ class Item extends Component
             $wishlist->delete();
         } else {
             Wishlist::create([
-                'user_id'   => Auth::id(),
-                'product_id'=> $productId,
+                'user_id' => Auth::id(),
+                'product_id' => $productId,
             ]);
         }
 
@@ -117,11 +143,11 @@ class Item extends Component
     public function render()
     {
         return view('livewire.public.item', [
-            'productDetail'    => $this->productDetail,
-            'relatedProducts'  => $this->relatedProducts,
-            'reviews'          => $this->reviews,
-            'canReview'        => $this->canReview,
-            'showReviewModal'  => $this->showReviewModal,
+            'productDetail' => $this->productDetail,
+            'relatedProducts' => $this->relatedProducts,
+            'reviews' => $this->reviews,
+            'canReview' => $this->canReview,
+            'showReviewModal' => $this->showReviewModal,
         ]);
     }
 }
