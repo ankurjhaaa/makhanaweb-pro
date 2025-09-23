@@ -13,11 +13,11 @@
             </p>
 
             <div class="mt-8 flex flex-wrap gap-4">
-                <a href="#"
+                <a href="{{ route('shop') }}"
                     class="bg-brand-600 text-white px-6 py-3 rounded-full hover:bg-brand-700 transition-all font-medium">
                     Shop Now
                 </a>
-                <a href="#"
+                <a href="{{ route('contact') }}"
                     class="border-2 border-brand-600 text-brand-600 px-6 py-3 rounded-full hover:bg-brand-50 transition-all font-medium">
                     Learn More
                 </a>
@@ -56,7 +56,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl w-full">
 
             <!-- Category Card -->
-            <a href="{{ route('special', 'homesnacks') }}">
+            <a href="{{ route('special', 'healthy-snacks') }}">
                 <div class="flex flex-col items-center rounded-xl border-2  p-6 hover:shadow-md transition">
                     <img src="/images/product4.png" alt="Whole Spices"
                         class="w-32 h-32 object-contain rounded-full bg-white p-3 mb-4">
@@ -185,11 +185,8 @@
                 @endforeach
             </div>
 
-
-
-
             <div class="mt-10 text-center">
-                <a href=""
+                <a href="{{ route('shop') }}"
                     class="inline-block border-2 border-brand-600 text-brand-600 px-6 py-3 rounded-full hover:bg-brand-50 transition-all font-medium">
                     View All Products
                 </a>
@@ -198,120 +195,10 @@
     </section>
 
 
-    <!-- Why Choose Makhana -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-20">
-        <div class="text-center">
-            <h2 class="font-poppins text-3xl md:text-4xl font-semibold">Why Choose Makhana?</h2>
-            <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Discover the incredible health benefits of this ancient
-                superfood that's perfect for modern wellness</p>
-        </div>
 
-        <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            <div
-                class="bg-white p-6 border border-gray-100 rounded-lg text-center hover:border-brand-200 transition-all">
-                <div class="inline-block p-3 bg-brand-50 rounded-full text-brand-600 text-3xl mb-4">♥</div>
-                <h4 class="font-poppins font-semibold text-xl">Heart Healthy</h4>
-                <p class="text-gray-600 mt-3">Low in cholesterol and sodium, high in magnesium for cardiovascular
-                    health.</p>
-            </div>
-            <div
-                class="bg-white p-6 border border-gray-100 rounded-lg text-center hover:border-brand-200 transition-all">
-                <div class="inline-block p-3 bg-brand-50 rounded-full text-brand-600 text-3xl mb-4">⚡</div>
-                <h4 class="font-poppins font-semibold text-xl">Energy Boost</h4>
-                <p class="text-gray-600 mt-3">Rich in complex carbs that provide sustained energy without sugar spikes.
-                </p>
-            </div>
-            <div
-                class="bg-white p-6 border border-gray-100 rounded-lg text-center hover:border-brand-200 transition-all">
-                <div class="inline-block p-3 bg-brand-50 rounded-full text-brand-600 text-3xl mb-4">🛡️</div>
-                <h4 class="font-poppins font-semibold text-xl">Antioxidant Rich</h4>
-                <p class="text-gray-600 mt-3">Natural antioxidants help fight free radicals and reduce inflammation.</p>
-            </div>
-            <div
-                class="bg-white p-6 border border-gray-100 rounded-lg text-center hover:border-brand-200 transition-all">
-                <div class="inline-block p-3 bg-brand-50 rounded-full text-brand-600 text-3xl mb-4">🍃</div>
-                <h4 class="font-poppins font-semibold text-xl">Weight Management</h4>
-                <p class="text-gray-600 mt-3">High fiber and protein content help you feel full longer naturally.</p>
-            </div>
-        </div>
-    </section>
 
-    <!-- Nutritional Powerhouse -->
-    <section class="bg-brand-50 py-16">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <h3 class="font-poppins text-2xl md:text-3xl font-semibold">Nutritional Powerhouse</h3>
-            <p class="text-gray-600 mt-2">Per 100g of premium makhana</p>
 
-            <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                <div class="bg-white p-6 rounded-lg border-2 border-brand-100">
-                    <div class="text-3xl font-bold text-brand-600 font-poppins">9.7g</div>
-                    <div class="text-gray-600 font-medium mt-1">Protein</div>
-                </div>
-                <div class="bg-white p-6 rounded-lg border-2 border-brand-100">
-                    <div class="text-3xl font-bold text-brand-600 font-poppins">14.5g</div>
-                    <div class="text-gray-600 font-medium mt-1">Fiber</div>
-                </div>
-                <div class="bg-white p-6 rounded-lg border-2 border-brand-100">
-                    <div class="text-3xl font-bold text-brand-600 font-poppins">0.1g</div>
-                    <div class="text-gray-600 font-medium mt-1">Fat</div>
-                </div>
-                <div class="bg-white p-6 rounded-lg border-2 border-brand-100">
-                    <div class="text-3xl font-bold text-brand-600 font-poppins">347</div>
-                    <div class="text-gray-600 font-medium mt-1">Calories</div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Amazing Facts -->
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <h3 class="font-poppins text-2xl md:text-3xl font-semibold text-center">Amazing Makhana Facts</h3>
-        <p class="text-center text-gray-600 mt-2 max-w-2xl mx-auto">Fascinating insights about this remarkable superfood
-        </p>
-
-        <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-700 max-w-5xl mx-auto">
-            <div class="bg-white p-6 border border-gray-100 rounded-lg">
-                <ul class="space-y-3">
-                    <li class="flex items-start">
-                        <span class="text-brand-600 mr-2">•</span>
-                        <span>India produces 90% of the world's makhana supply</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-brand-600 mr-2">•</span>
-                        <span>Consumed for over 3000 years in Asian cultures</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-brand-600 mr-2">•</span>
-                        <span>Considered a superfood in Ayurvedic medicine</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-brand-600 mr-2">•</span>
-                        <span>Also known as 'Fox Nuts' or 'Lotus Seeds'</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="bg-white p-6 border border-gray-100 rounded-lg">
-                <ul class="space-y-3">
-                    <li class="flex items-start">
-                        <span class="text-brand-600 mr-2">•</span>
-                        <span>Bihar state is the largest producer in India</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-brand-600 mr-2">•</span>
-                        <span>Seeds are harvested by hand from lotus flowers</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-brand-600 mr-2">•</span>
-                        <span>Makhana plants can live for over 100 years</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="text-brand-600 mr-2">•</span>
-                        <span>Naturally gluten-free and vegan friendly</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
 
     <!-- Testimonials -->
     <section class="bg-gray-50 py-16">
@@ -376,7 +263,7 @@
             <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Join thousands of satisfied customers who trust Your's
                 Snacks for their daily nutrition needs.</p>
             <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-                <a href="#"
+                <a href="{{ route('shop') }}"
                     class="bg-brand-600 text-white px-8 py-4 rounded-full hover:bg-brand-700 transition-all font-medium">Shop
                     All Products</a>
                 <a href="#"

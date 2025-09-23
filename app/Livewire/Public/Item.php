@@ -40,7 +40,6 @@ class Item extends Component
 
         $this->loadReviews();
 
-        // build breadcrumbs
         $this->buildBreadcrumbs($this->productDetail->category);
 
         if (Auth::check()) {

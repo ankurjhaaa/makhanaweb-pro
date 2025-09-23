@@ -37,6 +37,10 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+    public function slugtocategory()
+    {
+        return $this->belongsTo(Category::class, 'slug');
+    }
 
     public function setSlugAttribute($value)
     {

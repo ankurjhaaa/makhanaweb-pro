@@ -3,94 +3,210 @@
         <!-- Hero -->
         <section class="relative  text-white">
             <div
-                class="absolute inset-0 opacity-70 bg-[url('https://cpimg.tistatic.com/08426164/b/4/Raw-Premium-Makhana.jpg')] bg-cover bg-center">
+                class="absolute inset-0 opacity-90 bg-[url('https://as1.ftcdn.net/jpg/05/00/04/52/1000_F_500045261_FfPbsyx4CRm5aUkaLAqb7updn7b0ngud.webp')] bg-cover bg-center">
             </div>
-            <div class="relative max-w-6xl mx-auto px-6 py-24 text-center">
-                <h1 class="text-5xl md:text-6xl font-extrabold drop-shadow-lg">Premium Makhana</h1>
-                <p class="mt-6 max-w-2xl mx-auto text-lg">
-                    India’s healthiest superfood – crunchy, tasty, and loaded with nutrition.
-                </p>
-                <button
-                    class="mt-8 bg-white text-brand-600 px-8 py-3 rounded-full font-semibold shadow hover:scale-105 transition">
-                    Shop Now
-                </button>
+            <div class="relative  mx-auto px-6 py-24 text-center text-white">
+                <div class="absolute inset-0 bg-black/60"></div>
+                <div class="relative z-10">
+                    <h1 class="text-5xl md:text-6xl font-extrabold drop-shadow-lg">
+                        <span class="text-brand-400">Premium Makhana</span>
+                    </h1>
+                    <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-100">
+                        India’s healthiest superfood – crunchy, tasty, and loaded with nutrition.
+                    </p>
+                    <button
+                        class="mt-8 bg-brand-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-brand-700 hover:scale-105 transition">
+                        Shop Now
+                    </button>
+                </div>
             </div>
         </section>
 
-        <!-- Benefits -->
-        <section class="py-20 px-6 max-w-6xl mx-auto">
-            <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Why Choose Makhana?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition">
-                    <img src="https://picsum.photos/100?random=201" class="w-16 h-16 mx-auto mb-4 rounded-full">
-                    <h3 class="text-xl font-semibold text-center mb-2">Low Calorie Snack</h3>
-                    <p class="text-center">Enjoy without guilt – perfect for weight management.</p>
+        <!-- Why Choose Makhana -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-20">
+            <div class="text-center">
+                <h2 class="font-poppins text-3xl md:text-4xl font-semibold">Why Choose Makhana?</h2>
+                <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Discover the incredible health benefits of this ancient
+                    superfood that's perfect for modern wellness</p>
+            </div>
+
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div
+                    class="bg-white p-6 border border-gray-100 rounded-lg text-center hover:border-brand-200 transition-all">
+                    <div class="inline-block p-3 bg-brand-50 rounded-full text-brand-600 text-3xl mb-4">♥</div>
+                    <h4 class="font-poppins font-semibold text-xl">Heart Healthy</h4>
+                    <p class="text-gray-600 mt-3">Low in cholesterol and sodium, high in magnesium for cardiovascular
+                        health.</p>
                 </div>
-                <div class="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition">
-                    <img src="https://picsum.photos/100?random=202" class="w-16 h-16 mx-auto mb-4 rounded-full">
-                    <h3 class="text-xl font-semibold text-center mb-2">High in Protein</h3>
-                    <p class="text-center">Keeps you energetic and supports muscle health.</p>
+                <div
+                    class="bg-white p-6 border border-gray-100 rounded-lg text-center hover:border-brand-200 transition-all">
+                    <div class="inline-block p-3 bg-brand-50 rounded-full text-brand-600 text-3xl mb-4">⚡</div>
+                    <h4 class="font-poppins font-semibold text-xl">Energy Boost</h4>
+                    <p class="text-gray-600 mt-3">Rich in complex carbs that provide sustained energy without sugar spikes.
+                    </p>
                 </div>
-                <div class="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition">
-                    <img src="https://picsum.photos/100?random=203" class="w-16 h-16 mx-auto mb-4 rounded-full">
-                    <h3 class="text-xl font-semibold text-center mb-2">Good for Heart</h3>
-                    <p class="text-center">Helps control blood pressure and cholesterol.</p>
+                <div
+                    class="bg-white p-6 border border-gray-100 rounded-lg text-center hover:border-brand-200 transition-all">
+                    <div class="inline-block p-3 bg-brand-50 rounded-full text-brand-600 text-3xl mb-4">🛡️</div>
+                    <h4 class="font-poppins font-semibold text-xl">Antioxidant Rich</h4>
+                    <p class="text-gray-600 mt-3">Natural antioxidants help fight free radicals and reduce inflammation.</p>
+                </div>
+                <div
+                    class="bg-white p-6 border border-gray-100 rounded-lg text-center hover:border-brand-200 transition-all">
+                    <div class="inline-block p-3 bg-brand-50 rounded-full text-brand-600 text-3xl mb-4">🍃</div>
+                    <h4 class="font-poppins font-semibold text-xl">Weight Management</h4>
+                    <p class="text-gray-600 mt-3">High fiber and protein content help you feel full longer naturally.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Nutritional Powerhouse -->
+        <section class="bg-brand-50 py-16">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+                <h3 class="font-poppins text-2xl md:text-3xl font-semibold">Nutritional Powerhouse</h3>
+                <p class="text-gray-600 mt-2">Per 100g of premium makhana</p>
+
+                <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <div class="bg-white p-6 rounded-lg border-2 border-brand-100">
+                        <div class="text-3xl font-bold text-brand-600 font-poppins">9.7g</div>
+                        <div class="text-gray-600 font-medium mt-1">Protein</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border-2 border-brand-100">
+                        <div class="text-3xl font-bold text-brand-600 font-poppins">14.5g</div>
+                        <div class="text-gray-600 font-medium mt-1">Fiber</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border-2 border-brand-100">
+                        <div class="text-3xl font-bold text-brand-600 font-poppins">0.1g</div>
+                        <div class="text-gray-600 font-medium mt-1">Fat</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border-2 border-brand-100">
+                        <div class="text-3xl font-bold text-brand-600 font-poppins">347</div>
+                        <div class="text-gray-600 font-medium mt-1">Calories</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Amazing Facts -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+            <h3 class="font-poppins text-2xl md:text-3xl font-semibold text-center">Amazing Makhana Facts</h3>
+            <p class="text-center text-gray-600 mt-2 max-w-2xl mx-auto">Fascinating insights about this remarkable superfood
+            </p>
+
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-700 max-w-5xl mx-auto">
+                <div class="bg-white p-6 border border-gray-100 rounded-lg">
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-brand-600 mr-2">•</span>
+                            <span>India produces 90% of the world's makhana supply</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-brand-600 mr-2">•</span>
+                            <span>Consumed for over 3000 years in Asian cultures</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-brand-600 mr-2">•</span>
+                            <span>Considered a superfood in Ayurvedic medicine</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-brand-600 mr-2">•</span>
+                            <span>Also known as 'Fox Nuts' or 'Lotus Seeds'</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 border border-gray-100 rounded-lg">
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-brand-600 mr-2">•</span>
+                            <span>Bihar state is the largest producer in India</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-brand-600 mr-2">•</span>
+                            <span>Seeds are harvested by hand from lotus flowers</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-brand-600 mr-2">•</span>
+                            <span>Makhana plants can live for over 100 years</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-brand-600 mr-2">•</span>
+                            <span>Naturally gluten-free and vegan friendly</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </section>
 
         <!-- Recipes -->
         <section class="py-20 px-6 bg-gray-50">
-            <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Tasty Recipes with Makhana</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=301" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Roasted Makhana</h3>
-                        <p class="text-sm text-gray-600">Roast with ghee & spices – light, crunchy, and healthy.</p>
+            <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Our Makhana</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
+                @foreach ($makhanaproducts as $product)
+                    <div
+                        class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all relative border border-gray-200">
+
+                        <!-- Offer Badge -->
+                        @if ($product->mrp && $product->mrp > $product->price)
+                            @php
+                                $discount = round((($product->mrp - $product->price) / $product->mrp) * 100);
+                            @endphp
+                            <span class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                {{ $discount }}% OFF
+                            </span>
+                        @endif
+
+
+
+                        <!-- Product Image -->
+                        <a wire:navigate href="{{ route('item', $product->slug) }}">
+                            <div class="flex items-center justify-center bg-white p-6">
+                                <img src="{{ $product->imagelink }}?tr=w-400,h-400,f-auto,q-80" alt="{{ $product->name }}"
+                                    class="max-w-full max-h-64 object-contain">
+                            </div>
+                        </a>
+
+                        <!-- Product Info -->
+                        <div class="px-4 pb-4">
+                            <!-- Rating -->
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+                                    {{ number_format($product->reviews()->avg('rating') ?? 0, 1) }} ★
+                                </span>
+                                <span class="text-gray-500 text-sm">
+                                    {{ $product->reviews()->count('id') ?? 0 }}
+                                </span>
+                            </div>
+
+                            <!-- Product Name -->
+                            <h3 class="text-base font-semibold text-gray-900 truncate">
+                                {{ $product->name }}
+                            </h3>
+                            <p class="text-sm text-gray-600 mb-2">
+                                {{ $product->category->name ?? 'Food Item' }}
+                            </p>
+
+                            <!-- Price Section (same as before) -->
+                            <div class="flex flex-col gap-1 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg font-bold text-gray-900">₹{{ $product->price }}</span>
+                                    @if ($product->mrp)
+                                        <span class="text-red-500 font-medium">
+                                            (Rs. {{ $product->mrp - $product->price }} OFF)
+                                        </span>
+                                    @endif
+                                </div>
+                                @if ($product->mrp)
+                                    <span class="text-xs text-gray-500">MRP: ₹{{ $product->mrp }}</span>
+                                @endif
+                            </div>
+
+
+                        </div>
                     </div>
-                </div>
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=302" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Makhana Kheer</h3>
-                        <p class="text-sm text-gray-600">Delicious Indian dessert made with milk & makhana.</p>
-                    </div>
-                </div>
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=303" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Makhana Curry</h3>
-                        <p class="text-sm text-gray-600">Rich, creamy curry with cashews & spices.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </section>
-
-        <!-- Nutrition -->
-        <section class="py-20 px-6 max-w-5xl mx-auto text-center">
-            <h2 class="text-4xl font-bold text-brand-600 mb-10">Nutritional Value (per 100g)</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="p-6 bg-white rounded-2xl shadow hover:shadow-lg">
-                    <h3 class="font-semibold">Protein</h3>
-                    <p class="text-2xl font-bold text-brand-600">9.7g</p>
-                </div>
-                <div class="p-6 bg-white rounded-2xl shadow hover:shadow-lg">
-                    <h3 class="font-semibold">Calories</h3>
-                    <p class="text-2xl font-bold text-brand-600">347</p>
-                </div>
-                <div class="p-6 bg-white rounded-2xl shadow hover:shadow-lg">
-                    <h3 class="font-semibold">Fiber</h3>
-                    <p class="text-2xl font-bold text-brand-600">14.5g</p>
-                </div>
-                <div class="p-6 bg-white rounded-2xl shadow hover:shadow-lg">
-                    <h3 class="font-semibold">Magnesium</h3>
-                    <p class="text-2xl font-bold text-brand-600">120mg</p>
-                </div>
-            </div>
-        </section>
-
         <!-- FAQ -->
+
         <section class="py-20 px-6 bg-gray-50">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Frequently Asked Questions</h2>
             <div class="max-w-3xl mx-auto space-y-6">
@@ -119,38 +235,44 @@
                 Order Now
             </button>
         </section>
-    @elseif($name === "homesnacks")
+    @elseif($name === "healthy-snacks")
 
         <!-- Hero -->
         <section class="relative  text-white">
             <div
-                class="absolute inset-0 opacity-70 bg-[url('https://www.haribhoomi.com/h-upload/2025/08/30/1280x720_2525346-bhajivada.webp')] bg-cover bg-center">
+                class="absolute inset-0 opacity-90 bg-[url('https://as2.ftcdn.net/jpg/01/73/41/63/1000_F_173416361_2YCaYyXrVk6nhNoIkg21515HUWseyqyr.webp')] bg-cover bg-center">
             </div>
-            <div class="relative max-w-6xl mx-auto px-6 py-24 text-center">
-                <h1 class="text-5xl md:text-6xl font-extrabold drop-shadow-lg">Home Snacks – Ghar ka Swad</h1>
-                <p class="mt-6 max-w-2xl mx-auto text-lg">
-                    Traditional Bihar & UP homemade snacks – made with love, nostalgia, and authentic taste.
-                </p>
-                <button
-                    class="mt-8 bg-white text-brand-600 px-8 py-3 rounded-full font-semibold shadow hover:scale-105 transition">
-                    Explore Snacks
-                </button>
+            <div class="relative  mx-auto px-6 py-24 text-center text-white">
+                <div class="absolute inset-0 bg-black/60"></div>
+                <div class="relative z-10">
+                    <h1 class="text-5xl md:text-6xl font-extrabold drop-shadow-lg">
+                        <span class="text-brand-400">Home Snacks</span>
+                    </h1>
+                    <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-100">
+                        Traditional Bihar & UP homemade snacks – made with love, nostalgia, and authentic taste.
+                    </p>
+                    <button
+                        class="mt-8 bg-brand-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-brand-700 hover:scale-105 transition">
+                        Explore Snacks
+                    </button>
+                </div>
             </div>
+
         </section>
 
         <!-- Why Homemade Snacks -->
         <section class="py-20 px-6 max-w-6xl mx-auto">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Why Choose Our Homemade Snacks?</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition text-center">
+                <div class="p-8 rounded-2xl border-2 hover:shadow-md transition text-center">
                     <h3 class="text-xl font-semibold mb-2">Authentic Taste</h3>
                     <p>Recipes passed down generations, full of nostalgia and flavor.</p>
                 </div>
-                <div class="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition text-center">
+                <div class="p-8 rounded-2xl border-2 hover:shadow-md transition text-center">
                     <h3 class="text-xl font-semibold mb-2">No Preservatives</h3>
                     <p>Made fresh with natural ingredients – just like home.</p>
                 </div>
-                <div class="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition text-center">
+                <div class="p-8 rounded-2xl border-2 hover:shadow-md transition text-center">
                     <h3 class="text-xl font-semibold mb-2">Healthy & Wholesome</h3>
                     <p>Simple, clean ingredients – snacks you can trust for your family.</p>
                 </div>
@@ -160,49 +282,70 @@
         <!-- Snacks Showcase -->
         <section class="py-20 px-6 bg-gray-50">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Our Special Snacks</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=601" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Thekua</h3>
-                        <p class="text-sm text-gray-600">A classic Bihar sweet snack, made with jaggery & wheat flour.</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
+                @foreach ($snacksproducts as $product)
+                    <div
+                        class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all relative border border-gray-200">
+
+                        <!-- Offer Badge -->
+                        @if ($product->mrp && $product->mrp > $product->price)
+                            @php
+                                $discount = round((($product->mrp - $product->price) / $product->mrp) * 100);
+                            @endphp
+                            <span class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                {{ $discount }}% OFF
+                            </span>
+                        @endif
+
+
+
+                        <!-- Product Image -->
+                        <a wire:navigate href="{{ route('item', $product->slug) }}">
+                            <div class="flex items-center justify-center bg-white p-6">
+                                <img src="{{ $product->imagelink }}?tr=w-400,h-400,f-auto,q-80" alt="{{ $product->name }}"
+                                    class="max-w-full max-h-64 object-contain">
+                            </div>
+                        </a>
+
+                        <!-- Product Info -->
+                        <div class="px-4 pb-4">
+                            <!-- Rating -->
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+                                    {{ number_format($product->reviews()->avg('rating') ?? 0, 1) }} ★
+                                </span>
+                                <span class="text-gray-500 text-sm">
+                                    {{ $product->reviews()->count('id') ?? 0 }}
+                                </span>
+                            </div>
+
+                            <!-- Product Name -->
+                            <h3 class="text-base font-semibold text-gray-900 truncate">
+                                {{ $product->name }}
+                            </h3>
+                            <p class="text-sm text-gray-600 mb-2">
+                                {{ $product->category->name ?? 'Food Item' }}
+                            </p>
+
+                            <!-- Price Section (same as before) -->
+                            <div class="flex flex-col gap-1 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg font-bold text-gray-900">₹{{ $product->price }}</span>
+                                    @if ($product->mrp)
+                                        <span class="text-red-500 font-medium">
+                                            (Rs. {{ $product->mrp - $product->price }} OFF)
+                                        </span>
+                                    @endif
+                                </div>
+                                @if ($product->mrp)
+                                    <span class="text-xs text-gray-500">MRP: ₹{{ $product->mrp }}</span>
+                                @endif
+                            </div>
+
+
+                        </div>
                     </div>
-                </div>
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=602" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Khasta</h3>
-                        <p class="text-sm text-gray-600">Crispy & flaky delight, perfect for chai-time munching.</p>
-                    </div>
-                </div>
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=603" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Khajni</h3>
-                        <p class="text-sm text-gray-600">Sweet and crunchy, loved during festivals & family gatherings.</p>
-                    </div>
-                </div>
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=604" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Petha</h3>
-                        <p class="text-sm text-gray-600">Soft & sweet delicacy, a traditional treat from UP.</p>
-                    </div>
-                </div>
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=605" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Bihari Namkeen</h3>
-                        <p class="text-sm text-gray-600">Spicy homemade mixes with authentic Bihar flavors.</p>
-                    </div>
-                </div>
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=606" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">UP Homemade Snacks</h3>
-                        <p class="text-sm text-gray-600">Authentic snacks from Uttar Pradesh kitchens, full of culture.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </section>
 
@@ -210,16 +353,16 @@
         <section class="py-20 px-6 max-w-4xl mx-auto">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Frequently Asked Questions</h2>
             <div class="space-y-6">
-                <div class="p-6 bg-white rounded-2xl shadow">
+                <div class="p-6 rounded-2xl border">
                     <h3 class="font-semibold mb-2">Are these snacks really homemade?</h3>
                     <p class="text-gray-600">Yes! All our snacks are made in traditional style kitchens with natural
                         ingredients.</p>
                 </div>
-                <div class="p-6 bg-white rounded-2xl shadow">
+                <div class="p-6 rounded-2xl border">
                     <h3 class="font-semibold mb-2">Do you use preservatives?</h3>
                     <p class="text-gray-600">No preservatives, no chemicals – just pure, authentic taste.</p>
                 </div>
-                <div class="p-6 bg-white rounded-2xl shadow">
+                <div class="p-6 rounded-2xl border">
                     <h3 class="font-semibold mb-2">Can I gift these snacks?</h3>
                     <p class="text-gray-600">Yes, they make the perfect cultural & festive gift boxes for your loved ones.
                     </p>
@@ -228,31 +371,41 @@
         </section>
 
         <!-- CTA -->
-        <section class="py-20  text-gray-700 text-center">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6">Bring Home the Taste of Bihar & UP</h2>
-            <p class="max-w-2xl mx-auto mb-8">Order authentic homemade snacks today – Thekua, Khasta, Khajni, Petha & more.
+        <section class="py-20  text-gray-800 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                Bring Home the Taste of Bihar &amp; UP
+            </h2>
+            <p class="max-w-2xl mx-auto mb-8 text-gray-600">
+                Order authentic homemade snacks today – Thekua, Khasta, Khajni, Petha &amp; more.
             </p>
-            <button class="bg-white text-brand-600 px-10 py-4 rounded-full font-semibold shadow hover:scale-105 transition">
+            <button
+                class="bg-brand-600 text-white px-10 py-4 rounded-full font-semibold shadow-lg hover:bg-brand-700 hover:scale-105 transition">
                 Order Now
             </button>
         </section>
+
 
     @elseif($name === "spices")
 
         <!-- Hero -->
         <section class="relative text-white">
             <div
-                class="absolute inset-0 opacity-70 bg-[url('https://indianagrofoods.com/wp-content/uploads/2025/04/unveiling-the-flavors-of-india-an-insight-into-spices-manufacturers-and-suppliers.jpg')] bg-cover bg-center">
+                class="absolute inset-0 opacity-90 bg-[url('https://as1.ftcdn.net/v2/jpg/01/99/15/82/1000_F_199158226_8lRzVKGL2XAc34v3IfJpgycp3lcmcjda.jpg')] bg-cover bg-center">
             </div>
-            <div class="relative max-w-6xl mx-auto px-6 py-24 text-center">
-                <h1 class="text-5xl md:text-6xl font-extrabold drop-shadow-lg">Indian Spices – Flavor of India</h1>
-                <p class="mt-6 max-w-2xl mx-auto text-lg">
-                    From the land of spices – authentic flavors, rich aromas, and timeless health benefits.
-                </p>
-                <button
-                    class="mt-8 bg-white text-brand-600 px-8 py-3 rounded-full font-semibold shadow hover:scale-105 transition">
-                    Explore Spices
-                </button>
+            <div class="relative  mx-auto px-6 py-24 text-center text-white">
+                <div class="absolute inset-0 bg-black/60"></div>
+                <div class="relative z-10">
+                    <h1 class="text-5xl md:text-6xl font-extrabold drop-shadow-lg">
+                        <span class="text-brand-400">Indian Spices – Flavor of India</span>
+                    </h1>
+                    <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-100">
+                        From the land of spices – authentic flavors, rich aromas, and timeless health benefits.
+                    </p>
+                    <button
+                        class="mt-8 bg-brand-600 text-white px-8 py-3 rounded-full font-semibold shadow hover:scale-105 transition">
+                        Explore Spices
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -260,15 +413,15 @@
         <section class="py-20 px-6 max-w-6xl mx-auto">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Why Choose Our Spices?</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition text-center">
+                <div class="p-8 rounded-2xl border-2 hover:shadow-md transition text-center">
                     <h3 class="text-xl font-semibold mb-2">Pure & Authentic</h3>
                     <p>No adulteration – only natural, handpicked spices.</p>
                 </div>
-                <div class="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition text-center">
+                <div class="p-8 rounded-2xl border-2 hover:shadow-md transition text-center">
                     <h3 class="text-xl font-semibold mb-2">Rich Aroma</h3>
                     <p>Ground fresh to preserve flavor and fragrance.</p>
                 </div>
-                <div class="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition text-center">
+                <div class="p-8 rounded-2xl border-2 hover:shadow-md transition text-center">
                     <h3 class="text-xl font-semibold mb-2">Health Benefits</h3>
                     <p>Boost immunity, digestion, and overall wellness.</p>
                 </div>
@@ -278,55 +431,70 @@
         <!-- Spice Categories -->
         <section class="py-20 px-6 bg-gray-50">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Our Spice Collection</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
+                @foreach ($spiceproducts as $product)
+                    <div
+                        class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all relative border border-gray-200">
 
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=701" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Whole Spices</h3>
-                        <p class="text-sm">Cardamom, Cloves, Black Pepper, Cinnamon – pure & unbroken.</p>
-                    </div>
-                </div>
+                        <!-- Offer Badge -->
+                        @if ($product->mrp && $product->mrp > $product->price)
+                            @php
+                                $discount = round((($product->mrp - $product->price) / $product->mrp) * 100);
+                            @endphp
+                            <span class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                {{ $discount }}% OFF
+                            </span>
+                        @endif
 
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=702" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Powdered Spices</h3>
-                        <p class="text-sm">Turmeric, Red Chili, Coriander, Cumin – finely ground for everyday cooking.</p>
-                    </div>
-                </div>
 
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=703" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Blended Masalas</h3>
-                        <p class="text-sm">Garam Masala, Chaat Masala, Curry Masala – ready-to-use blends.</p>
-                    </div>
-                </div>
 
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=704" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Seasonings</h3>
-                        <p class="text-sm">Tangy, zesty mixes to enhance taste instantly.</p>
-                    </div>
-                </div>
+                        <!-- Product Image -->
+                        <a wire:navigate href="{{ route('item', $product->slug) }}">
+                            <div class="flex items-center justify-center bg-white p-6">
+                                <img src="{{ $product->imagelink }}?tr=w-400,h-400,f-auto,q-80" alt="{{ $product->name }}"
+                                    class="max-w-full max-h-64 object-contain">
+                            </div>
+                        </a>
 
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=705" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Exotic Spices</h3>
-                        <p class="text-sm">Saffron, Star Anise, Nutmeg – rare & premium selections.</p>
-                    </div>
-                </div>
+                        <!-- Product Info -->
+                        <div class="px-4 pb-4">
+                            <!-- Rating -->
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+                                    {{ number_format($product->reviews()->avg('rating') ?? 0, 1) }} ★
+                                </span>
+                                <span class="text-gray-500 text-sm">
+                                    {{ $product->reviews()->count('id') ?? 0 }}
+                                </span>
+                            </div>
 
-                <div class="rounded-2xl overflow-hidden shadow-lg bg-white hover:scale-105 transition">
-                    <img src="https://picsum.photos/400/250?random=706" class="w-full h-52 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-lg font-semibold mb-2">Regional Specials</h3>
-                        <p class="text-sm">Kashmiri Chili, Malvani Masala, Panch Phoron – spices of India’s regions.</p>
+                            <!-- Product Name -->
+                            <h3 class="text-base font-semibold text-gray-900 truncate">
+                                {{ $product->name }}
+                            </h3>
+                            <p class="text-sm text-gray-600 mb-2">
+                                {{ $product->category->name ?? 'Food Item' }}
+                            </p>
+
+                            <!-- Price Section (same as before) -->
+                            <div class="flex flex-col gap-1 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg font-bold text-gray-900">₹{{ $product->price }}</span>
+                                    @if ($product->mrp)
+                                        <span class="text-red-500 font-medium">
+                                            (Rs. {{ $product->mrp - $product->price }} OFF)
+                                        </span>
+                                    @endif
+                                </div>
+                                @if ($product->mrp)
+                                    <span class="text-xs text-gray-500">MRP: ₹{{ $product->mrp }}</span>
+                                @endif
+                            </div>
+
+
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </section>
 
@@ -337,29 +505,32 @@
                 <div class="p-6 bg-white shadow-lg rounded-2xl">
                     <h3 class="text-xl font-semibold mb-3">Golden Turmeric Latte</h3>
                     <p class="text-sm mb-3">A soothing drink with turmeric, milk & honey – immunity booster.</p>
-                    <img src="https://picsum.photos/500/300?random=707" class="rounded-xl">
+                    <img src="https://as2.ftcdn.net/jpg/13/53/85/37/1000_F_1353853761_eYA0yjCMvhgqCc1OQEpjY8Sn1p2G6p4s.webp"
+                        class="rounded-xl w-full h-64 object-cover">
                 </div>
                 <div class="p-6 bg-white shadow-lg rounded-2xl">
                     <h3 class="text-xl font-semibold mb-3">Classic Garam Masala Curry</h3>
                     <p class="text-sm mb-3">Rich, aromatic Indian curry powered by blended spices.</p>
-                    <img src="https://picsum.photos/500/300?random=708" class="rounded-xl">
+                    <img src="https://as2.ftcdn.net/jpg/16/89/94/25/1000_F_1689942591_HiHNmqCH7vxGdLuHXzgWR5Kzxv5EHpH3.webp"
+                        class="rounded-xl w-full h-64 object-cover">
                 </div>
             </div>
+
         </section>
 
         <!-- FAQ -->
         <section class="py-20 px-6 max-w-4xl mx-auto">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Frequently Asked Questions</h2>
             <div class="space-y-6">
-                <div class="p-6 bg-white rounded-2xl shadow">
+                <div class="p-6 rounded-2xl border">
                     <h3 class="font-semibold mb-2">Are your spices organic?</h3>
                     <p class="text-gray-600">Yes, we source directly from farmers and ensure chemical-free processing.</p>
                 </div>
-                <div class="p-6 bg-white rounded-2xl shadow">
+                <div class="p-6 rounded-2xl border">
                     <h3 class="font-semibold mb-2">How do you ensure freshness?</h3>
                     <p class="text-gray-600">We grind in small batches & pack immediately to lock aroma.</p>
                 </div>
-                <div class="p-6 bg-white rounded-2xl shadow">
+                <div class="p-6 rounded-2xl border">
                     <h3 class="font-semibold mb-2">Do you export globally?</h3>
                     <p class="text-gray-600">Yes, we ship authentic Indian spices worldwide.</p>
                 </div>
@@ -370,7 +541,7 @@
         <section class="py-20  text-gray-700 text-center">
             <h2 class="text-4xl md:text-5xl font-bold mb-6">Bring Home the Magic of Indian Spices</h2>
             <p class="max-w-2xl mx-auto mb-8">From turmeric to saffron – unlock the flavors of India in your kitchen.</p>
-            <button class="bg-white text-brand-600 px-10 py-4 rounded-full font-semibold shadow hover:scale-105 transition">
+            <button class="text-white bg-brand-600 px-10 py-4 rounded-full font-semibold shadow hover:scale-105 transition">
                 Shop Now
             </button>
         </section>
