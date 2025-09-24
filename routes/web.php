@@ -73,7 +73,7 @@ Route::middleware(['auth', 'role:admin'])->controller(AdminController::class)->g
 
     Route::get('admin/coupons', 'allCoupons')->name('allCouponsPage');
     Route::post('admin/addCoupon', 'addCoupons')->name('addCoupons');
-    Route::delete('admin/deleteCoupon/{id}', 'deleteCoupon')->name('deleteCoupon');
+    Route::delete('deleteCoupon/{id}', 'deleteCoupon')->name('deleteCoupon');
     Route::put('admin/updateCoupon/{id}', 'updateCoupon')->name('updateCoupon');
 
     Route::get('admin/allUsers', 'allUsers')->name('allUsers');

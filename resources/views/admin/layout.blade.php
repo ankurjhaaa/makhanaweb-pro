@@ -161,13 +161,17 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('logout') }}" onclick="showLoader()"
+                    <!-- Hidden POST form for logout -->
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                    <a href="#"
+                        onclick="event.preventDefault(); showLoader(); document.getElementById('logout-form').submit();"
                         class="flex items-center text-gray-300 hover:bg-red-600 hover:text-white px-4 py-3 rounded-md transition duration-150 ease-in-out mt-6">
                         <i class="fas fa-sign-out-alt mr-3 text-gray-400"></i>
                         Logout
                     </a>
                 </li>
-
 
             </ul>
         </div>

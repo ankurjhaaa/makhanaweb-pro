@@ -49,7 +49,7 @@
     <section class="bg-white flex flex-col items-center justify-center p-6">
         <!-- Heading -->
         <h1 class="font-poppins text-2xl md:text-3xl font-semibold mb-10">
-            CATEGORIES JO DIL JEET LE!
+            SPECIAL CATEGORIES
         </h1>
 
         <!-- Categories Grid -->
