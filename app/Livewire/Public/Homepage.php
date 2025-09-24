@@ -14,13 +14,13 @@ use App\Models\Wishlist;
 class Homepage extends Component
 {
     public $wishlistIds = [];
-    public $showCat=[];
+    public $showCat = [];
 
     public function mount()
     {
         $this->loadWishlist();
-        $this->showCat = Category::where('is_show',true)->get();
-        
+        $this->showCat = Category::where('is_show', true)->get();
+
     }
 
     public function loadWishlist()
@@ -47,12 +47,12 @@ class Homepage extends Component
     }
     public function render()
     {
+        $products = Product::with('category') 
+            ->withAvg('reviews', 'rating') 
+            ->withCount('reviews')
+            ->get();
 
-
-
-
-
-        $products = Product::all();
         return view('livewire.public.homepage', compact('products'));
     }
+
 }

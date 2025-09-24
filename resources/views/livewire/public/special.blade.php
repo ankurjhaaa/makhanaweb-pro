@@ -136,7 +136,6 @@
             </div>
         </section>
 
-        <!-- Recipes -->
         <section class="py-20 px-6 bg-gray-50">
             <h2 class="text-4xl font-bold text-center text-brand-600 mb-14">Our Makhana</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto">
@@ -167,12 +166,13 @@
                         <!-- Product Info -->
                         <div class="px-4 pb-4">
                             <!-- Rating -->
+                            <!-- Rating -->
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-                                    {{ number_format($product->reviews()->avg('rating') ?? 0, 1) }} ★
+                                    {{ number_format($product->reviews->avg('rating') ?? 0, 1) }} ★
                                 </span>
                                 <span class="text-gray-500 text-sm">
-                                    {{ $product->reviews()->count('id') ?? 0 }}
+                                    {{ $product->reviews->count() ?? 0 }}
                                 </span>
                             </div>
 
@@ -180,6 +180,7 @@
                             <h3 class="text-base font-semibold text-gray-900 truncate">
                                 {{ $product->name }}
                             </h3>
+                            <!-- Category -->
                             <p class="text-sm text-gray-600 mb-2">
                                 {{ $product->category->name ?? 'Food Item' }}
                             </p>
@@ -532,6 +533,10 @@
                 Shop Now
             </button>
         </section>
+    @else
+        <script>
+            window.location.href = "{{ route('category',$name) }}";
+        </script>
 
     @endif
 

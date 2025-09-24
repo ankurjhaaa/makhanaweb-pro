@@ -58,6 +58,7 @@ class Category extends Model
         $this->attributes['slug'] = $slug;
     }
 
+    
 
 
 

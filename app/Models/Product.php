@@ -62,4 +62,7 @@ class Product extends Model
 
         return asset('default-image.jpg'); // fallback
     }
+
+    
+    
 }

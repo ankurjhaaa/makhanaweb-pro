@@ -124,10 +124,10 @@
                             <!-- Rating -->
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-                                    {{ number_format($product->reviews()->avg('rating') ?? 0, 1) }} ★
+                                    {{ number_format($product->reviews_avg_rating ?? 0, 1) }} ★
                                 </span>
                                 <span class="text-gray-500 text-sm">
-                                    ({{ $product->reviews()->count('id') ?? 0 }} reviews )
+                                    ({{ $product->reviews_count ?? 0 }} reviews)
                                 </span>
                             </div>
 
@@ -135,6 +135,7 @@
                             <h3 class="text-base font-semibold text-gray-900 truncate">
                                 {{ $product->name }}
                             </h3>
+                            <!-- Category -->
                             <p class="text-sm text-gray-600 mb-2">
                                 {{ $product->category->name ?? 'Food Item' }}
                             </p>

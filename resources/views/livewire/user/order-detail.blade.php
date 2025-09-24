@@ -95,37 +95,49 @@
                         </button>
                     @endif
 
-                    <!-- Review Modal -->
-                    @if($showReviewModal)
-                        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                            <div class="bg-white rounded-lg shadow-lg w-96 p-6">
-                                <h2 class="text-lg font-semibold mb-4">Write a Review</h2>
+                   <!-- Review Modal -->
+@if($showReviewModal)
+    <div class="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative transform transition-all scale-95 animate-fadeIn">
+            
+            <!-- Close Button -->
+            <button wire:click="$set('showReviewModal', false)" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+                <i class="fas fa-times text-lg"></i>
+            </button>
 
-                                <!-- Rating -->
-                                <label class="block mb-2 text-sm font-medium">Rating</label>
-                                <select wire:model="rating" class="w-full border rounded p-2 mb-4">
-                                    <option value="">Select rating</option>
-                                    <option value="1">⭐</option>
-                                    <option value="2">⭐⭐</option>
-                                    <option value="3">⭐⭐⭐</option>
-                                    <option value="4">⭐⭐⭐⭐</option>
-                                    <option value="5">⭐⭐⭐⭐⭐</option>
-                                </select>
+            <!-- Title -->
+            <h2 class="text-xl font-bold text-gray-800 mb-1">Write a Review</h2>
+            <p class="text-sm text-gray-500 mb-5">Share your feedback about this product</p>
 
-                                <!-- Comment -->
-                                <label class="block mb-2 text-sm font-medium">Comment</label>
-                                <textarea wire:model="comment" class="w-full border rounded p-2 mb-4"></textarea>
+            <!-- Rating -->
+            <div class="mb-5">
+                <label class="block mb-2 text-sm font-medium text-gray-700">Your Rating</label>
+                <div class="flex space-x-2">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <button type="button" wire:click="$set('rating', {{ $i }})" class="text-3xl transition transform hover:scale-110 focus:outline-none {{ $i <= $rating ? 'text-yellow-400 drop-shadow' : 'text-gray-300 hover:text-yellow-300' }}"> ★
+                        </button>
+                    @endfor
+                </div>
+            </div>
 
-                                <div class="flex justify-end space-x-2">
-                                    <button wire:click="$set('showReviewModal', false)" class="px-3 py-1 bg-gray-300 rounded">
-                                        Cancel
-                                    </button>
+            <!-- Comment -->
+            <div class="mb-5">
+                <label class="block mb-2 text-sm font-medium text-gray-700">Your Review</label>
+                <textarea wire:model="comment" rows="4" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 resize-none" placeholder="Tell others what you liked or disliked..."></textarea>
+            </div>
 
-                                    <button wire:click="addReview">Submit Review</button>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
+            <!-- Buttons -->
+            <div class="flex justify-end space-x-3">
+                <button wire:click="$set('showReviewModal', false)" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition"> Cancel
+                </button>
+
+                <button wire:click="addReview"  class="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 shadow-md transition">  Submit Review
+                </button>
+            </div>
+        </div>
+    </div>
+@endif
+
 
                 </div>
             @endforeach
