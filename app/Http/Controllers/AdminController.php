@@ -199,7 +199,7 @@ class AdminController extends Controller
     public function toggleShow($id)
     {
         $category = Category::findOrFail($id);
-        $category->is_show = !$category->is_show; // ulta-pulta kar do
+        $category->is_show = !$category->is_show; 
         $category->save();
 
         return back()->with('success', 'Category display status updated!');

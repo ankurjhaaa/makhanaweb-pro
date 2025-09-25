@@ -114,7 +114,7 @@
                                                 <p class="text-gray-500 text-sm mt-1">Update category information</p>
                                             </div>
 
-                                            <form action="{{ route('editAdminCategory', $cat->id) }}" method="POST" enctype="multipart/form-dataservre"
+                                            <form action="{{ route('editAdminCategory', $cat->id) }}" method="POST" enctype="multipart/form-data"
                                                 class="space-y-4">
                                                 @csrf
                                                 @method('PUT')
