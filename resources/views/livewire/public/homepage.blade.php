@@ -41,7 +41,7 @@
 
         <div class="flex justify-end mt-8 md:mt-0">
             <div class="w-full max-w-lg rounded-lg border-4 border-brand-100 p-4">
-                <img src="/images/hero-snacks.jpg" alt="Assorted healthy snacks" class="rounded-lg w-full h-auto">
+                <img src="https://media.istockphoto.com/id/1020058602/vector/traditional-diwali-celebration-at-home-with-food.jpg?s=612x612&w=0&k=20&c=PfSWitf5C4M4gAKTCyUTaO2WIisevU2Sy5cmgFri8ZI=" alt="Assorted healthy snacks" class="rounded-lg w-full h-auto">
             </div>
         </div>
     </section>
