@@ -33,7 +33,7 @@ Route::get('/item/{slug}', Item::class)->name("item");
 Route::get('/category/{slug}', Category::class)->name('category');
 Route::get('/special/{id}/{name}', Special::class)->name("special");
 Route::middleware('auth')->group(function () {
-    Route::get('/checkout', Checkout::class)->name('checkout');
+    Route::get('/checkout', Checkout::class)->name('checkout'); 
 });
 // Route::get('/order/success', function () {
 //     return view('order-success');
