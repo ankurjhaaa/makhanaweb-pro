@@ -114,7 +114,7 @@
                                                 <p class="text-gray-500 text-sm mt-1">Update category information</p>
                                             </div>
 
-                                            <form action="{{ route('editAdminCategory', $cat->id) }}" method="POST"
+                                            <form action="{{ route('editAdminCategory', $cat->id) }}" method="POST" enctype="multipart/form-dataservre"
                                                 class="space-y-4">
                                                 @csrf
                                                 @method('PUT')
@@ -148,7 +148,18 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Category Image</label>
+                                                        <input type="file" name="image" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                                                        
+                                                             @if($cat->imagelink)
+                                                                    <div class="mt-2">
+                                                                        <img src="{{ $cat->imagelink }}" alt="Current Image"
+                                                                             class="h-16 w-16 object-cover rounded">
+                                                                    </div>
+                                                             @endif
+                                                    </div>
+                                                        
                                                 <div class="pt-4 flex justify-end gap-3">
                                                     <button type="button"
                                                         onclick="document.getElementById('editModal-{{ $cat->id }}').classList.add('hidden')"

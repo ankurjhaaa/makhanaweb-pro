@@ -115,12 +115,50 @@ class AdminController extends Controller
     public function editCategory($id, Request $request)
     {
         $findCategories = Category::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'parent_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
         $findCategories->name = $request->name;
         $findCategories->description = $request->description;
         $findCategories->parent_id = $request->parent_id;
+
+        // ✅ ImageKit logic (update)
+        if ($request->hasFile('image')) {
+            $imageKit = new \ImageKit\ImageKit(
+                config('services.imagekit.public_key'),
+                config('services.imagekit.private_key'),
+                config('services.imagekit.url_endpoint')
+            );
+
+            // Purani image delete karna (agar chahte ho)
+            if ($findCategories->imageid) {
+                $imageKit->deleteFile($findCategories->imageid);
+            }
+
+            $file = $request->file('image');
+            $fileContent = file_get_contents($file->getRealPath());
+
+            $uploadFile = $imageKit->upload([
+                'file' => base64_encode($fileContent),
+                'fileName' => time() . '_' . $file->getClientOriginalName(),
+            ]);
+
+            if (isset($uploadFile->result) && isset($uploadFile->result->url)) {
+                $findCategories->imageid = $uploadFile->result->fileId;
+                $findCategories->imagelink = $uploadFile->result->url;
+            }
+        }
+
         $findCategories->save();
-        return back()->with('success', 'category edit succesfully');
+
+        return back()->with('success', 'Category updated successfully');
     }
+
     public function adminCategory(Request $request)
     {
         $request->validate([
