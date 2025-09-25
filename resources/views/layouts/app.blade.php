@@ -182,7 +182,6 @@
     </header>
     {{ $slot }}
 
-    @vite(['resources/js/app.js'])
     @livewireScripts
 
     <!-- Page-specific JS -->
