@@ -60,7 +60,7 @@
                 <a href="{{ route('special', [$cat->id, $cat->slug]) }}">
                     <div class="flex flex-col items-center rounded-xl border-2  p-6 hover:shadow-md transition">
                         <img src="{{ $cat->imagelink }}" alt="Whole Spices"
-                            class="w-32 h-32 object-contain rounded-full bg-white p-3 mb-4">
+                            class="w-32 h-32 object-cover rounded-full bg-white p-3 mb-4">
                         <h2 class="text-lg font-semibold text-gray-600">{{ $cat->name }}</h2>
                     </div>
                 </a>
