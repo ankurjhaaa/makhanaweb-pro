@@ -7,7 +7,7 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
-use App\Models\product_pricing;
+use App\Models\Product_pricing;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -129,7 +129,7 @@ class AdminController extends Controller
 
         // ✅ ImageKit logic (update)
         if ($request->hasFile('image')) {
-            $imageKit = new \ImageKit\ImageKit(
+            $imageKit = new ImageKit(
                 config('services.imagekit.public_key'),
                 config('services.imagekit.private_key'),
                 config('services.imagekit.url_endpoint')
@@ -380,7 +380,7 @@ class AdminController extends Controller
             'status'
         )->get();
 
-        return view('admin.Coupons', compact('coupons'));
+        return view('admin.coupons', compact('coupons')); 
     }
 
     public function deleteCoupon($id)
