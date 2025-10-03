@@ -41,7 +41,8 @@
 
         <div class="flex justify-end mt-8 md:mt-0">
             <div class="w-full max-w-lg rounded-lg border-4 border-brand-100 p-4">
-                <img src="https://media.istockphoto.com/id/1020058602/vector/traditional-diwali-celebration-at-home-with-food.jpg?s=612x612&w=0&k=20&c=PfSWitf5C4M4gAKTCyUTaO2WIisevU2Sy5cmgFri8ZI=" alt="Assorted healthy snacks" class="rounded-lg w-full h-auto">
+                <img src="https://media.istockphoto.com/id/1020058602/vector/traditional-diwali-celebration-at-home-with-food.jpg?s=612x612&w=0&k=20&c=PfSWitf5C4M4gAKTCyUTaO2WIisevU2Sy5cmgFri8ZI="
+                    alt="Assorted healthy snacks" class="rounded-lg w-full h-auto">
             </div>
         </div>
     </section>
@@ -81,98 +82,165 @@
 
             <!-- Product Grid -->
             <!-- Product Grid -->
-            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                 @foreach ($products as $product)
-                    <div class=" rounded-xl border relative ">
+                    <div
+                        class="bg-white rounded-2xl border border-gray-100 relative overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 group">
 
                         <!-- Offer Badge -->
                         @if ($product->mrp && $product->mrp > $product->price)
                             @php
                                 $discount = round((($product->mrp - $product->price) / $product->mrp) * 100);
                             @endphp
-                            <span class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            <div
+                                class="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold px-2 sm:px-3 py-1 rounded-full shadow-lg z-20 ">
                                 {{ $discount }}% OFF
-                            </span>
+                            </div>
                         @endif
 
                         <!-- Wishlist Button -->
                         @auth
                             <button wire:click="toggleWishlist({{ $product->id }})" @class([
-                                'absolute top-3 right-3 h-9 w-9 flex items-center justify-center rounded-full border shadow-sm transition-all z-10',
-                                'text-red-500 bg-red-50 hover:bg-red-100' => $wishlistIds->contains($product->id),
-                                'text-gray-400 bg-white hover:bg-gray-100' => !$wishlistIds->contains($product->id),
+                                'absolute top-3 right-3 h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center rounded-full shadow-lg transition-all duration-300 z-20 hover:scale-110',
+                                'text-red-500 bg-white border-2 border-red-500' => $wishlistIds->contains($product->id),
+                                'text-gray-400 bg-white border-2 border-gray-200 hover:border-red-400 hover:text-red-500' => !$wishlistIds->contains($product->id),
                             ])>
-                                <i class="fas fa-heart"></i>
+                                <i @class([
+                                    'fas fa-heart text-sm' => $wishlistIds->contains($product->id),
+                                    'far fa-heart text-sm hover:fas' => !$wishlistIds->contains($product->id)
+                                ])></i>
                             </button>
                         @else
                             <a href="{{ route('login') }}"
-                                class="absolute top-3 right-3 h-9 w-9 flex items-center justify-center rounded-full border shadow-sm text-gray-400 bg-white hover:bg-gray-100 z-10">
-                                <i class="fas fa-heart"></i>
+                                class="absolute top-3 right-3 h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center rounded-full border-2 border-gray-200 shadow-lg text-gray-400 bg-white hover:border-red-400 hover:text-red-500 hover:scale-110 transition-all duration-300 z-20">
+                                <i class="far fa-heart text-sm hover:fas"></i>
                             </a>
                         @endauth
 
                         <!-- Product Image -->
-                        <a wire:navigate href="{{ route('item', $product->slug) }}">
-                            <div class="flex items-center justify-center  p-6">
-                                <img src="{{ $product->imagelink }}?tr=w-400,h-400,f-auto,q-80" alt="{{ $product->name }}"
-                                    class="max-w-full max-h-64 object-contain">
+                        <a wire:navigate href="{{ route('item', $product->slug) }}" class="block">
+                            <div class="relative overflow-hidden bg-gradient-to-br from-green-50 to-green-100 aspect-square">
+                                <img src="{{ $product->imagelink }}?tr=w-500,h-500,f-auto,q-90" alt="{{ $product->name }}"
+                                    class="w-full h-full object-contain p-4 sm:p-6 transition-all duration-700 group-hover:scale-110 group-hover:rotate-2"
+                                    loading="lazy"
+                                    onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRkVGM0UyIi8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjE4MCIgcj0iNDAiIGZpbGw9IiNGOTdGMTYiLz4KPHBhdGggZD0iTTE2MCAyNDBIMjQwVjI4MEgxNjBWMjQwWiIgZmlsbD0iI0Y5N0YxNiIvPgo8dGV4dCB4PSIyMDAiIHk9IjMzMCIgZmlsbD0iI0Y5N0YxNiIgZm9udC1zaXplPSIxNCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5Gb29kIEl0ZW08L3RleHQ+Cjwvc3ZnPg=='" />
+
+                                <!-- Fresh Badge for Food -->
+                                <div
+                                    class="absolute bottom-3 left-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                    <i class="fas fa-leaf mr-1"></i>Fresh
+                                </div>
                             </div>
                         </a>
 
                         <!-- Product Info -->
-                        <div class="px-4 pb-4">
-                            <!-- Rating -->
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-                                    {{ number_format($product->reviews_avg_rating ?? 0, 1) }} ★
-                                </span>
-                                <span class="text-gray-500 text-sm">
-                                    ({{ $product->reviews_count ?? 0 }} reviews)
+                        <div class="p-4 sm:p-5 space-y-2"> <!-- yaha 3 se 2 -->
+                            <!-- Rating & Reviews -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-1">
+                                    <div
+                                        class="flex items-center bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">
+                                        <i class="fas fa-star mr-1"></i>
+                                        {{ number_format($product->reviews_avg_rating ?? 4.2, 1) }}
+                                    </div>
+                                    <span class="text-gray-500 text-xs ml-1">
+                                        ({{ $product->reviews_count ?? 0 }} reviews)
+                                    </span>
+                                </div>
+                                <!-- Category Badge -->
+                                <span class="text-xs text-orange-600 bg-green-100 px-2 py-1 rounded-full font-medium">
+                                    {{ $product->category->name ?? 'Food' }}
                                 </span>
                             </div>
 
                             <!-- Product Name -->
-                            <h3 class="text-base font-semibold text-gray-900 truncate">
-                                {{ $product->name }}
-                            </h3>
-                            <!-- Category -->
-                            <p class="text-sm text-gray-600 mb-2">
-                                {{ $product->category->name ?? 'Food Item' }}
-                            </p>
+                            <div>
+                                <h3
+                                    class="text-sm sm:text-base font-bold text-gray-900 line-clamp-2 leading-snug group-hover:text-orange-600 transition-colors duration-300">
+                                    {{ $product->name }}
+                                </h3>
+                            </div>
 
-                            <!-- Price Section (same as before) -->
-                            <div class="flex flex-col gap-1 text-sm">
+                            <!-- Price Section -->
+                            <div class="space-y-0.5"> <!-- 1 se 0.5 -->
                                 <div class="flex items-center gap-2">
-                                    <span class="text-lg font-bold text-gray-900">₹{{ $product->price }}</span>
-                                    @if ($product->mrp)
-                                        <span class="text-red-500 font-medium">
-                                            (Rs. {{ $product->mrp - $product->price }} OFF)
-                                        </span>
+                                    <span
+                                        class="text-lg sm:text-xl font-black text-gray-900">₹{{ number_format($product->price, 0) }}</span>
+                                    @if ($product->mrp && $product->mrp > $product->price)
+                                        <span
+                                            class="text-sm text-gray-400 line-through">₹{{ number_format($product->mrp, 0) }}</span>
                                     @endif
                                 </div>
-                                @if ($product->mrp)
-                                    <span class="text-xs text-gray-500">MRP: ₹{{ $product->mrp }}</span>
+                                @if ($product->mrp && $product->mrp > $product->price)
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm text-green-600 font-semibold">
+                                            You Save ₹{{ number_format($product->mrp - $product->price, 0) }}
+                                        </span>
+                                    </div>
                                 @endif
                             </div>
 
-                            <!-- Floating Cart Icon -->
-                            @if ($product->stock === 0)
-                                <button disabled
-                                    class="absolute bottom-4 right-4 h-11 w-11 rounded-full bg-gray-500 text-white flex items-center justify-center shadow-lg transition-all">
-                                    <i class="fas fa-shopping-cart text-lg"></i>
-                                </button>
-                            @else
-                                <a wire:navigate href="{{ route('cart', ['add' => $product->id]) }}"
-                                    class="absolute bottom-4 right-4 h-11 w-11 rounded-full bg-brand-500 hover:bg-brand-600 text-white flex items-center justify-center shadow-lg transition-all">
-                                    <i class="fas fa-shopping-cart text-lg"></i>
+                            <!-- Delivery Info -->
+
+                            <div class="flex items-center gap-4 text-xs text-gray-600">
+                                @if ($product->price > 1000)
+                                    <div class="flex items-center gap-1">
+                                        <i class="fas fa-truck text-green-600"></i>
+                                        <span>Free Delivery</span>
+                                    </div>
+                                @endif
+                                @if ($product->stock)
+                                    <div class="flex items-center gap-2 text-yellow-600 font-medium">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <span>Limited Stock Only</span>
+                                    </div>
+                                @else
+                                    <div class="flex items-center gap-2 text-red-600 font-medium">
+                                        <i class="fas fa-times-circle"></i>
+                                        <span>Out of Stock</span>
+                                    </div>
+                                @endif
+
+                            </div>
+                        </div>
+
+
+                        <!-- Add to Cart Button - Hidden initially, shows on hover -->
+                        <div
+                            class="absolute bottom-0 left-0 right-0 p-4 sm:p-5 bg-gradient-to-t from-white via-white to-transparent transform translate-y-full group-hover:translate-y-0 transition-all duration-500 ease-out">
+                            @if ($product->stock)
+                                <a href="{{ route('cart', ['add' => $product->id]) }}"
+                                    class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105">
+                                    <i class="fas fa-shopping-cart text-sm"></i>
+                                    <span class="text-sm">Add to Cart</span>
                                 </a>
+                            @else
+                                <button disabled
+                                    class="w-full bg-gray-400 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105">
+                                    <i class="fas fa-shopping-cart text-sm"></i>
+                                    <span class="text-sm">Add to Cart</span>
+                                </button>
                             @endif
 
-
                         </div>
+
                     </div>
                 @endforeach
             </div>
+
+            <!-- Empty State -->
+            @if($products->isEmpty())
+                <div class="mt-12 text-center py-16">
+                    <div class="max-w-md mx-auto">
+                        <div class="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-utensils text-3xl text-gray-400"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">No Food Items Found</h3>
+                        <p class="text-gray-600">Try adjusting your filters or search terms.</p>
+                    </div>
+                </div>
+            @endif
+
 
             <div class="mt-10 text-center">
                 <a href="{{ route('shop') }}"

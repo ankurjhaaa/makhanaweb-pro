@@ -60,7 +60,9 @@
         class="fixed top-0 left-0 h-full w-72 bg-gradient-to-b from-gray-800 to-gray-900 shadow-xl z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
 
         <div class="px-6 py-6 flex items-center justify-between">
-            <h2 class="text-xl font-bold text-white">Yours<span class="text-blue-400">Snacks</span></h2>
+            <a href="{{ route('admindashboard') }}">
+                <h2 class="text-xl font-bold text-white">Yours<span class="text-blue-400">Snacks</span></h2>
+            </a>
             <button class="text-gray-400 hover:text-white md:hidden" onclick="toggleSidebar()">
                 <i class="fas fa-times"></i>
             </button>
@@ -74,7 +76,8 @@
                 </div>
 
                 <div>
-                    <p class="text-white font-medium">Hi, <span class="text-blue-400">Ankur Jha</span></p>
+                    <p class="text-white font-medium">Hi, <span class="text-blue-400">{{ Auth::user()->name }}</span>
+                    </p>
                     <p class="text-xs text-gray-400">Administrator</p>
                 </div>
             </div>
@@ -131,14 +134,14 @@
                         Coupons
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="{{ route('productComboPage') }}" onclick="showLoader()"
                         class="flex items-center text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-3 {{ request()->routeIs('productComboPage') ? 'bg-blue-600 text-white' : '' }} rounded-md transition duration-150 ease-in-out">
                         <i
                             class="fas fa-gift mr-3 {{ request()->routeIs('productComboPage') ? 'text-white' : 'text-gray-400' }}"></i>
                         Combo Packs
                     </a>
-                </li>
+                </li> -->
 
                 <p class="text-xs uppercase text-gray-500 font-semibold py-4 pl-4 mt-2">Users</p>
 
@@ -194,7 +197,7 @@
 
                     <div class="hidden md:block text-xl font-bold">
                         <a href="{{ route('admindashboard') }}" class="flex items-center gap-2" onclick="showLoader()">
-                            <span class="text-gray-800">Admin Dashboard</span>
+                            <span class="text-white">Admin Dashboard</span>
                         </a>
                     </div>
                 </div>
@@ -318,8 +321,10 @@
         });
     </script>
     <!-- Main content -->
-    <main class="flex-1 min-h-screen md:ml-72 p-6 bg-gray-50">
-        @yield('content')
+    <main class="flex-1 min-h-screen md:ml-72 p-2 bg-gray-50">
+        <div class="mt-10">
+            @yield('content')
+        </div>
     </main>
     @if(session('success'))
         <div id="toast-success"

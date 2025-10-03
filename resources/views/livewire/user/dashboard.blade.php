@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="text-2xl font-bold mb-1">
-                    {{ $recentOrders ?? 'N/A' }}
+                    {{ $recentOrders ?? 0 }}
                 </div>
                 <div class="text-sm text-gray-500">In the last 30 days</div>
             </div>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="text-2xl font-bold mb-1">
-                    {{ $totalSpent ? '₹' . number_format($totalSpent, 2) : 'N/A' }}
+                    {{ $totalSpent ? '₹' . number_format($totalSpent, 2) : 0 }}
                 </div>
                 <div class="text-sm text-gray-500">Lifetime purchases</div>
             </div>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="text-2xl font-bold mb-1">
-                    {{ $wishlistCount ?? 'N/A' }}
+                    {{ $wishlistCount ?? 0 }}
                 </div>
                 <div class="text-sm text-gray-500">Saved items</div>
             </div>
@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="text-2xl font-bold mb-1">
-                    {{ $addressesCount ?? 'N/A' }}
+                    {{ $addressesCount ?? 0 }}
                 </div>
                 <div class="text-sm text-gray-500">Saved addresses</div>
             </div>

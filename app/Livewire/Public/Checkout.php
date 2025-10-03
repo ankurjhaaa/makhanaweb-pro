@@ -75,9 +75,7 @@ class Checkout extends Component
         'first_name' => 'required|min:2',
         'last_name' => 'required|min:2',
         'payment_method' => 'required|in:cod,online',
-        'billing_address_id' => 'required',
         'shipping_address_id' => 'required',
-
 
         'new_line1' => 'required|string|max:255',
         'new_city' => 'required|string|max:100',
@@ -102,6 +100,10 @@ class Checkout extends Component
         }
 
         if ($coupon->status !== 'active') {
+            $this->couponError = 'This coupon is inactive';
+            return;
+        }
+        if ($coupon->used_count >= $coupon->usage_limit) {
             $this->couponError = 'This coupon is inactive';
             return;
         }
@@ -147,27 +149,29 @@ class Checkout extends Component
     }
     public function mount()
     {
-        //  pehle se jo hai use call rehne do
         $this->loadCartData();
-        $this->loadAddresses();
-        if (Auth::check()) {
-            $user = Auth::user();
-            $this->email = $user->email;
-            $this->first_name = $user->first_name ?? '';
-            $this->last_name = $user->last_name ?? '';
 
-            //  yaha address load karenge
-            $this->addresses = Address::where('user_id', $user->id)->get();
-
-            // agar koi address nahi mila to Add Address form dikhana hai
-            if ($this->addresses->isEmpty()) {
-                $this->showAddAddress = true;
-            }
-
+        // agar cart empty hai to login bhej do
+        if ($this->cartItems->isEmpty()) {
+            return redirect()->route('shop');
         }
 
+        $this->loadAddresses();
 
+        $user = Auth::user();
+        $this->email = $user->email;
+        $this->first_name = $user->first_name ?? '';
+        $this->last_name = $user->last_name ?? '';
+
+        // yaha address load karenge
+        $this->addresses = Address::where('user_id', $user->id)->get();
+
+        // agar koi address nahi mila to Add Address form dikhana hai
+        if ($this->addresses->isEmpty()) {
+            $this->showAddAddress = true;
+        }
     }
+
 
 
     public function loadAddresses()
@@ -334,13 +338,17 @@ class Checkout extends Component
 
         $this->validate([
             'billing_address_id' => 'required',
-            'shipping_address_id' => 'required',
             'payment_method' => 'required|in:cod,online',
         ]);
 
         if ($this->payment_method === 'cod') {
             $coupon = Coupon::where('code', $this->couponCode)->first();
             $coupon_id = $coupon->id ?? null;
+            if ($coupon) {
+                $coupon->used_count += 1;
+                $coupon->save();
+
+            }
 
             // ✅ Create Order
             $order = Order::create([
@@ -353,9 +361,10 @@ class Checkout extends Component
                 'discount' => $this->couponDiscount,
                 'total_amount' => $this->total,
                 'billing_address_id' => $this->billing_address_id,
-                'shipping_address_id' => $this->shipping_address_id,
+                'shipping_address_id' => $this->billing_address_id,
                 'payment_method' => 'cod',
             ]);
+
 
             // ✅ Move Cart Items to Order
             $cartItems = CartItem::where('user_id', Auth::id())->get();
@@ -397,7 +406,6 @@ class Checkout extends Component
         }
         $this->validate([
             'billing_address_id' => 'required',
-            'shipping_address_id' => 'required',
             'payment_method' => 'required|in:cod,online',
         ]);
 
@@ -417,7 +425,7 @@ class Checkout extends Component
                 'discount' => $this->couponDiscount,
                 'total_amount' => $this->total,
                 'billing_address_id' => $this->billing_address_id,
-                'shipping_address_id' => $this->shipping_address_id,
+                'shipping_address_id' => $this->billing_address_id,
                 'payment_method' => $this->payment_method,
                 'status' => 'cancelled',
             ]);
@@ -439,13 +447,9 @@ class Checkout extends Component
             }
 
             // Clear cart
-            session()->flash('success', 'Order placed successfully!');
+            session()->flash('success', 'Order placed online page!');
             return redirect()->route('payment.online', $order->id);
-
-
         }
-
-
     }
 
     public function render()

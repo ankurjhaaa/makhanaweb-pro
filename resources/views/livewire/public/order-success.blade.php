@@ -39,7 +39,7 @@
             <a href="/" class="bg-brand-600 text-white px-6 py-3 rounded-full hover:bg-brand-700 transition-all font-medium">
                 Continue Shopping
             </a>
-            <a href="#" class="border border-gray-300 text-gray-700 px-6 py-3 rounded-full hover:border-brand-600 hover:text-brand-600 transition-all font-medium">
+            <a href="{{ route('user.orderdetail',session('order_id')) }}" class="border border-gray-300 text-gray-700 px-6 py-3 rounded-full hover:border-brand-600 hover:text-brand-600 transition-all font-medium">
                 Track Order
             </a>
         </div>

@@ -76,7 +76,7 @@ class Myorder extends Component
     }
 
     public function cancelOrder($orderId)
-    {
+    { 
         $order = Order::where('id', $orderId)
             ->where('user_id', Auth::id())
             ->first();

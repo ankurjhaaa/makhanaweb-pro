@@ -29,50 +29,59 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
                             <input type="text" wire:model.blur="first_name"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                placeholder="Enter first name">
+                                placeholder="Enter first name" disabled>
                             @error('first_name') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
                             <input type="text" wire:model.blur="last_name"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                placeholder="Enter last name">
+                                placeholder="Enter last name" disabled>
                             @error('last_name') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
                             <input type="email" wire:model.blur="email"
                                 class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"
-                                placeholder="Enter email address">
+                                placeholder="Enter email address" disabled>
                             @error('email') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-6">
-
-                    <!-- BILLING -->
-                    <div class="bg-white border border-gray-100 rounded-lg p-6">
-                        <h2 class="font-poppins text-xl font-semibold mb-4">Billing Address</h2>
+                    <div class="bg-white border border-gray-100 rounded-md p-6">
+                        <h2 class="flex font-poppins text-xl font-semibold mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 7l1.664 12.428a2 2 0 001.992 1.572h10.688a2 2 0 001.992-1.572L21 7M5 7h14M10 11v6m4-6v6" />
+                            </svg>
+                            Shipping Address
+                        </h2>
 
                         <!-- Existing addresses list -->
                         @if($addresses->count())
-                            <div class="space-y-3 max-h-64 overflow-y-auto">
+                            <div class="space-y-3 max-h-64 overflow-y-auto pr-2">
                                 @foreach($addresses as $addr)
-                                    <label class="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                                        <input type="radio" wire:model="billing_address_id" value="{{ $addr->id }}"
-                                            class="mt-1">
+                                    <label
+                                        class="flex items-start gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-200 ">
+                                        <input type="radio" wire:model.defer="shipping_address_id" value="{{ $addr->id }}"
+                                            class="mt-1 text-brand-600 focus:ring-brand-600">
                                         <div>
-                                            <div class="font-medium">{{ $addr->address_line1 }} @if($addr->address_line2) —
-                                                {{ $addr->address_line2 }}
-                                            @endif
+                                            <div class="font-medium text-gray-800">
+                                                {{ $addr->address_line1 }}
+                                                @if($addr->address_line2)
+                                                    <span class="text-gray-600"> — {{ $addr->address_line2 }}</span>
+                                                @endif
                                             </div>
-                                            <div class="text-sm text-gray-600">{{ $addr->city }}, {{ $addr->state }} —
-                                                {{ $addr->postal_code }}
+                                            <div class="text-sm text-gray-600">
+                                                {{ $addr->city }}, {{ $addr->state }} — {{ $addr->postal_code }}
                                             </div>
-                                            <div class="text-sm text-gray-600">{{ $addr->country }} • {{ $addr->phone }}</div>
+                                            <div class="text-sm text-gray-600">
+                                                {{ $addr->country }} • {{ $addr->phone }}
+                                            </div>
                                         </div>
-
                                     </label>
                                 @endforeach
                             </div>
@@ -80,41 +89,51 @@
                             <div class="text-sm text-gray-600 mb-3">No saved addresses yet.</div>
                         @endif
 
+                        <!-- Add address button -->
+                        @if($showAddAddressFor !== 'billing')
+                            <div class="mt-4 flex items-center gap-3">
+                                <button wire:click.prevent="openAddAddress('billing')"
+                                    class="px-4 py-2 bg-brand-600 text-white rounded-lg">+ Add New Address</button>
+                                <span class="text-sm text-gray-600">or select from saved addresses above</span>
+                            </div>
+                            @if(!$addresses->count())
+                                <div class="text-red-500 text-sm mt-1">Enter at least one address And select to place order</div>
+                            @endif
+                        @endif
 
-                        <div class="mt-4 flex items-center gap-3">
-                            <button wire:click.prevent="openAddAddress('billing')"
-                                class="px-4 py-2 bg-brand-600 text-white rounded-lg">Add new address</button>
-                            <span class="text-sm text-gray-600">or choose from saved addresses above</span>
-                        </div>
 
                         <!-- Inline Add Address Form (for billing) -->
                         @if($showAddAddressFor === 'billing')
-                            <div class="mt-4 border-t pt-4">
-                                <h3 class="font-semibold mb-2">Add Billing Address</h3>
-                                <div class="space-y-3">
+                            <div class="mt-6 border-t pt-6">
+                                <h3 class="font-semibold mb-4 text-gray-800">Add Billing Address</h3>
+                                <div class="space-y-4">
                                     <input type="text" wire:model.defer="new_line1" placeholder="Address Line 1 *"
-                                        class="w-full border rounded-lg px-3 py-2">
+                                        class="w-full border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-lg px-4 py-2.5 text-gray-700">
                                     <input type="text" wire:model.defer="new_line2" placeholder="Address Line 2"
-                                        class="w-full border rounded-lg px-3 py-2">
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        class="w-full border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-lg px-4 py-2.5 text-gray-700">
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <input type="text" wire:model.defer="new_city" placeholder="City *"
-                                            class="border rounded-lg px-3 py-2">
+                                            class="border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-lg px-4 py-2.5 text-gray-700">
                                         <input type="text" wire:model.defer="new_state" placeholder="State *"
-                                            class="border rounded-lg px-3 py-2">
+                                            class="border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-lg px-4 py-2.5 text-gray-700">
                                         <input type="text" wire:model.defer="new_postal_code" placeholder="PIN Code *"
-                                            class="border rounded-lg px-3 py-2">
+                                            class="border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-lg px-4 py-2.5 text-gray-700">
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <select wire:model.defer="new_country" class="border rounded-lg px-3 py-2">
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <select wire:model.defer="new_country"
+                                            class="border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-lg px-4 py-2.5 text-gray-700">
                                             <option>India</option>
                                             <option>USA</option>
                                             <option>UK</option>
                                             <option>Canada</option>
                                         </select>
                                         <input type="tel" wire:model.defer="new_phone" placeholder="Phone *"
-                                            class="border rounded-lg px-3 py-2">
+                                            class="border-gray-300 focus:border-brand-500 focus:ring-brand-500 rounded-lg px-4 py-2.5 text-gray-700">
                                     </div>
 
+                                    <!-- Error messages -->
                                     @error('new_line1') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
                                     @error('new_city') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
                                     @error('new_state') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
@@ -122,94 +141,24 @@
                                     @enderror
                                     @error('new_phone') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
 
-                                    <div class="flex gap-2">
+                                    <div class="flex gap-3 pt-2">
                                         <button wire:click.prevent="saveNewAddress"
-                                            class="px-4 py-2 bg-brand-600 text-white rounded-lg">Save & select</button>
+                                            class="px-5 py-2 bg-brand-600 text-white rounded-md shadow hover:bg-brand-700 transition-all">
+                                            Save & Select
+                                        </button>
                                         <button wire:click.prevent="closeAddAddress"
-                                            class="px-4 py-2 border rounded-lg">Cancel</button>
+                                            class="px-5 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-all">
+                                            Cancel
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         @endif
-
                     </div>
 
-                    <!-- SHIPPING -->
-                    <div class="bg-white border border-gray-100 rounded-lg p-6">
-                        <h2 class="font-poppins text-xl font-semibold mb-4">Shipping Address</h2>
-
-
-                        @if($addresses->count())
-                            <div class="space-y-3 max-h-64 overflow-y-auto">
-                                @foreach($addresses as $addr)
-                                    <label class="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                                        <input type="radio" wire:model="shipping_address_id" value="{{ $addr->id }}"
-                                            class="mt-1">
-                                        <div>
-                                            <div class="font-medium">{{ $addr->address_line1 }} @if($addr->address_line2) —
-                                                {{ $addr->address_line2 }}
-                                            @endif
-                                            </div>
-                                            <div class="text-sm text-gray-600">{{ $addr->city }}, {{ $addr->state }} —
-                                                {{ $addr->postal_code }}
-                                            </div>
-                                            <div class="text-sm text-gray-600">{{ $addr->country }} • {{ $addr->phone }}</div>
-                                        </div>
-                                        <!-- <div class="ml-auto space-x-2">
-                                                                                            <button wire:click.prevent="removeAddress({{ $addr->id }})"
-                                                                                                class="text-sm text-red-500">Delete</button>
-                                                                                        </div> -->
-                                    </label>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="text-sm text-gray-600 mb-3">No saved addresses yet.</div>
-                        @endif
-
-
-
-                        @if($showAddAddressFor === 'shipping')
-                            <div class="mt-4 border-t pt-4">
-                                <h3 class="font-semibold mb-2">Add Shipping Address</h3>
-                                <div class="space-y-3">
-                                    <input type="text" wire:model.defer="new_line1" placeholder="Address Line 1 *"
-                                        class="w-full border rounded-lg px-3 py-2">
-                                    <input type="text" wire:model.defer="new_line2" placeholder="Address Line 2"
-                                        class="w-full border rounded-lg px-3 py-2">
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                        <input type="text" wire:model.defer="new_city" placeholder="City *"
-                                            class="border rounded-lg px-3 py-2">
-                                        <input type="text" wire:model.defer="new_state" placeholder="State *"
-                                            class="border rounded-lg px-3 py-2">
-                                        <input type="text" wire:model.defer="new_postal_code" placeholder="PIN Code *"
-                                            class="border rounded-lg px-3 py-2">
-                                    </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <select wire:model.defer="new_country" class="border rounded-lg px-3 py-2">
-                                            <option>India</option>
-                                            <option>USA</option>
-                                            <option>UK</option>
-                                            <option>Canada</option>
-                                        </select>
-                                        <input type="tel" wire:model.defer="new_phone" placeholder="Phone *"
-                                            class="border rounded-lg px-3 py-2">
-                                    </div>
-
-                                    @error('new_line1') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
-
-                                    <div class="flex gap-2">
-                                        <button wire:click.prevent="saveNewAddress('shipping')"
-                                            class="px-4 py-2 bg-brand-600 text-white rounded-lg">Save & select</button>
-                                        <button wire:click.prevent="closeAddAddress"
-                                            class="px-4 py-2 border rounded-lg">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                    </div>
 
                 </div>
+
 
 
 

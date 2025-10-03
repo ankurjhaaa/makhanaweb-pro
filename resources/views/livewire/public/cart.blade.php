@@ -218,10 +218,17 @@
 
                         <!-- Checkout Button -->
                         <div class="mt-6">
-                            <button type="button" wire:click="checkout"
-                                class="w-full bg-brand-600 text-white px-6 py-3 rounded-full hover:bg-brand-700 transition-all font-medium">
-                                Proceed to Checkout
-                            </button>
+                            @auth
+                                <button type="button" wire:click="checkout"
+                                    class="w-full bg-brand-600 text-white px-6 py-3 rounded-full hover:bg-brand-700 transition-all font-medium text-center block">
+                                    Proceed to Checkout
+                                </button>
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="w-full bg-brand-600 text-white px-6 py-3 rounded-full hover:bg-brand-700 transition-all font-medium text-center block">
+                                    Login to continue
+                                </a>
+                            @endauth
                         </div>
 
                         <!-- Payment Methods -->

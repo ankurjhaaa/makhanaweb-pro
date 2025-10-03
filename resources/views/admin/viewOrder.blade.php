@@ -15,14 +15,20 @@
                 @method('PUT')
 
                 <select name="status" onchange="this.form.submit()" class="px-3 py-2 text-sm rounded-lg border shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200
-                    @if($order->status == 'pending') bg-yellow-100 text-yellow-700 border-yellow-300
-                    @elseif($order->status == 'processing') bg-blue-100 text-blue-700 border-blue-300
-                    @elseif($order->status == 'shipped') bg-purple-100 text-purple-700 border-purple-300
-                    @elseif($order->status == 'delivered') bg-green-100 text-green-700 border-green-300
-                    @elseif($order->status == 'cancelled') bg-red-100 text-red-700 border-red-300
-                    @else bg-gray-100 text-gray-700 border-gray-300
-                    @endif">
-
+                            @if($order->status == 'pending')
+                                {{ ' bg-yellow-100 text-yellow-700 border-yellow-300' }}
+                            @elseif($order->status == 'processing')
+                                {{ ' bg-blue-100 text-blue-700 border-blue-300' }}
+                            @elseif($order->status == 'shipped') 
+                                {{ 'bg-purple-100 text-purple-700 border-purple-300' }}
+                            @elseif($order->status == 'delivered') 
+                                {{ 'bg-green-100 text-green-700 border-green-300' }}
+                            @elseif($order->status == 'cancelled')
+                                {{ ' bg-red-100 text-red-700 border-red-300' }}
+                            @else
+                                {{ ' bg-gray-100 text-gray-700 border-gray-300' }}
+                            @endif
+                            ">
                     <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>🕒 Pending</option>
                     <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>⚙ Processing</option>
                     <option value="shipped" {{ $order->status == 'shipped' ? 'selected' : '' }}>📦 Shipped</option>
@@ -52,31 +58,17 @@
                 <h3 class="text-lg font-semibold text-gray-700 mb-3">Addresses</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    <!-- Shipping Address -->
-                    <div>
-                        <h4 class="font-semibold text-gray-800 mb-2">Shipping Address</h4>
-                        @if($order->shippingAddress)
-                            <ul class="space-y-1 text-gray-600 text-sm">
-                                <li>{{ $order->shippingAddress->name }}</li>
-                                <li>{{ $order->shippingAddress->address_line1 }}</li>
-                                <li>{{ $order->shippingAddress->city }}, {{ $order->shippingAddress->state }}</li>
-                                <li>{{ $order->shippingAddress->zip }}</li>
-                                <li>📞 {{ $order->shippingAddress->phone }}</li>
-                            </ul>
-                        @else
-                            <p class="text-gray-500 text-sm">No shipping address available.</p>
-                        @endif
-                    </div>
+
 
                     <!-- Billing Address -->
                     <div>
-                        <h4 class="font-semibold text-gray-800 mb-2">Billing Address</h4>
+                        <h4 class="font-semibold text-gray-800 mb-2">Shipping Address</h4>
                         @if($order->billingAddress)
                             <ul class="space-y-1 text-gray-600 text-sm">
                                 <li>{{ $order->billingAddress->address_line1 }}</li>
                                 <li>{{ $order->billingAddress->address_line2 }}</li>
                                 <li>{{ $order->billingAddress->city }}, {{ $order->billingAddress->state }}</li>
-                                <li>{{ $order->billingAddress->zip }}</li>
+                                <li>{{ $order->billingAddress->postal_code }}</li>
                                 <li>📞 {{ $order->billingAddress->phone }}</li>
                             </ul>
                         @else
@@ -106,8 +98,10 @@
                     @foreach($order->orderItems as $item)
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-4 py-3">
-                                <img src="{{ $item->product->imagelink }}" alt="{{ $item->product->name }}"
-                                    class="w-16 h-16 object-cover rounded-md">
+                                <a href="{{ route('item',$item->product->slug) }}">
+                                    <img src="{{ $item->product->imagelink }}" alt="{{ $item->product->name }}"
+                                        class="w-16 h-16 object-cover rounded-md">
+                                </a>
                             </td>
                             <td class="px-4 py-3 font-medium text-gray-800">
                                 {{ $item->product->name }}

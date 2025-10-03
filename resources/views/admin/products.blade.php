@@ -114,10 +114,10 @@
 
                                 <td class="px-6 py-4 whitespace-nowrap text-right">
                                     <div class="flex items-center justify-end space-x-3">
-                                        <button onclick="openComboModal({{ $product->id }}, '{{ $product->name }}')"
-                                            class="text-blue-600 hover:text-blue-900" title="Make Combo">
-                                            <i class="fas fa-object-group"></i>
-                                        </button>
+                                        <!-- <button onclick="openComboModal({{ $product->id }}, '{{ $product->name }}')"
+                                                                    class="text-blue-600 hover:text-blue-900" title="Make Combo">
+                                                                    <i class="fas fa-object-group"></i>
+                                                                </button> -->
                                         <button
                                             onclick="document.getElementById('editProductModal-{{ $product->id }}').classList.remove('hidden')"
                                             class="text-blue-600 hover:text-blue-900" title="Edit Product">
@@ -213,6 +213,27 @@
                                                             required>
                                                     </div>
                                                 </div>
+                                                <div class="grid grid-cols-3 gap-4">
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">MRP</label>
+                                                        <input type="number" step="0.01" name="mrp" value="{{ $product->mrp }}"
+                                                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                                            required>
+                                                    </div>
+                                                    <div>
+                                                        <label
+                                                            class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
+                                                        <input type="number" name="quantity" value="{{ $product->quantity }}"
+                                                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                                            required>
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+                                                        <input type="text" name="unit" value="{{ $product->unit }}"
+                                                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                                            required>
+                                                    </div>
+                                                </div>
 
                                                 <div>
                                                     <label
@@ -238,27 +259,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="grid grid-cols-3 gap-4">
-                                                    <div>
-                                                        <label class="block text-sm font-medium text-gray-700 mb-1">MRP</label>
-                                                        <input type="number" step="0.01" name="mrp" value="{{ $product->mrp }}"
-                                                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                                                            required>
-                                                    </div>
-                                                    <div>
-                                                        <label
-                                                            class="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
-                                                        <input type="number" name="quantity" value="{{ $product->quantity }}"
-                                                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                                                            required>
-                                                    </div>
-                                                    <div>
-                                                        <label class="block text-sm font-medium text-gray-700 mb-1">Unit</label>
-                                                        <input type="text" name="unit" value="{{ $product->unit }}"
-                                                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
-                                                            required>
-                                                    </div>
-                                                </div>
+
 
                                                 <div class="pt-4 border-t border-gray-200 flex justify-end gap-3">
                                                     <button type="button"

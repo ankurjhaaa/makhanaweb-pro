@@ -199,7 +199,7 @@ class AdminController extends Controller
     public function toggleShow($id)
     {
         $category = Category::findOrFail($id);
-        $category->is_show = !$category->is_show; 
+        $category->is_show = !$category->is_show;
         $category->save();
 
         return back()->with('success', 'Category display status updated!');
@@ -380,7 +380,7 @@ class AdminController extends Controller
             'status'
         )->get();
 
-        return view('admin.coupons', compact('coupons')); 
+        return view('admin.coupons', compact('coupons'));
     }
 
     public function deleteCoupon($id)
@@ -442,15 +442,31 @@ class AdminController extends Controller
         $allUsers = User::all();
         return view('admin.users', compact('allUsers'));
     }
-    public function allOrders()
+    public function allOrders(Request $request)
     {
-        $allOrders = Order::all();
+        // Start query
+        $query = Order::query();
+
+        // Search by order number or email
+        if ($request->search) {
+            $query->where('order_number', 'like', "%{$request->search}%");
+        }
+
+        // Filter by status
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // Order by latest
+        $allOrders = $query->orderBy('id', 'desc')->paginate(30); // 10 per page
+
         return view('admin.orders', compact('allOrders'));
     }
 
+
     public function viewOrder($id)
     {
-        $order = Order::with(['orderItems.product', 'shippingAddress', 'billingAddress'])
+        $order = Order::with(['orderItems.product', 'shippingAddress'])
             ->findOrFail($id);
 
         return view('admin.viewOrder', compact('order'));

@@ -1,7 +1,7 @@
 <div class="space-y-6">
     <!-- Back Button -->
     <div>
-        <a href="#" class="inline-flex items-center text-sm text-brand-600 hover:text-brand-500">
+        <a href="{{ route('user.orders') }}" class="inline-flex items-center text-sm text-brand-600 hover:text-brand-500">
             <i class="fas fa-arrow-left mr-2"></i> Back to Orders
         </a>
     </div>

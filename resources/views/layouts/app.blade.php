@@ -257,7 +257,7 @@
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-12 pt-8 border-t border-gray-200 text-center text-gray-500">
-            © 2024 Your's Snacks. All rights reserved.
+            © 2024 Your's Snacks. All rights reserved. <a href="{{ route('admindashboard') }}">admin login</a>
         </div>
     </footer>
     <script>

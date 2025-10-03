@@ -6,7 +6,7 @@
     <div class="pt-8 pb-4">
         <!-- Welcome section -->
         <div class="mb-6">
-            <h1 class="text-2xl font-bold text-gray-900">Hi Mac,</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Hi {{ Auth::user()->name }},</h1>
             <p class="text-gray-600">Welcome back to your dashboard</p>
         </div>
 

@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartItem;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Payment;
 use Auth;
@@ -61,6 +62,11 @@ class PaymentController extends Controller
                 $orderid->status = 'processing';
                 $orderid->save();
                 CartItem::where('user_id', Auth::id())->delete();
+                $coupon = Coupon::findOrFail($orderid->coupon_id);
+                if ($coupon) {
+                    $coupon->used_count += 1;
+                    $coupon->save();
+                }
                 session()->flash('order_id', $orderid->order_number);
                 return redirect()->route('order.success')->with('success', 'Payment successful!');
             } else {
