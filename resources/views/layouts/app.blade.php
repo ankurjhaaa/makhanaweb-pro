@@ -84,7 +84,7 @@
             </div>
 
             <nav class="hidden md:flex gap-8 text-gray-600 font-medium">
-                <a wire:navigate href="{{ route("home") }}" class="hover:text-brand-600 transition-all">Home</a>
+                <a wire:navigate href="{{ route("home") }}" class="hover:text-brand-600 transition-all">Homeeee</a>
                 <a wire:navigate href="{{ route("shop") }}" class="hover:text-brand-600 transition-all">Shop</a>
                 <a wire:navigate href="#" class="hover:text-brand-600 transition-all">About</a>
                 <a wire:navigate href="{{ route("recipes") }}" class="hover:text-brand-600 transition-all">Recipes</a>
