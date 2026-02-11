@@ -1,161 +1,133 @@
-<div
-    class="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <!-- Header -->
-        <div class="text-center">
-            <h2 class="mt-6 text-3xl font-bold text-gray-900">Create your account</h2>
-            <p class="mt-2 text-sm text-gray-600">
-                Already have an account?
-                <a href="{{ route('login') }}"
-                    class="font-medium text-orange-600 hover:text-orange-500 transition-colors">
-                    Sign in here
-                </a>
-            </p>
-        </div>
+<div class="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-16">
 
-        <!-- Register Form -->
-        <form wire:submit="register" class="mt-8 space-y-6">
-            <div class="bg-white rounded-xl shadow-lg p-8 space-y-6">
-                <!-- Name Fields -->
+    <div class="w-full max-w-md">
+
+        <div class="bg-white border border-gray-200 rounded-2xl p-10">
+
+            <!-- Header -->
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-semibold text-gray-900">
+                    Create your account
+                </h2>
+                <p class="text-sm text-gray-500 mt-3">
+                    Already registered?
+                    <a href="{{ route('login') }}" class="text-gray-900 font-medium hover:underline">
+                        Sign in
+                    </a>
+                </p>
+            </div>
+
+            <!-- Form -->
+            <form wire:submit.prevent="register" class="space-y-6">
+
+                <!-- Name Row -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- First Name -->
+
                     <div>
-                        <label for="first_name" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm text-gray-600 mb-2">
                             First Name
                         </label>
-                        <input id="first_name" type="text" wire:model="first_name"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors  placeholder="
-                            Enter your first name">
+                        <input type="text"
+                            wire:model.blur="first_name"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gray-500"
+                            placeholder="First name">
                         @error('first_name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <!-- Last Name -->
                     <div>
-                        <label for="last_name" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm text-gray-600 mb-2">
                             Last Name
                         </label>
-                        <input id="last_name" type="text" wire:model="last_name"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors "
-                            placeholder="Enter your last name">
+                        <input type="text"
+                            wire:model.blur="last_name"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gray-500"
+                            placeholder="Last name">
                         @error('last_name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+
                 </div>
 
                 <!-- Email -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label class="block text-sm text-gray-600 mb-2">
                         Email Address
                     </label>
-                    <input id="email" type="email" wire:model="email"
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors "
-                        placeholder="Enter your email address">
+                    <input type="email"
+                        wire:model.blur="email"
+                        class="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gray-500"
+                        placeholder="you@example.com">
                     @error('email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Password -->
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label class="block text-sm text-gray-600 mb-2">
                         Password
                     </label>
                     <div class="relative">
-                        <input id="password" type="{{ $showPassword ? 'text' : 'password' }}" wire:model="password"
-                            class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors "
-                            placeholder="Create a strong password">
-                        <button type="button" wire:click="togglePasswordVisibility"
-                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
-                            @if($showPassword)
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21">
-                                    </path>
-                                </svg>
-                            @else
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                    </path>
-                                </svg>
-                            @endif
+                        <input type="{{ $showPassword ? 'text' : 'password' }}"
+                            wire:model="password"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 text-sm focus:outline-none focus:border-gray-500"
+                            placeholder="Create password">
+
+                        <button type="button"
+                            wire:click="togglePasswordVisibility"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-700">
+                            👁
                         </button>
                     </div>
                     @error('password')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Password Confirmation -->
+                <!-- Confirm Password -->
                 <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">
+                    <label class="block text-sm text-gray-600 mb-2">
                         Confirm Password
                     </label>
                     <div class="relative">
-                        <input id="password_confirmation" type="{{ $showPasswordConfirmation ? 'text' : 'password' }}"
+                        <input type="{{ $showPasswordConfirmation ? 'text' : 'password' }}"
                             wire:model="password_confirmation"
-                            class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors "
-                            placeholder="Confirm your password">
-                        <button type="button" wire:click="togglePasswordConfirmationVisibility"
-                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
-                            @if($showPasswordConfirmation)
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21">
-                                    </path>
-                                </svg>
-                            @else
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                    </path>
-                                </svg>
-                            @endif
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 text-sm focus:outline-none focus:border-gray-500"
+                            placeholder="Re-enter password">
+
+                        <button type="button"
+                            wire:click="togglePasswordConfirmationVisibility"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-700">
+                            👁
                         </button>
                     </div>
-                    @error('password_confirmation')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
                 </div>
 
-                <!-- Submit Button -->
+                <!-- Submit -->
                 <button type="submit"
-                    class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-orange-600 hover:to-amber-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-200 shadow-lg"
-                    wire:loading.attr="disabled" wire:loading.class="opacity-50 cursor-not-allowed">
+                    wire:loading.attr="disabled"
+                    class="w-full bg-gray-900 text-white py-3 rounded-lg text-sm font-medium hover:bg-gray-800 transition">
                     <span wire:loading.remove>Create Account</span>
-                    <span wire:loading class="flex items-center justify-center">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                            </circle>
-                            <path class="opacity-75" fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                            </path>
-                        </svg>
-                        Creating Account...
-                    </span>
+                    <span wire:loading>Creating account...</span>
                 </button>
 
                 <!-- Divider -->
-                <div class="relative">
+                <div class="relative my-6">
                     <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
+                        <div class="w-full border-t border-gray-200"></div>
                     </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">Or continue with</span>
+                    <div class="relative flex justify-center text-xs text-gray-400 bg-white px-4">
+                        OR
                     </div>
                 </div>
 
-                <!-- Google OAuth Button -->
-                <button type="button" wire:click="redirectToGoogle"
-                    class="w-full bg-white border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-3">
+                <!-- Google Button -->
+                <button type="button"
+                    wire:click="redirectToGoogle"
+                    class="w-full border border-gray-300 py-3 rounded-lg text-sm font-medium hover:bg-gray-50 transition flex items-center justify-center gap-3">
                     <svg class="w-5 h-5" viewBox="0 0 24 24">
                         <path fill="#4285F4"
                             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -166,9 +138,13 @@
                         <path fill="#EA4335"
                             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                     </svg>
-                    <span>Continue with Google</span>
+                    Continue with Google
                 </button>
-            </div>
-        </form>
+
+            </form>
+
+        </div>
+
     </div>
+
 </div>

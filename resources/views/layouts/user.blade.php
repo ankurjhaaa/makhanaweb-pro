@@ -1,106 +1,158 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $title ?? 'Your\'s Snacks' }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MakhanaWeb</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    @livewireStyles
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#d97706',
+                        softbg: '#faf7f2'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
-<body class="bg-gray-50 font-inter text-gray-900 antialiased">
-    <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex justify-between h-16 items-center">
-                <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="/" class="text-2xl font-bold font-poppins text-brand-600">
-                        Your's<span class="text-gray-800">Snacks</span>
-                    </a>
-                </div>
+<body class="bg-softbg pb-20 md:pb-0">
 
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex space-x-10">
-                    <a href="/" class="text-gray-600 hover:text-brand-600 transition">Home</a>
-                    <a href="/shop" class="text-gray-600 hover:text-brand-600 transition">Shop</a>
-                    <a href="/about" class="text-gray-600 hover:text-brand-600 transition">About</a>
-                    <a href="/contact" class="text-gray-600 hover:text-brand-600 transition">Contact</a>
-                </nav>
+    <!-- ================= NAVBAR ================= -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-5 flex items-center justify-between">
 
-                <!-- Account & Cart -->
-                <div class="hidden md:flex items-center space-x-6">
+            <!-- Logo -->
+            <a href="/" class="text-2xl font-bold text-primary tracking-tight">
+                MakhanaWeb
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex gap-8 text-gray-700 font-medium">
+                <a href="/" class="hover:text-primary transition">Home</a>
+                <a href="/shop" class="hover:text-primary transition">Shop</a>
+                <!-- <a href="/recipes" class="hover:text-primary transition">Recipes</a> -->
+                <a href="/contact" class="hover:text-primary transition">Contact</a>
+            </nav>
+
+            <!-- Desktop Right -->
+            <div class="hidden md:flex items-center gap-6">
+
+                <!-- Cart -->
+                <a href="{{ route('cart') }}" class="relative text-gray-600 hover:text-gray-900 transition text-lg">
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    @if($cartCount ?? false)
+                        <span class="absolute -top-2 -right-2 bg-black text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                            {{ $cartCount }}
+                        </span>
+                    @endif
+                </a>
+
+                @auth
+                    <!-- Profile Dropdown -->
                     <div class="relative">
-                        <div class="flex items-center space-x-1 cursor-pointer group">
-                            <span class="text-gray-700 group-hover:text-brand-600">My Account</span>
-                            <i class="fas fa-chevron-down text-xs text-gray-500 group-hover:text-brand-600"></i>
-                        </div>
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
-                            <a href="{{ route('user.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
-                            <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                            <a href="{{ route('user.orders') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Orders</a>
-                            <hr class="my-1">
+
+                        <button type="button"
+                            onclick="document.getElementById('desktopProfileMenu').classList.toggle('hidden')"
+                            class="flex items-center gap-3 px-3 py-2 rounded-full hover:bg-gray-100 transition">
+
+                            <!-- Avatar -->
+                            <div
+                                class="h-9 w-9 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center text-sm font-medium text-gray-700">
+
+                                @if(Auth::user()->avatar)
+                                    <img src="{{ Auth::user()->avatar }}" class="h-full w-full object-cover">
+                                @else
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                @endif
+                            </div>
+
+                            <!-- Name -->
+                            <span class="text-sm text-gray-700">
+                                {{ Auth::user()->name }}
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div id="desktopProfileMenu"
+                            class="hidden absolute right-0 mt-3 w-52 bg-white border border-gray-200 rounded-xl shadow-lg py-2 z-50">
+
+                            <a href="{{ route('user.profile') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                My Profile
+                            </a>
+
+                            <a href="{{ route('user.orders') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                Orders
+                            </a>
+
+                            <a href="{{ route('user.addresses') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                Addresses
+                            </a>
+
+                            <a href="{{ route('user.wishlist') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                Wishlist
+                            </a>
+
+                            <div class="border-t my-2"></div>
+
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Sign Out
+                                <button type="submit"
+                                    class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                    Logout
                                 </button>
                             </form>
                         </div>
                     </div>
 
-                    <a href="/cart" class="text-gray-700 hover:text-brand-600 relative">
-                        <i class="fas fa-shopping-bag text-xl"></i>
-                        <span class="absolute -top-2 -right-2 bg-brand-600 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
-                            0
-                        </span>
+                @else
+                    <!-- Login Button -->
+                    <a href="{{ route('login') }}"
+                        class="bg-black text-white px-5 py-2 rounded-full text-sm hover:bg-gray-800 transition">
+                        Login
                     </a>
-                </div>
+                @endauth
 
-                <!-- Mobile menu button -->
-                <div class="flex md:hidden">
-                    <button id="mobile-menu-button" type="button" class="text-gray-600">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
             </div>
-        </div>
 
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="/" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md">Home</a>
-                <a href="/shop" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md">Shop</a>
-                <a href="/about" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md">About</a>
-                <a href="/contact" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md">Contact</a>
-                <hr class="my-2">
-                <a href="{{ route('user.dashboard') }}" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md">Dashboard</a>
-                <a href="{{ route('user.profile') }}" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md">Profile</a>
-                <a href="{{ route('user.orders') }}" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md">My Orders</a>
-                <a href="{{ route('cart') }}" class="block px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md">Cart</a>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="block w-full text-left px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-md">
-                        Sign Out
-                    </button>
-                </form>
+            <!-- Mobile Right (Login Button Only) -->
+            <div class="md:hidden">
+                <a href="/login" class="text-sm bg-primary text-white px-4 py-2 rounded-lg">
+                    Login
+                </a>
             </div>
+
         </div>
     </header>
 
+
+    <!-- ================= PAGE CONTENT ================= -->
     <!-- User Dashboard Container -->
-    <div class="max-w-8xl mx-auto px-4 sm:px-6 py-8">
+    <div class="max-w-8xl mx-auto md:px-4 md:py-8">
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Sidebar -->
-            <div class="w-full md:w-64 shrink-0">
+            <div class="w-full md:w-64 shrink-0 hidden md:block">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                     <div class="p-4 bg-brand-50 border-b border-gray-200">
                         <div class="flex items-center">
-                            <div class="h-12 w-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-600">
+                            <div
+                                class="h-12 w-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-600">
                                 <i class="fas fa-user"></i>
                             </div>
                             <div class="ml-3">
@@ -110,7 +162,7 @@
                         </div>
                     </div>
                     <nav class="p-2">
-                        <a href="{{ route('user.dashboard') }}" 
+                        <a href="{{ route('user.dashboard') }}"
                             class="flex items-center px-4 py-3 rounded-md {{ request()->routeIs('user.dashboard') ? 'bg-brand-50 text-brand-600' : 'text-gray-700 hover:bg-gray-50' }}">
                             <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
                             <span>Dashboard</span>
@@ -138,7 +190,8 @@
                         <hr class="my-2 border-gray-200">
                         <form method="POST" action="{{ route('logout') }}" class="p-2">
                             @csrf
-                            <button type="submit" class="flex w-full items-center px-4 py-3 rounded-md text-gray-700 hover:bg-gray-50">
+                            <button type="submit"
+                                class="flex w-full items-center px-4 py-3 rounded-md text-gray-700 hover:bg-gray-50">
                                 <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
                                 <span>Sign Out</span>
                             </button>
@@ -151,107 +204,95 @@
             <div class="flex-1">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="p-6">
-                        @if (isset($header))
-                            <h1 class="text-2xl font-semibold text-gray-800 mb-6">{{ $header }}</h1>
-                        @endif
-
+                       
                         {{ $slot }}
-                        @yield('content')
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100 py-12 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Column 1: About -->
-                <div>
-                    <h5 class="font-bold text-gray-800 mb-4">About Us</h5>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Your's Snacks brings you premium quality, healthy snacks direct from farmers. We believe in natural, 
-                        nutritious food that's good for you and the planet.
-                    </p>
-                </div>
 
-                <!-- Column 2: Quick Links -->
-                <div>
-                    <h5 class="font-bold text-gray-800 mb-4">Quick Links</h5>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">Home</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">Shop</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">About Us</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">Contact</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">Blog</a></li>
-                    </ul>
-                </div>
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-white border-t hidden md:block">
+        <div class="max-w-7xl mx-auto px-4 py-14 grid md:grid-cols-4 gap-10">
 
-                <!-- Column 3: Help -->
-                <div>
-                    <h5 class="font-bold text-gray-800 mb-4">Help</h5>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">FAQs</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">Shipping</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">Returns</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">Track Order</a></li>
-                        <li><a href="#" class="text-gray-600 hover:text-brand-600">Privacy Policy</a></li>
-                    </ul>
-                </div>
+            <!-- Brand -->
+            <div>
+                <h2 class="text-xl font-bold text-primary">MakhanaWeb</h2>
+                <p class="text-gray-600 mt-4 text-sm leading-relaxed">
+                    Fresh roasted makhana & healthy snacks made with love.
+                    Pure ingredients, better snacking.
+                </p>
+            </div>
 
-                <!-- Column 4: Newsletter -->
-                <div>
-                    <h5 class="font-bold text-gray-800 mb-4">Newsletter</h5>
-                    <p class="text-gray-600 text-sm mb-4">Subscribe to our newsletter for the latest updates and offers</p>
-                    <form class="space-y-2">
-                        <div class="flex">
-                            <input type="email" placeholder="Your email"
-                                class="flex-1 px-4 py-2 text-sm border border-gray-300 rounded-l-md focus:ring-brand-500 focus:border-brand-500">
-                            <button type="submit"
-                                class="bg-brand-600 text-white px-4 py-2 text-sm rounded-r-md hover:bg-brand-700">
-                                Subscribe
-                            </button>
-                        </div>
-                    </form>
+            <!-- Links -->
+            <div>
+                <h4 class="font-semibold mb-4 text-gray-800">Quick Links</h4>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li><a href="/shop" class="hover:text-primary">Shop</a></li>
+                    <li><a href="/recipes" class="hover:text-primary">Recipes</a></li>
+                    <li><a href="/contact" class="hover:text-primary">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div>
+                <h4 class="font-semibold mb-4 text-gray-800">Support</h4>
+                <ul class="space-y-2 text-gray-600 text-sm">
+                    <li>Shipping Info</li>
+                    <li>Returns Policy</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+
+            <!-- Subscribe -->
+            <div>
+                <h4 class="font-semibold mb-4 text-gray-800">Stay Updated</h4>
+                <div class="flex">
+                    <input type="email" placeholder="Your email"
+                        class="flex-1 px-4 py-2 border rounded-l-lg text-sm focus:ring-2 focus:ring-primary outline-none">
+                    <button class="bg-primary text-white px-4 rounded-r-lg text-sm">
+                        Join
+                    </button>
                 </div>
             </div>
 
-            <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-500 text-sm">© 2025 Your's Snacks. All rights reserved.</p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="#" class="text-gray-400 hover:text-brand-600">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-brand-600">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-brand-600">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-brand-600">
-                        <i class="fab fa-pinterest-p"></i>
-                    </a>
-                </div>
-            </div>
+        </div>
+
+        <div class="text-center text-gray-500 text-xs py-6 border-t">
+            © 2026 MakhanaWeb. All rights reserved.
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Mobile menu toggle
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
 
-            if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', function () {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            }
-        });
-    </script>
+    <!-- ================= MOBILE BOTTOM NAV ================= -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t shadow-md z-50">
+        <div class="flex justify-around py-3 text-gray-600 text-xs">
 
-    @livewireScripts
+            <a href="/" class="flex flex-col items-center hover:text-primary">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="mt-1">Home</span>
+            </a>
+
+            <a href="/shop" class="flex flex-col items-center hover:text-primary">
+                <i class="fa-solid fa-store text-lg"></i>
+                <span class="mt-1">Shop</span>
+            </a>
+
+            <a href="/cart" class="flex flex-col items-center hover:text-primary">
+                <i class="fa-solid fa-cart-shopping text-lg"></i>
+                <span class="mt-1">Cart</span>
+            </a>
+
+            <a href="/profile" class="flex flex-col items-center hover:text-primary">
+                <i class="fa-solid fa-user text-lg"></i>
+                <span class="mt-1">Profile</span>
+            </a>
+
+        </div>
+    </div>
+
 </body>
 
 </html>

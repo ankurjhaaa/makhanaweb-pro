@@ -1,171 +1,241 @@
 <div class="space-y-6">
-    <!-- Back Button -->
+
+    <!-- Back -->
     <div>
-        <a href="{{ route('user.orders') }}" class="inline-flex items-center text-sm text-brand-600 hover:text-brand-500">
-            <i class="fas fa-arrow-left mr-2"></i> Back to Orders
+        <a href="{{ route('user.orders') }}"
+            class="inline-flex items-center text-sm text-brand-600 hover:text-brand-500 font-medium">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Back to Orders
         </a>
     </div>
 
-    <!-- Order Info -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div class="p-6 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+
+    <!-- Order Header -->
+    <div class="bg-white border border-gray-100 rounded-lg shadow-sm">
+
+        <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
             <div>
-                <h2 class="text-lg font-semibold">Order #{{ $order->order_number }}</h2>
-                <p class="text-sm text-gray-500">Placed on Sep 20, 2025 10:30 AM</p>
+                <h2 class="font-poppins text-lg font-semibold text-gray-800">
+                    Order #{{ $order->order_number }}
+                </h2>
+                <p class="text-sm text-gray-500 mt-1">
+                    Placed on {{ $order->created_at->format('M d, Y • h:i A') }}
+                </p>
             </div>
 
-            <div class="flex items-center gap-3">
-                <!-- Order Status -->
-                <!-- Order Status -->
-                @switch($order->status)
-                    @case('pending')
-                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">Pending</span>
-                        @break
-                    @case('processing')
-                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">Processing</span>
-                        @break
-                    @case('shipped')
-                        <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">Shipped</span>
-                        @break
-                    @case('delivered')
-                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Delivered</span>
-                        @break
-                    @case('cancelled')
-                        <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium">Cancelled</span>
-                        @break
-                @endswitch
+            <div class="flex items-center gap-4">
 
-                <div class="text-lg font-semibold text-gray-800">
-                    ₹{{ $order->total_amount }}
+                <!-- Status -->
+                <span class="px-3 py-1 text-xs rounded-full
+                    @if($order->status === 'delivered') bg-green-50 text-green-700
+                    @elseif($order->status === 'processing') bg-blue-50 text-blue-700
+                    @elseif($order->status === 'shipped') bg-indigo-50 text-indigo-700
+                    @elseif($order->status === 'pending') bg-yellow-50 text-yellow-700
+                    @elseif($order->status === 'cancelled') bg-red-50 text-red-700
+                    @else bg-gray-100 text-gray-700
+                    @endif">
+                    {{ ucfirst($order->status) }}
+                </span>
+
+                <div class="text-lg font-semibold text-brand-600">
+                    ₹{{ number_format($order->total_amount, 2) }}
                 </div>
+
             </div>
+
         </div>
 
-        <!-- Address Info -->
+
+
+        <!-- Addresses -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+
             <div>
-                <h3 class="text-sm font-medium text-gray-700 mb-2">Shipping Address</h3>
-                <p class="text-sm text-gray-600">
-                    {{ Auth::user()->name }} <br>
-                     {{ $order->shippingAddress->address_line1 }}
-                    <br>
-                    {{ $order->shippingAddress->city }}, {{ $order->shippingAddress->state }} - {{ $order->shippingAddress->postal_code }}
+                <h3 class="text-sm font-medium text-gray-700 mb-2">
+                    Shipping Address
+                </h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    {{ $order->shippingAddress->address_line1 }}<br>
+                    {{ $order->shippingAddress->city }},
+                    {{ $order->shippingAddress->state }}
+                    - {{ $order->shippingAddress->postal_code }}<br>
+                    {{ $order->shippingAddress->country }}
                 </p>
             </div>
+
             <div>
-                <h3 class="text-sm font-medium text-gray-700 mb-2">Billing Address</h3>
-                <p class="text-sm text-gray-600">
-                    {{ Auth::user()->name }} <br>
-                     {{ $order->billingAddress->address_line1 }}
-                    <br>
-                    {{ $order->billingAddress->city }}, {{ $order->billingAddress->state }} - {{ $order->billingAddress->postal_code }}
+                <h3 class="text-sm font-medium text-gray-700 mb-2">
+                    Billing Address
+                </h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    {{ $order->billingAddress->address_line1 }}<br>
+                    {{ $order->billingAddress->city }},
+                    {{ $order->billingAddress->state }}
+                    - {{ $order->billingAddress->postal_code }}<br>
+                    {{ $order->billingAddress->country }}
                 </p>
             </div>
+
         </div>
+
     </div>
 
+
+
     <!-- Order Items -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div class="p-6 border-b border-gray-200">
-            <h3 class="text-lg font-medium text-gray-900">Order Items</h3>
+    <div class="bg-white border border-gray-100 rounded-lg shadow-sm overflow-hidden">
+
+        <div class="p-6 border-b border-gray-100">
+            <h3 class="font-poppins text-lg font-semibold text-gray-800">
+                Order Items
+            </h3>
         </div>
 
-        <div>
+        <div class="divide-y divide-gray-100">
+
             @foreach($order->orderItems as $item)
-                <div class="p-6 flex items-center border-b border-gray-100">
-                    <a href="{{ route('item', $item->product->slug) }}">
-                        <div class="h-16 w-16 flex-shrink-0 rounded-md overflow-hidden border border-gray-200">
-                            <img src="{{ $item->product->imagelink }}" alt="Product 1" class="h-full w-full object-cover">
-                        </div>
+
+                <div class="p-6 flex flex-col sm:flex-row gap-4 sm:items-center">
+
+                    <!-- Image -->
+                    <a href="{{ route('item', $item->product->slug) }}"
+                        class="w-20 h-20 bg-gray-100 rounded-md overflow-hidden border border-gray-200">
+                        <img src="{{ $item->product->imagelink }}" class="w-full h-full object-cover">
                     </a>
 
-                    <div class="ml-4 flex-1">
-                        <h4 class="text-sm font-medium text-gray-900">
+                    <!-- Info -->
+                    <div class="flex-1">
+                        <h4 class="text-sm font-medium text-gray-800">
                             {{ $item->product->name }}
                         </h4>
-                        <p class="text-sm text-gray-500">
-                            Qty: {{ $item->quantity }} × ₹{{ $item->product->price }}
+                        <p class="text-xs text-gray-500 mt-1">
+                            Qty: {{ $item->quantity }} × ₹{{ number_format($item->unit_price, 2) }}
                         </p>
                     </div>
 
-                    @if(auth()->check() && $hasDeliveredOrder)
-                        <button wire:click="$set('showReviewModal', true)"
-                            class="mt-2 text-xs text-brand-600 hover:text-brand-500 flex items-center">
-                            <button wire:click="openReviewModal({{ $item->id }})">Add Review</button>
+                    <!-- Subtotal -->
+                    <div class="text-sm font-semibold text-gray-800">
+                        ₹{{ number_format($item->subtotal, 2) }}
+                    </div>
+
+                    <!-- Review -->
+                    @if(auth()->check() && $order->status === 'delivered')
+                        <button wire:click="openReviewModal({{ $item->id }})"
+                            class="text-xs text-brand-600 hover:text-brand-500 font-medium">
+                            Add Review
                         </button>
                     @endif
 
-                   <!-- Review Modal -->
-@if($showReviewModal)
-    <div class="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative transform transition-all scale-95 animate-fadeIn">
-            
-            <!-- Close Button -->
-            <button wire:click="$set('showReviewModal', false)" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times text-lg"></i>
-            </button>
-
-            <!-- Title -->
-            <h2 class="text-xl font-bold text-gray-800 mb-1">Write a Review</h2>
-            <p class="text-sm text-gray-500 mb-5">Share your feedback about this product</p>
-
-            <!-- Rating -->
-            <div class="mb-5">
-                <label class="block mb-2 text-sm font-medium text-gray-700">Your Rating</label>
-                <div class="flex space-x-2">
-                    @for ($i = 1; $i <= 5; $i++)
-                        <button type="button" wire:click="$set('rating', {{ $i }})" class="text-3xl transition transform hover:scale-110 focus:outline-none {{ $i <= $rating ? 'text-yellow-400 drop-shadow' : 'text-gray-300 hover:text-yellow-300' }}"> ★
-                        </button>
-                    @endfor
                 </div>
-            </div>
 
-            <!-- Comment -->
-            <div class="mb-5">
-                <label class="block mb-2 text-sm font-medium text-gray-700">Your Review</label>
-                <textarea wire:model="comment" rows="4" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 resize-none" placeholder="Tell others what you liked or disliked..."></textarea>
-            </div>
-
-            <!-- Buttons -->
-            <div class="flex justify-end space-x-3">
-                <button wire:click="$set('showReviewModal', false)" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition"> Cancel
-                </button>
-
-                <button wire:click="addReview"  class="px-4 py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 shadow-md transition">  Submit Review
-                </button>
-            </div>
-        </div>
-    </div>
-@endif
-
-
-                </div>
             @endforeach
 
         </div>
+
     </div>
 
-    <!-- Coupon & Payment Info -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div class="flex flex-col sm:flex-row sm:justify-between gap-4">
+
+
+    <!-- Payment Summary -->
+    <div class="bg-white border border-gray-100 rounded-lg shadow-sm p-6">
+
+        <div class="flex flex-col md:flex-row md:justify-between gap-6">
+
             <div>
-                @if($order->coupon_id != null)
-                <p class="text-sm text-gray-600">Coupon Applied:
-                    <span class="font-mono font-medium text-green-600">{{ $order->coupon->code }}</span>
-                </p>
+                @if($order->coupon)
+                    <p class="text-sm text-gray-600">
+                        Coupon Applied:
+                        <span class="text-green-600 font-medium">
+                            {{ $order->coupon->code }}
+                        </span>
+                    </p>
                 @endif
-                
             </div>
-            <div class="text-right space-y-1">
-                <p class="text-sm">Subtotal: ₹{{ $order->subtotal }}</p>
-                <p class="text-sm">Tax: ₹{{ $order->subtotal * 0.18 }}</p>
-                <p class="text-sm">Shipping: ₹{{ $order->shipping_cost }}</p>
-                @if($order->coupon_id != null)
-                <p class="text-sm text-gray-600">Coupon Applied: ₹{{ $order->discount }} </p>
+
+            <div class="w-full md:w-64 space-y-2 text-sm">
+
+                <div class="flex justify-between">
+                    <span>Subtotal</span>
+                    <span>₹{{ number_format($order->subtotal, 2) }}</span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span>Tax</span>
+                    <span>₹{{ number_format($order->tax_amount, 2) }}</span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span>Shipping</span>
+                    <span>₹{{ number_format($order->shipping_cost, 2) }}</span>
+                </div>
+
+                @if($order->discount > 0)
+                    <div class="flex justify-between text-green-600">
+                        <span>Discount</span>
+                        <span>-₹{{ number_format($order->discount, 2) }}</span>
+                    </div>
                 @endif
-                <p class="text-base font-semibold">Total: ₹{{ $order->total_amount }}</p>
+
+                <div class="border-t border-gray-200 pt-2 flex justify-between font-semibold text-base">
+                    <span>Total</span>
+                    <span>₹{{ number_format($order->total_amount, 2) }}</span>
+                </div>
+
             </div>
+
         </div>
+
     </div>
+
+
+
+    <!-- Review Modal -->
+    @if($showReviewModal)
+        <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+
+            <div class="bg-white w-full max-w-md rounded-xl shadow-xl p-6 relative">
+
+                <button wire:click="$set('showReviewModal', false)"
+                    class="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">
+                    Write a Review
+                </h2>
+
+                <!-- Rating -->
+                <div class="mb-4">
+                    <div class="flex gap-2 text-2xl">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <button type="button" wire:click="$set('rating', {{ $i }})"
+                                class="{{ $i <= $rating ? 'text-yellow-400' : 'text-gray-300' }}">
+                                ★
+                            </button>
+                        @endfor
+                    </div>
+                </div>
+
+                <!-- Comment -->
+                <textarea wire:model="comment" rows="4"
+                    class="w-full border border-gray-300 rounded-md p-3 text-sm focus:ring-brand-500 focus:border-brand-500"
+                    placeholder="Share your experience..."></textarea>
+
+                <div class="mt-4 flex justify-end gap-3">
+                    <button wire:click="$set('showReviewModal', false)" class="px-4 py-2 text-sm border rounded-md">
+                        Cancel
+                    </button>
+                    <button wire:click="addReview"
+                        class="px-4 py-2 text-sm bg-brand-600 text-white rounded-md hover:bg-brand-700">
+                        Submit
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    @endif
 
 </div>
