@@ -23,7 +23,7 @@ use App\Enums\Role;
 use App\Livewire\User\WishlistComponent;
 use App\Livewire\Public\Item;
 use App\Livewire\Public\Special;
-
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', Homepage::class)->name("home");
 Route::get('/shop', Shop::class)->name("shop");
@@ -131,3 +131,9 @@ Route::middleware('auth')->group(function () {
 // // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 // Route::get('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
 // Route::get('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
+
+
+Route::get('migratefresh', function () {
+    Artisan::call('migrate:fresh');
+    return 'Database migrated fresh!';
+});
