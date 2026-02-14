@@ -133,7 +133,7 @@ Route::middleware('auth')->group(function () {
 // Route::get('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
 
 
-Route::get('migratefresh', function () {
+Route::get('/migratefresh', function () {
     Artisan::call('migrate:fresh');
     return 'Database migrated fresh!';
 });
