@@ -13,7 +13,6 @@ use Livewire\Component;
 #[Layout('layouts.app')]
 class Item extends Component
 {
-    public $activeTab = 'description';
     public $productDetail;
     public $relatedProducts = [];
     public $wishlistIds = [];
